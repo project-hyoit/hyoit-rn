@@ -1,31 +1,15 @@
-import { Tabs } from "expo-router";
-import React from "react";
-import { Platform } from "react-native";
-
 import { QueryProvider } from "@/shared/providers/QueryProvider";
-import { HapticTab } from "@/shared/ui/HapticTab";
 import { IconSymbol } from "@/shared/ui/IconSymbol";
-import TabBarBackground from "@/widgets/BottomTabBar/TabBarBackground";
-import { useTheme } from "@react-navigation/native";
+import BottomTabBar from "@/widgets/BottomTabBar/BottomTabBar";
+import { Tabs } from "expo-router";
+
+import React from "react";
 export default function TabLayout() {
-  const { colors } = useTheme() as any;
   return (
     <QueryProvider>
       <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: colors.tabIconSelected || colors.primary,
-          tabBarInactiveTintColor: colors.tabIconDefault || colors.text,
-          headerShown: false,
-          tabBarButton: HapticTab,
-          tabBarBackground: TabBarBackground,
-          tabBarStyle: Platform.select({
-            ios: {
-              // Use a transparent background on iOS to show the blur effect
-              position: "absolute",
-            },
-            default: {},
-          }),
-        }}
+        tabBar={(props) => <BottomTabBar {...props} />}
+        screenOptions={{ headerShown: false }}
       >
         <Tabs.Screen
           name="index"

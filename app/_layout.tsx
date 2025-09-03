@@ -1,5 +1,4 @@
-import { useColorScheme } from "@/hooks/useColorScheme";
-import { DarkTheme, LightTheme } from "@/shared/config/theme";
+import { LightTheme } from "@/shared/config/theme";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -7,16 +6,14 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme() ?? "light";
-  const theme = colorScheme === "dark" ? DarkTheme : LightTheme;
+  // 라이트 테마 고정
+  const theme = LightTheme;
+
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+  if (!loaded) return null;
 
   return (
     <ThemeProvider value={theme}>
@@ -24,7 +21,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
     </ThemeProvider>
   );
 }
