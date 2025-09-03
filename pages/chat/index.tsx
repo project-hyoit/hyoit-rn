@@ -1,9 +1,9 @@
 import { Text, View } from "react-native";
 
-export default function ProfileScreen() {
+export default function ChatScreen() {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>내정보 화면 입니당</Text>
+      <Text>채팅화면 입니당</Text>
     </View>
   );
 }
