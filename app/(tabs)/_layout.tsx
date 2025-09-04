@@ -25,7 +25,7 @@ export default function TabLayout() {
           options={{
             title: "게임",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="paperplane.fill" color={color} />
+              <IconSymbol size={28} name="gamecontroller.fill" color={color} />
             ),
           }}
         />
@@ -34,7 +34,7 @@ export default function TabLayout() {
           options={{
             title: "대화",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="paperplane.fill" color={color} />
+              <IconSymbol size={28} name="text.bubble.fill" color={color} />
             ),
           }}
         />
@@ -44,7 +44,7 @@ export default function TabLayout() {
           options={{
             title: "내 정보",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="paperplane.fill" color={color} />
+              <IconSymbol size={28} name="person.fill" color={color} />
             ),
           }}
         />

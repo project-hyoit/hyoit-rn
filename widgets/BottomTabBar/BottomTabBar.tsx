@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const ACTIVE = "#1E90FF";
 const INACTIVE = "#D9D9D9";
 const BG = "#FFFFFF";
-const TAB_HEIGHT = 90;
+const TAB_HEIGHT = 100;
 
 export default function BottomTabBar({
   state,
@@ -43,14 +43,14 @@ export default function BottomTabBar({
           />
         );
 
-        const label = options.title ?? route.name;
+        const label = options.title;
 
         return (
           <Pressable
             key={route.key}
             onPress={onPress}
             style={styles.item}
-            android_ripple={{ color: "rgba(0,0,0,0.06)" }} // ← 선택
+            android_ripple={{ color: "rgba(0,0,0,0.06)" }}
             hitSlop={8}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : undefined}
