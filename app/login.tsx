@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   logoText: {
     fontSize: 48,
-    fontWeight: "900",
+    fontWeight: "600",
     color: COLORS.text,
     lineHeight: 56,
   },
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
         shadowRadius: 8,
         shadowOffset: { width: 0, height: 2 },
       },
-      android: { elevation: 2 },
     }),
   },
   kakaoPressed: { opacity: 0.9 },
