@@ -2,14 +2,15 @@ import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { IconSymbol } from "@/shared/ui/IconSymbol";
 import BottomTabBar from "@/widgets/BottomTabBar/BottomTabBar";
 import { Tabs } from "expo-router";
-
 import React from "react";
+
 export default function TabLayout() {
   return (
     <QueryProvider>
       <Tabs
         tabBar={(props) => <BottomTabBar {...props} />}
         screenOptions={{ headerShown: false }}
+        initialRouteName="index"
       >
         <Tabs.Screen
           name="index"

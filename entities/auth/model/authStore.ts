@@ -1,15 +1,17 @@
 import { create } from "zustand";
 
 type AuthState = {
-  token: string | null;
-  isLoggedIn: boolean;
-  setToken: (t: string) => void;
-  logout: () => void;
+  isSignedIn: boolean;
+  hasOnboarded: boolean;
+  setSignedIn: (v: boolean) => void;
+  setOnboarded: (v: boolean) => void;
+  reset: () => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  token: null,
-  isLoggedIn: false,
-  setToken: (t) => set({ token: t, isLoggedIn: true }),
-  logout: () => set({ token: null, isLoggedIn: false }),
+  isSignedIn: false,
+  hasOnboarded: false,
+  setSignedIn: (v) => set({ isSignedIn: v }),
+  setOnboarded: (v) => set({ hasOnboarded: v }),
+  reset: () => set({ isSignedIn: false, hasOnboarded: false }),
 }));
