@@ -55,6 +55,9 @@ export default function Success() {
           accessibilityRole="button"
           accessibilityLabel="돌아가기"
         >
+          <Text style={s.leftArrow} allowFontScaling={false}>
+            ←
+          </Text>
           <Text style={s.outlineText} allowFontScaling={false}>
             돌아가기
           </Text>
@@ -96,7 +99,7 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.bg,
     paddingHorizontal: 24,
-    paddingTop: 60,
+    paddingTop: 120,
   },
   title: {
     fontSize: 20,
@@ -113,6 +116,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 16,
     marginTop: 16,
+    marginBottom: 100,
   },
   cardTitle: {
     fontSize: 16,
@@ -157,8 +161,17 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.primary,
     backgroundColor: "transparent",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
   },
   outlineText: { color: COLORS.primary, fontSize: 16, fontWeight: "700" },
+  leftArrow: {
+    color: COLORS.primary,
+    fontSize: 16,
+    fontWeight: "700",
+    marginRight: 2,
+  },
   primaryBtn: {
     flexDirection: "row",
     alignItems: "center",

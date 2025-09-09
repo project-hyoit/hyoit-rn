@@ -16,7 +16,7 @@ export default function BottomTabBar({
   const { bottom } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.frame, { paddingBottom: Math.max(bottom, 0) }]}>
+    <View style={[styles.frame, { paddingBottom: Math.max(bottom, 6) }]}>
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
         const { options } = descriptors[route.key];
@@ -76,9 +76,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: TAB_HEIGHT,
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     backgroundColor: BG,
     borderTopWidth: 0,
+    paddingHorizontal: 0,
+    overflow: "visible",
     ...Platform.select({
       ios: {
         shadowColor: "#000",
@@ -94,18 +96,24 @@ const styles = StyleSheet.create({
     height: 48,
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 0,
+    overflow: "visible",
   },
   iconWrap: {
-    width: 24,
+    width: 30,
     height: 24,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 4,
+    overflow: "visible",
   },
   label: {
     fontSize: 12,
     lineHeight: 16,
     includeFontPadding: false,
+    textAlign: "center",
     textAlignVertical: "center",
+    paddingHorizontal: 2,
+    minWidth: 0,
   },
 });

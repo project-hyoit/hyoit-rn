@@ -45,10 +45,17 @@ export function IconSymbol({
 }) {
   return (
     <MaterialIcons
-      color={color}
-      size={size}
       name={MAPPING[name]}
-      style={style}
+      size={size}
+      color={color}
+      style={[
+        {
+          includeFontPadding: false,
+          lineHeight: size + 2,
+          textAlign: "center",
+        },
+        style,
+      ]}
     />
   );
 }

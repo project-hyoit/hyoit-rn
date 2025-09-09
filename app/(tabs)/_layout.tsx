@@ -35,7 +35,7 @@ export default function TabLayout() {
           options={{
             title: "대화",
             tabBarIcon: ({ color }) => (
-              <IconSymbol size={28} name="text.bubble.fill" color={color} />
+              <IconSymbol size={26} name="text.bubble.fill" color={color} />
             ),
           }}
         />
