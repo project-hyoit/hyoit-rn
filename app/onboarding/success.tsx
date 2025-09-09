@@ -13,7 +13,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Success() {
   const { bottom } = useSafeAreaInsets();
-  const setSignedIn = useAuthStore((s) => s.setSignedIn);
   const setOnboarded = useAuthStore((s) => s.setOnboarded);
 
   const child = { name: "김유찬", phone: "010-4610-3405" };
@@ -63,7 +62,6 @@ export default function Success() {
 
         <Pressable
           onPress={() => {
-            setSignedIn(true);
             setOnboarded(true);
             router.replace("/(tabs)");
           }}

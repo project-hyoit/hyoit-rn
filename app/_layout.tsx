@@ -18,7 +18,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={LightTheme}>
       <Stack screenOptions={{ headerShown: false }} />
-      <StatusBar style="dark" />
+      <StatusBar />
     </ThemeProvider>
   );
 }
