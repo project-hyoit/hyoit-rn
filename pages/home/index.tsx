@@ -3,7 +3,6 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { COLORS } from "@/shared/theme/colors";
 import {
   ActionBarDual,
   AskBanner,
@@ -16,10 +15,7 @@ import {
 
 export default function HomeScreen() {
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: COLORS.bg }}
-      edges={["top"]}
-    >
+    <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
       <ScrollView
         contentContainerStyle={s.container}
         showsVerticalScrollIndicator={false}
@@ -35,22 +31,24 @@ export default function HomeScreen() {
         <ActionBarDual
           left={{
             label: "쥐돌이와 대화",
-            onPress: () => router.push("/(tabs)/chat"),
+            icon: "text.bubble.fill",
+            onPress: () => router.push("/chat"),
           }}
           right={{
             label: "게임하기",
-            onPress: () => router.push("/(tabs)/game"),
+            icon: "gamecontroller.fill",
+            onPress: () => router.push("/game"),
           }}
         />
 
         <View style={s.row}>
           <View style={s.col}>
-            <WeatherCard temp={22} summary="맑음" />
+            <WeatherCard temp={22} />
           </View>
           <View style={s.col}>
             <MetricCard
               title="주간 활동량"
-              message={"활동량이 점점 줄어들고 있어요.\n짧은 산책 어떠세요?"}
+              message={"활동량이 점점 줄어들고 있어요. \n 짧은 산책 어떠세요?"}
               data={[72, 55, 35, 37, 27, 18]}
             />
           </View>
@@ -72,7 +70,6 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* 1열: 카드 맞추기 */}
         <MemoryGameCard onPress={() => router.push("/(tabs)/game")} />
       </ScrollView>
     </SafeAreaView>
@@ -81,11 +78,11 @@ export default function HomeScreen() {
 
 const s = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
-    paddingTop: 8,
+    paddingHorizontal: 14,
+    paddingTop: 12,
     paddingBottom: 24,
     gap: 16,
   },
-  row: { flexDirection: "row", gap: 16 },
+  row: { flexDirection: "row", gap: 12 },
   col: { flex: 1 },
 });

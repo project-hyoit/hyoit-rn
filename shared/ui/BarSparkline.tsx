@@ -11,7 +11,7 @@ type Props = {
 export default function BarSparkline({
   values,
   color = "#1E90FF",
-  gap = 8,
+  gap = 6,
   height = 72,
 }: Props) {
   const max = Math.max(...values, 1);

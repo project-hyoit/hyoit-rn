@@ -7,7 +7,7 @@ type Props = { title: string };
 export default function HomeHeader({ title }: Props) {
   return (
     <View style={styles.wrap}>
-      <IconSymbol size={20} name="house.fill" color="#000" />
+      <IconSymbol size={24} name="house.fill" color="#000" />
       <Text style={styles.title} allowFontScaling={false}>
         {title}
       </Text>
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   wrap: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: 4,
   },
   title: {
     fontSize: 18,

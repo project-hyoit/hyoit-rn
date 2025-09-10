@@ -11,7 +11,7 @@ type Props = {
 export default function AskBanner({ title, ctaLabel, onPress }: Props) {
   return (
     <Card style={styles.card}>
-      <View style={{ flex: 1 }}>
+      <View style={styles.left}>
         <Text style={styles.title} allowFontScaling={false}>
           {title}
         </Text>
@@ -20,6 +20,7 @@ export default function AskBanner({ title, ctaLabel, onPress }: Props) {
           <Text style={styles.arrow}> ▶</Text>
         </Pressable>
       </View>
+
       <Image
         source={require("@/assets/images/character.png")}
         style={styles.img}
@@ -31,39 +32,33 @@ export default function AskBanner({ title, ctaLabel, onPress }: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
-    padding: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 22,
     borderRadius: 16,
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
   },
+  left: {
+    flex: 1,
+    paddingRight: 8,
+  },
   title: {
-    fontSize: 20,
+    fontSize: 18,
+    lineHeight: 26,
     fontWeight: "800",
     color: "#000",
-    lineHeight: 28,
     marginBottom: 8,
+    flexShrink: 1,
   },
-  cta: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-
-  ctaText: {
-    color: "#1E90FF",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-  arrow: {
-    color: "#1E90FF",
-    fontSize: 18,
-    marginTop: -1,
-  },
+  cta: { flexDirection: "row", alignItems: "center", gap: 6, marginTop: 12 },
+  ctaText: { color: "#1E90FF", fontWeight: "700", fontSize: 16 },
+  arrow: { color: "#1E90FF", fontSize: 18, marginTop: 1 },
   img: {
-    width: 112,
-    height: 112,
+    width: 96,
+    height: 96,
     resizeMode: "contain",
     marginLeft: 8,
+    alignSelf: "flex-end",
   },
 });

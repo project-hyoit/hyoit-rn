@@ -1,8 +1,8 @@
 import BarSparkline from "@/shared/ui/BarSparkline";
 import Card from "@/shared/ui/Card";
 import React from "react";
-import { StyleSheet, Text } from "react-native";
-import { View } from "react-native-reanimated/lib/typescript/Animated";
+import { StyleSheet, Text, View } from "react-native";
+
 type Props = {
   title: string;
   message: string;
