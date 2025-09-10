@@ -63,7 +63,7 @@ const s = StyleSheet.create({
     right: -6,
     top: 22,
     width: 70,
-    height: 80,
+    height: 74,
     resizeMode: "contain",
   },
   link: { marginTop: 8, color: "#1E90FF", fontWeight: "700" },
