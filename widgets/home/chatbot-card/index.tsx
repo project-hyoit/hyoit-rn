@@ -6,6 +6,7 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  View,
 } from "react-native";
 
 type Props = {
@@ -25,13 +26,15 @@ export default function ChatbotCard({
 }: Props) {
   return (
     <Card style={s.card}>
-      <Text style={s.title} allowFontScaling={false}>
-        {title}
-      </Text>
-      <Text style={s.body} allowFontScaling={false}>
-        {body}
-      </Text>
-      <Image source={image} style={s.img} />
+      <View style={s.fill}>
+        <Text style={s.title} allowFontScaling={false}>
+          {title}
+        </Text>
+        <Text style={s.body} allowFontScaling={false}>
+          {body}
+        </Text>
+        <Image source={image} style={s.img} />
+      </View>
       <Pressable onPress={onPress} hitSlop={8}>
         <Text style={s.link} allowFontScaling={false}>
           {ctaLabel} ▶
@@ -48,16 +51,19 @@ const s = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 16,
     backgroundColor: "#fff",
-    marginBottom: 40,
+  },
+  fill: {
+    flex: 1,
+    justifyContent: "space-between",
   },
   title: { fontSize: 18, fontWeight: "800", color: "#000" },
   body: { marginTop: 10, fontSize: 14, color: "#333", lineHeight: 20 },
   img: {
     position: "absolute",
-    right: 8,
-    top: 32,
-    width: 60,
-    height: 60,
+    right: -6,
+    top: 22,
+    width: 70,
+    height: 80,
     resizeMode: "contain",
   },
   link: { marginTop: 8, color: "#1E90FF", fontWeight: "700" },

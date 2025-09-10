@@ -42,9 +42,33 @@ export default function MemoryGameCard({
 }
 
 const s = StyleSheet.create({
-  card: { flex: 1, padding: 16, borderRadius: 16, backgroundColor: "#fff" },
-  title: { fontSize: 18, fontWeight: "800", color: "#000" },
-  body: { marginTop: 8, fontSize: 14, color: "#333", lineHeight: 20 },
-  img: { position: "absolute", right: 16, top: 20, width: 56, height: 56 },
-  link: { marginTop: 8, color: "#1E90FF", fontWeight: "700" },
+  card: {
+    flex: 1,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: "#fff",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#000",
+  },
+  body: {
+    marginTop: 8,
+    fontSize: 14,
+    color: "#333",
+    lineHeight: 20,
+  },
+  img: {
+    position: "absolute",
+    right: 16,
+    top: 20,
+    width: 56,
+    height: 70,
+  },
+  link: {
+    marginTop: 8,
+    color: "#1E90FF",
+    fontWeight: "700",
+  },
 });

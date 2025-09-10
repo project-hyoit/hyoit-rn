@@ -95,6 +95,12 @@ const s = StyleSheet.create({
     paddingBottom: 24,
     gap: 16,
   },
-  row: { flexDirection: "row", gap: 12 },
-  col: { flex: 1 },
+  row: {
+    flexDirection: "row",
+    gap: 12,
+    alignItems: "stretch",
+  },
+  col: {
+    flex: 1,
+  },
 });

@@ -17,10 +17,13 @@ export default function MetricCard({
 }: Props) {
   const bars = reverseBars ? [...data].reverse() : data;
   return (
-    <Card style={styles.card}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.msg}>{message}</Text>
-      <View style={{ marginTop: 8, alignItems: "flex-start" }}>
+    <Card style={[styles.card]}>
+      <View style={styles.fill}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.msg}>{message}</Text>
+      </View>
+
+      <View style={styles.graphWrap}>
         <BarSparkline values={bars} gap={10} height={80} color="#1E90FF" />
       </View>
     </Card>
@@ -34,6 +37,10 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: "#fff",
   },
+  fill: {
+    flex: 1,
+    justifyContent: "space-between",
+  },
   title: {
     fontSize: 18,
     fontWeight: "800",
@@ -46,5 +53,9 @@ const styles = StyleSheet.create({
     color: "#333",
     lineHeight: 20,
     opacity: 0.9,
+  },
+  graphWrap: {
+    paddingTop: 8,
+    alignItems: "flex-start",
   },
 });
