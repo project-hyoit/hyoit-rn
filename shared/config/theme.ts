@@ -5,7 +5,7 @@ export const LightTheme = {
   colors: {
     ...RNLight.colors,
     primary: "#0a7ea4",
-    background: "#fff",
+    background: "#F8F8F8",
     card: "#fff",
     text: "#11181C",
     border: "#E5E7EB",

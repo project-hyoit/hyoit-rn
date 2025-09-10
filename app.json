@@ -7,20 +7,13 @@
     "scheme": "hyoitrn",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "ios": {
-      "supportsTablet": true
-    },
+    "ios": { "supportsTablet": true },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "edgeToEdgeEnabled": true
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "output": "static"
     },
     "plugins": [
       "expo-router",
@@ -34,8 +27,6 @@
         }
       ]
     ],
-    "experiments": {
-      "typedRoutes": true
-    }
+    "experiments": { "typedRoutes": true }
   }
 }
