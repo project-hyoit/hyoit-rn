@@ -66,11 +66,23 @@ export default function HomeScreen() {
             />
           </View>
           <View style={s.col}>
-            <ChatbotCard onPress={() => router.push("/(tabs)/chat")} />
+            <ChatbotCard
+              title="챗봇 쥐돌이"
+              body={
+                "쥐돌이에게\n궁금한 것을\n간단히 설명해주면\n무엇이든 대답해 줄 수 있어요"
+              }
+              ctaLabel="쥐돌이에게 질문하기"
+              onPress={() => router.push("/(tabs)/chat")}
+            />
           </View>
         </View>
 
-        <MemoryGameCard onPress={() => router.push("/(tabs)/game")} />
+        <MemoryGameCard
+          title="카드 맞추기"
+          body={"같은 카드를\n기억해서 뒤집으세요"}
+          ctaLabel="카드 맞추기 게임하기"
+          onPress={() => router.push("/(tabs)/game")}
+        />
       </ScrollView>
     </SafeAreaView>
   );
