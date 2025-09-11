@@ -21,9 +21,10 @@ const FRUITS: FruitKey[] = [
 
 export default function PlayScreen() {
   const { level, secs } = useLocalSearchParams<{
-    level?: string;
-    secs?: string;
+    level?: string; // 난이도
+    secs?: string; // 제안 시간
   }>();
+
   const insets = useSafeAreaInsets();
 
   const [untilStart, setUntilStart] = useState(5);
@@ -37,15 +38,16 @@ export default function PlayScreen() {
 
   const [trayH, setTrayH] = useState(0);
 
+  const count = level === "easy" ? 4 : level === "hard" ? 8 : 6;
   const deck = useMemo(() => {
-    const base = FRUITS.slice(0, 8);
-    const pairs: FruitKey[] = [...base, ...base];
+    const base = FRUITS.slice(0, count);
+    const pairs = [...base, ...base];
     for (let i = pairs.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
     }
     return pairs;
-  }, []);
+  }, [count]);
 
   return (
     <View style={s.page}>
@@ -68,6 +70,7 @@ export default function PlayScreen() {
 
         <View style={{ height: 10 }} />
 
+        {/* 카운트다운(untilStart)가 끝나기 전(>0) 까지 보드 조작을 막고, 0이 되면 해제 */}
         <MemoryBoard items={deck} disabled={untilStart > 0} />
       </ScrollView>
 
