@@ -1,14 +1,20 @@
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  ImageSourcePropType,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 
 type Props = {
-  size: number; // 정사각 타일 한 변 길이
-  emoji: string; // 우선 이모지로 표현
-  disabled?: boolean; // 카운트다운 중 비활성화 등
+  size: number;
+  source: ImageSourcePropType;
+  disabled?: boolean;
   onPress?: () => void;
 };
 
-export default function MemoryTile({ size, emoji, disabled, onPress }: Props) {
+export default function MemoryTile({ size, source, disabled, onPress }: Props) {
   return (
     <Pressable
       disabled={disabled}
@@ -16,13 +22,11 @@ export default function MemoryTile({ size, emoji, disabled, onPress }: Props) {
       style={({ pressed }) => [
         s.box,
         { width: size, height: size, borderRadius: 12 },
-        pressed && { opacity: 0.9 },
+        pressed && { opacity: 0.92 },
       ]}
     >
       <View style={s.inner}>
-        <Text style={[s.emoji, { fontSize: Math.round(size * 0.55) }]}>
-          {emoji}
-        </Text>
+        <Image source={source} style={s.img} resizeMode="contain" />
       </View>
     </Pressable>
   );
@@ -40,5 +44,8 @@ const s = StyleSheet.create({
     elevation: 2,
   },
   inner: { flex: 1, alignItems: "center", justifyContent: "center" },
-  emoji: { textAlign: "center" },
+  img: {
+    width: "72%",
+    height: "72%",
+  },
 });

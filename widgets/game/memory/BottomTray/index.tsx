@@ -1,8 +1,8 @@
-import { TEXT } from "@/shared/config/theme";
+import { FruitKey, fruitSrc } from "@/shared/assets/fruits";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
-type Props = { remaining: string[] };
+type Props = { remaining: FruitKey[] };
 
 export default function BottomTray({ remaining }: Props) {
   return (
@@ -11,10 +11,13 @@ export default function BottomTray({ remaining }: Props) {
         남은 모양
       </Text>
       <View style={s.row}>
-        {remaining.map((emj, i) => (
-          <Text key={i} style={s.emoji}>
-            {emj}
-          </Text>
+        {remaining.map((k, i) => (
+          <Image
+            key={i}
+            source={fruitSrc[k]}
+            style={s.icon}
+            resizeMode="contain"
+          />
         ))}
       </View>
     </View>
@@ -36,7 +39,12 @@ const s = StyleSheet.create({
     elevation: 6,
     marginTop: 18,
   },
-  title: { textAlign: "center", fontSize: 16, fontWeight: "800", color: TEXT },
+  title: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#111",
+  },
   row: {
     marginTop: 12,
     flexDirection: "row",
@@ -44,5 +52,5 @@ const s = StyleSheet.create({
     gap: 8,
     justifyContent: "center",
   },
-  emoji: { fontSize: 22 },
+  icon: { width: 28, height: 28 },
 });

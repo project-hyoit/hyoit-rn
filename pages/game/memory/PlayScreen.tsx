@@ -1,3 +1,4 @@
+import type { FruitKey } from "@/shared/assets/fruits";
 import { BG } from "@/shared/config/theme";
 import BottomTray from "@/widgets/game/memory/BottomTray";
 import MemoryBoard from "@/widgets/game/memory/MemoryBoard";
@@ -6,10 +7,22 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 
-const FRUITS = ["🍌", "🍎", "🍇", "🍋", "🍑", "🍒", "감", "🍊"];
+const FRUITS: FruitKey[] = [
+  "banana",
+  "apple",
+  "grape",
+  "lemon",
+  "peach",
+  "cherry",
+  "persimmon",
+  "orange",
+];
 
 export default function PlayScreen() {
-  const { level } = useLocalSearchParams<{ level?: string }>();
+  const { level, secs } = useLocalSearchParams<{
+    level?: string;
+    secs?: string;
+  }>();
 
   const [untilStart, setUntilStart] = useState(5);
   useEffect(() => {
@@ -20,11 +33,9 @@ export default function PlayScreen() {
 
   const [wrong, setWrong] = useState(0);
 
-  // 4x4 보드에 쓸 이모지 8쌍(2장씩)
   const deck = useMemo(() => {
     const base = FRUITS.slice(0, 8);
-    const pairs = [...base, ...base];
-    // 간단 셔플
+    const pairs: FruitKey[] = [...base, ...base];
     for (let i = pairs.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
@@ -61,6 +72,12 @@ function labelFromLevel(level?: string) {
 }
 
 const s = StyleSheet.create({
-  page: { flex: 1, backgroundColor: BG },
-  content: { paddingBottom: 16, paddingTop: 8 },
+  page: {
+    flex: 1,
+    backgroundColor: BG,
+  },
+  content: {
+    paddingBottom: 16,
+    paddingTop: 50,
+  },
 });

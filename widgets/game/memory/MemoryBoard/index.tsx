@@ -1,15 +1,16 @@
+import { FruitKey, fruitSrc } from "@/shared/assets/fruits";
 import React, { useMemo } from "react";
 import { View, useWindowDimensions } from "react-native";
 import MemoryTile from "../MemoryTitle";
 
 type Props = {
-  items: string[]; // 이모지 16개
+  items: FruitKey[]; // ← 이모지 대신 키 배열
   disabled?: boolean;
 };
 
 const COLS = 4;
 const GAP = 16;
-const HPAD = 24; // 좌우 패딩
+const HPAD = 24;
 
 export default function MemoryBoard({ items, disabled }: Props) {
   const { width } = useWindowDimensions();
@@ -21,12 +22,19 @@ export default function MemoryBoard({ items, disabled }: Props) {
   return (
     <View style={{ paddingHorizontal: HPAD, paddingTop: 6 }}>
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-        {items.map((emj, i) => {
+        {items.map((key, i) => {
           const mr = i % COLS !== COLS - 1 ? GAP : 0;
           const mb = i < items.length - COLS ? GAP : 0;
           return (
-            <View key={i} style={{ marginRight: mr, marginBottom: mb }}>
-              <MemoryTile size={tile} emoji={emj} disabled={disabled} />
+            <View
+              key={`${key}-${i}`}
+              style={{ marginRight: mr, marginBottom: mb }}
+            >
+              <MemoryTile
+                size={tile}
+                source={fruitSrc[key]}
+                disabled={disabled}
+              />
             </View>
           );
         })}
