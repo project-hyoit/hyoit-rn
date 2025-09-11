@@ -6,14 +6,15 @@ import {
   Pressable,
   StyleSheet,
   Text,
+  View,
 } from "react-native";
 
 type Props = {
   title: string;
   body: string;
-  ctaLabel: string;
+  ctaLabel?: string;
   image?: ImageSourcePropType;
-  onPress(): void;
+  onPress?: () => void;
 };
 
 export default function MemoryGameCard({
@@ -23,7 +24,7 @@ export default function MemoryGameCard({
   image = require("@/assets/images/banana-cards.png"),
   onPress,
 }: Props) {
-  return (
+  const inner = (
     <Card style={s.card}>
       <Text style={s.title} allowFontScaling={false}>
         {title}
@@ -32,16 +33,34 @@ export default function MemoryGameCard({
         {body}
       </Text>
       <Image source={image} style={s.img} />
-      <Pressable onPress={onPress} hitSlop={8}>
+
+      {ctaLabel ? (
         <Text style={s.link} allowFontScaling={false}>
-          {ctaLabel} ▶
+          {ctaLabel}
         </Text>
-      </Pressable>
+      ) : null}
     </Card>
+  );
+
+  return onPress ? (
+    <Pressable
+      onPress={onPress}
+      android_ripple={{ color: "#eee" }}
+      style={({ pressed }) => [s.wrap, pressed && { opacity: 0.98 }]}
+      accessibilityRole="button"
+    >
+      {inner}
+    </Pressable>
+  ) : (
+    <View style={s.wrap}>{inner}</View>
   );
 }
 
 const s = StyleSheet.create({
+  wrap: {
+    borderRadius: 16,
+    overflow: "hidden",
+  },
   card: {
     flex: 1,
     padding: 16,
@@ -65,6 +84,7 @@ const s = StyleSheet.create({
     top: 20,
     width: 56,
     height: 70,
+    resizeMode: "contain",
   },
   link: {
     marginTop: 8,
