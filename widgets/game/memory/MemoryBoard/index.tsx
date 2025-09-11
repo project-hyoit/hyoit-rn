@@ -4,7 +4,7 @@ import { View, useWindowDimensions } from "react-native";
 import MemoryTile from "../MemoryTitle";
 
 type Props = {
-  items: FruitKey[]; // ← 이모지 대신 키 배열
+  items: FruitKey[];
   disabled?: boolean;
 };
 

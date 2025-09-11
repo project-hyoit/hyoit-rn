@@ -1,12 +1,22 @@
 import { FruitKey, fruitSrc } from "@/shared/assets/fruits";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  StyleProp,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native";
 
-type Props = { remaining: FruitKey[] };
+type Props = {
+  remaining: FruitKey[];
+  style?: StyleProp<ViewStyle>;
+};
 
-export default function BottomTray({ remaining }: Props) {
+export default function BottomTray({ remaining, style }: Props) {
   return (
-    <View style={s.wrap}>
+    <View style={[s.wrap, style]}>
       <Text style={s.title} allowFontScaling={false}>
         남은 모양
       </Text>
@@ -29,15 +39,15 @@ const s = StyleSheet.create({
     backgroundColor: "#fff",
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
-    paddingTop: 16,
-    paddingBottom: 12,
+    paddingTop: 20,
+    paddingBottom: 80,
     paddingHorizontal: 20,
     shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: -2 },
     elevation: 6,
-    marginTop: 18,
+    marginTop: 20,
   },
   title: {
     textAlign: "center",
@@ -46,7 +56,7 @@ const s = StyleSheet.create({
     color: "#111",
   },
   row: {
-    marginTop: 12,
+    marginTop: 28,
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 8,

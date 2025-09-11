@@ -1,15 +1,20 @@
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { IconSymbol } from "@/shared/ui/IconSymbol";
 import BottomTabBar from "@/widgets/BottomTabBar/BottomTabBar";
-import { Tabs } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import React from "react";
 
 export default function TabLayout() {
+  const pathname = usePathname();
+  const hideTabBar = pathname.includes("/game/memory/play");
+
   return (
     <QueryProvider>
       <Tabs
-        tabBar={(props) => <BottomTabBar {...props} />}
-        screenOptions={{ headerShown: false }}
+        tabBar={(props) => (hideTabBar ? null : <BottomTabBar {...props} />)}
+        screenOptions={{
+          headerShown: false,
+        }}
         initialRouteName="index"
       >
         <Tabs.Screen

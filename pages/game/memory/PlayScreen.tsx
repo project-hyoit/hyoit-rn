@@ -6,6 +6,7 @@ import PlayHeader from "@/widgets/game/memory/PlayHeader";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const FRUITS: FruitKey[] = [
   "banana",
@@ -23,6 +24,7 @@ export default function PlayScreen() {
     level?: string;
     secs?: string;
   }>();
+  const insets = useSafeAreaInsets();
 
   const [untilStart, setUntilStart] = useState(5);
   useEffect(() => {
@@ -32,6 +34,8 @@ export default function PlayScreen() {
   }, [untilStart]);
 
   const [wrong, setWrong] = useState(0);
+
+  const [trayH, setTrayH] = useState(0);
 
   const deck = useMemo(() => {
     const base = FRUITS.slice(0, 8);
@@ -47,7 +51,14 @@ export default function PlayScreen() {
     <View style={s.page}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={s.content}
+        bounces={false}
+        alwaysBounceVertical={false}
+        overScrollMode="never"
+        contentInsetAdjustmentBehavior="never"
+        contentContainerStyle={[
+          s.content,
+          { paddingBottom: trayH + insets.bottom + 12, flexGrow: 1 },
+        ]}
       >
         <PlayHeader
           title={`${labelFromLevel(level)} 난이도`}
@@ -58,9 +69,21 @@ export default function PlayScreen() {
         <View style={{ height: 10 }} />
 
         <MemoryBoard items={deck} disabled={untilStart > 0} />
-
-        <BottomTray remaining={FRUITS} />
       </ScrollView>
+
+      <View style={s.trayWrap} pointerEvents="box-none">
+        <View
+          onLayout={(e) => setTrayH(e.nativeEvent.layout.height)}
+          pointerEvents="box-none"
+        >
+          <BottomTray remaining={FRUITS} style={{ marginTop: 0 }} />
+        </View>
+
+        <View
+          style={[s.bottomPad, { height: insets.bottom }]}
+          pointerEvents="none"
+        />
+      </View>
     </View>
   );
 }
@@ -72,12 +95,28 @@ function labelFromLevel(level?: string) {
 }
 
 const s = StyleSheet.create({
-  page: {
-    flex: 1,
-    backgroundColor: BG,
+  page: { flex: 1, backgroundColor: BG },
+  content: { paddingTop: 50 },
+  bottomOnly: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#fff",
   },
-  content: {
-    paddingBottom: 16,
-    paddingTop: 50,
+  trayWrap: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#fff",
+    paddingHorizontal: 0,
+  },
+  bottomPad: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#fff",
   },
 });

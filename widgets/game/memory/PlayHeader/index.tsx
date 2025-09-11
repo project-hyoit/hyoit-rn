@@ -15,7 +15,7 @@ export default function PlayHeader({ title, untilStart, wrong }: Props) {
     <>
       <View style={s.topRow}>
         <Pressable onPress={() => router.back()} hitSlop={10}>
-          <Text style={s.back}>‹</Text>
+          <Text style={s.back}>◀</Text>
         </Pressable>
         <Text style={s.title}>{title}</Text>
       </View>
@@ -38,17 +38,42 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingHorizontal: 24,
+    paddingTop: 20,
   },
-  back: { fontSize: 24, fontWeight: "900", color: TEXT },
-  title: { fontSize: 16, fontWeight: "800", color: TEXT },
-  centerStats: { alignItems: "center", marginTop: 12, gap: 4 },
-  label: { fontSize: 16, color: TEXT, fontWeight: "800" },
-  big: { fontSize: 32, fontWeight: "900", color: TEXT },
-  wrong: { marginTop: 6, fontSize: 15, color: DANGER, fontWeight: "800" },
+  back: {
+    fontSize: 24,
+    fontWeight: "900",
+    color: TEXT,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: TEXT,
+  },
+  centerStats: {
+    alignItems: "center",
+    marginTop: 12,
+    gap: 4,
+  },
+  label: {
+    fontSize: 16,
+    color: TEXT,
+    fontWeight: "800",
+  },
+  big: {
+    fontSize: 32,
+    fontWeight: "900",
+    color: TEXT,
+  },
+  wrong: {
+    marginTop: 6,
+    fontSize: 15,
+    color: DANGER,
+    fontWeight: "800",
+  },
   guide: {
-    marginTop: 18,
+    marginTop: 30,
     textAlign: "center",
     paddingHorizontal: 20,
     color: "#111",
