@@ -15,3 +15,9 @@ export const LightTheme = {
     tabIconSelected: "#0a7ea4",
   },
 };
+
+export const PRIMARY = "#1E90FF";
+export const BG = "#F6F7F9";
+export const TEXT = "#111";
+export const SUBTEXT = "#333";
+export const DANGER = "#FF4757";
