@@ -21,7 +21,7 @@ export default function MemoryGameCard({
   title,
   body,
   ctaLabel,
-  image = require("@/assets/images/banana-cards.png"),
+  image = require("@/assets/images/banana-cards.jpg"),
   onPress,
 }: Props) {
   const inner = (

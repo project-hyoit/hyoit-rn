@@ -21,7 +21,7 @@ export default function ChatbotCard({
   title,
   body,
   ctaLabel,
-  image = require("@/assets/images/character_02.png"),
+  image = require("@/assets/images/character_02.jpg"),
   onPress,
 }: Props) {
   return (

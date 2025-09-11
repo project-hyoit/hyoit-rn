@@ -10,7 +10,7 @@ export default function WeatherCard({ temp }: Props) {
       <Text style={s.title}>오늘의 날씨</Text>
       <Text style={s.temp}>{temp}°C</Text>
       <Image
-        source={require("@/assets/images/weather-sun-cloud.png")}
+        source={require("@/assets/images/weather-sun-cloud.jpg")}
         style={s.icon}
       />
     </Card>

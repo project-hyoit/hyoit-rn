@@ -22,7 +22,7 @@ export default function AskBanner({ title, ctaLabel, onPress }: Props) {
       </View>
 
       <Image
-        source={require("@/assets/images/character.png")}
+        source={require("@/assets/images/character.jpg")}
         style={styles.img}
       />
     </Card>

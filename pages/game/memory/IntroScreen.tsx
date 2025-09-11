@@ -34,7 +34,7 @@ export default function IntroScreen() {
         ]}
       >
         <Image
-          source={require("@/assets/images/banana-cards-lg.png")}
+          source={require("@/assets/images/banana-cards_02.png")}
           style={s.hero}
         />
         <Text style={s.title}>카드 맞추기</Text>
@@ -101,6 +101,7 @@ const s = StyleSheet.create({
     height: 160,
     resizeMode: "contain",
     marginVertical: 8,
+    backgroundColor: "#F6F7F9",
   },
   title: {
     fontSize: 32,
