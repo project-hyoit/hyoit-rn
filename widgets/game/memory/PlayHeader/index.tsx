@@ -1,7 +1,6 @@
 import { useRouter } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 type Props = {
   title: string; // ex) "쉬움 난이도"
@@ -10,11 +9,10 @@ type Props = {
 };
 
 export default function PlayHeader({ title, hearts, onBack }: Props) {
-  const { top } = useSafeAreaInsets();
   const router = useRouter();
 
   return (
-    <View style={[s.wrap, { paddingTop: top + 8 }]}>
+    <View style={[s.wrap]}>
       <Pressable onPress={onBack ?? router.back} hitSlop={16} style={s.left}>
         <Text style={s.back}>◀</Text>
       </Pressable>
@@ -22,7 +20,11 @@ export default function PlayHeader({ title, hearts, onBack }: Props) {
       <Text style={s.title}>{title}</Text>
 
       <View style={s.right}>
-        <Text style={s.heart}>💗</Text>
+        <Image
+          source={require("@/assets/images/hart.png")}
+          style={s.heart}
+          resizeMode="contain"
+        />
         <Text style={s.heartCount}>× {hearts}</Text>
       </View>
     </View>
@@ -31,20 +33,37 @@ export default function PlayHeader({ title, hearts, onBack }: Props) {
 
 const s = StyleSheet.create({
   wrap: {
-    paddingHorizontal: 16,
-    paddingBottom: 8,
+    marginTop: 20,
+    paddingHorizontal: 18,
+    paddingBottom: 80,
     flexDirection: "row",
     alignItems: "center",
   },
-  left: { width: 40, alignItems: "flex-start" },
-  back: { fontSize: 18 },
-  title: { flex: 1, fontSize: 18, fontWeight: "700" },
+  left: {
+    width: 20,
+    alignItems: "flex-start",
+  },
+  back: {
+    fontSize: 18,
+  },
+  title: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: "700",
+  },
   right: {
     minWidth: 60,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
   },
-  heart: { fontSize: 18, marginRight: 4 },
-  heartCount: { fontSize: 18, fontWeight: "700" },
+  heart: {
+    width: 30,
+    height: 26,
+    marginRight: 4,
+  },
+  heartCount: {
+    fontSize: 28,
+    fontWeight: "700",
+  },
 });
