@@ -1,82 +1,50 @@
-import { DANGER, TEXT } from "@/shared/config/theme";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {
-  title: string; // "쉬움 난이도"
-  untilStart: number; // 5,4,3...
-  wrong: number; // 틀린 횟수
+  title: string; // ex) "쉬움 난이도"
+  hearts: number; // ex) 8
+  onBack?: () => void;
 };
 
-export default function PlayHeader({ title, untilStart, wrong }: Props) {
+export default function PlayHeader({ title, hearts, onBack }: Props) {
+  const { top } = useSafeAreaInsets();
   const router = useRouter();
+
   return (
-    <>
-      <View style={s.topRow}>
-        <Pressable onPress={() => router.back()} hitSlop={10}>
-          <Text style={s.back}>◀</Text>
-        </Pressable>
-        <Text style={s.title}>{title}</Text>
-      </View>
+    <View style={[s.wrap, { paddingTop: top + 8 }]}>
+      <Pressable onPress={onBack ?? router.back} hitSlop={16} style={s.left}>
+        <Text style={s.back}>◀</Text>
+      </Pressable>
 
-      <View style={s.centerStats}>
-        <Text style={s.label}>시작까지</Text>
-        <Text style={s.big}>{untilStart}초</Text>
-        <Text style={s.wrong}>틀린 횟수: {wrong}</Text>
-      </View>
+      <Text style={s.title}>{title}</Text>
 
-      <Text style={s.guide}>
-        위치를 기억하고 알맞은 모양의 카드끼리 뒤집으세요
-      </Text>
-    </>
+      <View style={s.right}>
+        <Text style={s.heart}>💗</Text>
+        <Text style={s.heartCount}>× {hearts}</Text>
+      </View>
+    </View>
   );
 }
 
 const s = StyleSheet.create({
-  topRow: {
+  wrap: {
+    paddingHorizontal: 16,
+    paddingBottom: 8,
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    paddingHorizontal: 24,
-    paddingTop: 20,
   },
-  back: {
-    fontSize: 24,
-    fontWeight: "900",
-    color: TEXT,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "800",
-    color: TEXT,
-  },
-  centerStats: {
+  left: { width: 40, alignItems: "flex-start" },
+  back: { fontSize: 18 },
+  title: { flex: 1, fontSize: 18, fontWeight: "700" },
+  right: {
+    minWidth: 60,
+    flexDirection: "row",
     alignItems: "center",
-    marginTop: 12,
-    gap: 4,
+    justifyContent: "flex-end",
   },
-  label: {
-    fontSize: 16,
-    color: TEXT,
-    fontWeight: "800",
-  },
-  big: {
-    fontSize: 32,
-    fontWeight: "900",
-    color: TEXT,
-  },
-  wrong: {
-    marginTop: 6,
-    fontSize: 15,
-    color: DANGER,
-    fontWeight: "800",
-  },
-  guide: {
-    marginTop: 30,
-    textAlign: "center",
-    paddingHorizontal: 20,
-    color: "#111",
-    fontSize: 15,
-  },
+  heart: { fontSize: 18, marginRight: 4 },
+  heartCount: { fontSize: 18, fontWeight: "700" },
 });
