@@ -1,16 +1,14 @@
-import { FruitKey, fruitSrc } from "@/shared/assets/fruits";
+import { useMemoryCardAnimation } from "@/entities/memory-game/lib/useMemoryCardAnimation";
+import { Card } from "@/entities/memory-game/model/types";
+import { useMemoryGameState } from "@/entities/memory-game/useMemoryGameState";
+import { fruitSrc } from "@/shared/assets/fruits";
+import { MEMORY_GAME } from "@/shared/config/constants";
+import { useGridLayout } from "@/shared/lib/hooks/useGridLayout";
 import React from "react";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
 import MemoryTile from "../MemoryTile";
-
-// FSD 아키텍처에 따른 imports
-import { useMemoryCardAnimation } from "@/entities/memory-game/lib/useMemoryCardAnimation";
-import { useMemoryGameState } from "@/entities/memory-game/useMemoryGameState";
-import { MEMORY_GAME } from "@/shared/config/constants";
-import { useGridLayout } from "@/shared/lib/hooks/useGridLayout";
-
 type Props = {
-  items: FruitKey[];
+  items: Card[];
   cols?: number;
   disabled?: boolean;
   onPairMatched?: () => void;
@@ -28,7 +26,6 @@ export default function MemoryBoard({
   onComplete,
   revealAll = false,
 }: Props) {
-  // FSD 아키텍처에 따른 훅들 사용
   const { tileSize, getItemMargins } = useGridLayout(cols);
   const gameState = useMemoryGameState(
     items,
@@ -49,7 +46,6 @@ export default function MemoryBoard({
     if (gameState.open.includes(i)) return;
 
     if (gameState.open.length === 0) {
-      // 먼저 open에 넣어 두어 연타 차단
       gameState.setOpen([i]);
       cardAnimation.flipCardSafe(i, 1).start();
       return;
@@ -63,7 +59,7 @@ export default function MemoryBoard({
       gameState.setLock(true);
 
       cardAnimation.flipCardSafe(second, 1).start(() => {
-        const same = items[first] === items[second];
+        const same = items[first].fruit === items[second].fruit;
 
         if (same) {
           gameState.setMatched((prev) => {
@@ -90,13 +86,13 @@ export default function MemoryBoard({
   return (
     <View style={{ paddingHorizontal: MEMORY_GAME.HPAD, paddingTop: 6 }}>
       <View style={styles.wrap}>
-        {items.map((key, i) => {
+        {items.map((card, i) => {
           const margins = getItemMargins(i, items.length);
           const transforms = cardAnimation.getCardTransforms(i);
 
           return (
             <Pressable
-              key={`${key}-${i}-${gameState.matched.has(i) ? "m" : "n"}`}
+              key={card.id}
               disabled={
                 disabled ||
                 gameState.lock ||
@@ -148,7 +144,7 @@ export default function MemoryBoard({
                     },
                   ]}
                 >
-                  <MemoryTile size={tileSize} source={fruitSrc[key]} />
+                  <MemoryTile size={tileSize} source={fruitSrc[card.fruit]} />
                 </Animated.View>
               </View>
             </Pressable>

@@ -9,33 +9,29 @@ export const useCardFlip = (
   const [bulkFlipping, setBulkFlipping] = useState(false);
   const flipsRef = useRef<Animated.Value[]>([]);
 
-  // 애니메이션 값 초기화
-  if (flipsRef.current.length !== itemCount) {
-    flipsRef.current = Array.from(
-      { length: itemCount },
-      () => new Animated.Value(initialRevealed ? 1 : 0)
-    );
-  }
+  const initialRef = useRef(initialRevealed);
 
-  // 아이템 개수나 초기 상태 변경시 리셋
   useEffect(() => {
-    flipsRef.current = Array.from(
-      { length: itemCount },
-      () => new Animated.Value(initialRevealed ? 1 : 0)
-    );
-  }, [itemCount, initialRevealed]);
+    if (flipsRef.current.length !== itemCount) {
+      flipsRef.current = Array.from(
+        { length: itemCount },
+        () => new Animated.Value(initialRef.current ? 1 : 0)
+      );
+    }
+  }, [itemCount]);
 
   // 개별 카드 뒤집기 함수
   const flipCard = (index: number, toValue: 0 | 1) => {
     if (index < 0 || index >= flipsRef.current.length) {
-      return Animated.timing(new Animated.Value(0), {
+      const initial = new Animated.Value(0);
+      return Animated.timing(initial, {
         toValue: 0,
         duration: 0,
         useNativeDriver: true,
       });
     }
 
-    const animatedValue = flipsRef.current[index];
+    const animatedValue = flipsRef.current[index]; // index(배열의 위치,슬롯) 즉, 이건 그 슬롯의 애니메이션 상태를 가리킴
     animatedValue.stopAnimation(); // 기존 애니메이션 중단
 
     return Animated.timing(animatedValue, {

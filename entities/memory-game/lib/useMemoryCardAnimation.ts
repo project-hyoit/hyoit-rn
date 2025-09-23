@@ -1,5 +1,5 @@
 import { useCardFlip } from "@/shared/lib/animations/useCardFlip";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Animated } from "react-native";
 
 interface UseMemoryCardAnimationProps {
@@ -16,8 +16,15 @@ export const useMemoryCardAnimation = ({
   const cardAnimation = useCardFlip(itemCount, revealAll);
 
   // revealAll 상태 변경시 모든 카드 일괄 뒤집기
+  const didMount = React.useRef(false);
+
   useEffect(() => {
-    cardAnimation.flipAllCards(revealAll ? 1 : 0);
+    if (!didMount.current) {
+      didMount.current = true;
+      return; // 첫 렌더에서는 스킵 (이미 초기 값으로 맞춰져 있음)
+    }
+    cardAnimation.flipAllCards(revealAll ? 1 : 0, 8);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revealAll]);
 
   // 매칭된 카드는 뒤집지 않는 flipTo 함수
