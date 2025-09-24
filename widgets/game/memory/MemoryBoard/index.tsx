@@ -28,12 +28,7 @@ export default function MemoryBoard({
   revealAll = false,
 }: Props) {
   const { tileSize, getItemMargins } = useGridLayout(cols);
-  const gameState = useMemoryGameState(
-    items,
-    onPairMatched,
-    onMismatch,
-    onComplete
-  );
+  const gameState = useMemoryGameState(items, onMismatch, onComplete);
   const cardAnimation = useMemoryCardAnimation({
     itemCount: items.length,
     revealAll,
