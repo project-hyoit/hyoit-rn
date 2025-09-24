@@ -25,9 +25,9 @@ export default function PlayScreen() {
   }>();
   const insets = useSafeAreaInsets();
 
-  const count = level === "easy" ? 4 : level === "hard" ? 8 : 6;
+  const cardCount = level === "easy" ? 4 : level === "hard" ? 8 : 6;
 
-  const base = useMemo(() => FRUITS.slice(0, count), [count]);
+  const base = useMemo(() => FRUITS.slice(0, cardCount), [cardCount]);
 
   const deck = useMemo(() => {
     const pairs = [...base, ...base];
@@ -65,7 +65,7 @@ export default function PlayScreen() {
   const [wrong, setWrong] = useState(0);
   useEffect(() => {
     setWrong(0);
-  }, [MAX_HP, count, level]);
+  }, [MAX_HP, cardCount, level]);
 
   const hearts = Math.max(0, MAX_HP - wrong);
 
@@ -73,10 +73,10 @@ export default function PlayScreen() {
     if (hearts <= 0 && phase === "playing") setPhase("done");
   }, [hearts, phase]);
 
-  const pairLeftRef = React.useRef(count);
+  const pairLeftRef = React.useRef(cardCount);
   useEffect(() => {
-    pairLeftRef.current = count;
-  }, [count]);
+    pairLeftRef.current = cardCount;
+  }, [cardCount]);
 
   const [trayH, setTrayH] = useState(0);
 
@@ -97,7 +97,6 @@ export default function PlayScreen() {
 
         <View style={{ height: 10 }} />
 
-        {/* 카운트다운(untilStart)가 끝나기 전(>0) 까지 보드 조작을 막고, 0이 되면 해제 */}
         <MemoryBoard
           items={deck}
           disabled={phase !== "playing"}
