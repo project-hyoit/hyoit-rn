@@ -1,6 +1,7 @@
 import { useMemoryCardAnimation } from "@/entities/memory-game/lib/useMemoryCardAnimation";
 import { Card } from "@/entities/memory-game/model/types";
 import { useMemoryGameState } from "@/entities/memory-game/useMemoryGameState";
+import type { FruitKey } from "@/shared/assets/fruits";
 import { fruitSrc } from "@/shared/assets/fruits";
 import { MEMORY_GAME } from "@/shared/config/constants";
 import { useGridLayout } from "@/shared/lib/hooks/useGridLayout";
@@ -11,7 +12,7 @@ type Props = {
   items: Card[];
   cols?: number;
   disabled?: boolean;
-  onPairMatched?: () => void;
+  onPairMatched?: (fruit: FruitKey) => void;
   onMismatch?: () => void;
   onComplete?: () => void;
   revealAll?: boolean;
@@ -70,7 +71,7 @@ export default function MemoryBoard({
           });
           gameState.setOpen([]);
           gameState.setLock(false);
-          onPairMatched?.();
+          onPairMatched?.(items[first].fruit);
         } else {
           // mismatch시 순차적으로 뒤집기
           cardAnimation.flipCardsSequentially(first, second, 0);

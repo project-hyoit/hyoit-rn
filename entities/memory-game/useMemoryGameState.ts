@@ -1,8 +1,8 @@
+import { FruitKey } from "@/shared/assets/fruits";
 import { useEffect, useState } from "react";
-
 export const useMemoryGameState = <T>(
   items: T[],
-  onPairMatched?: () => void,
+  onPairMatched?: (fruit: FruitKey) => void,
   onMismatch?: () => void,
   onComplete?: () => void
 ) => {

@@ -1,14 +1,17 @@
 import { ImageSourcePropType } from "react-native";
 
-export type FruitKey =
-  | "banana"
-  | "apple"
-  | "grape"
-  | "lemon"
-  | "peach"
-  | "cherry"
-  | "persimmon"
-  | "orange";
+export const FRUITS = [
+  "banana",
+  "apple",
+  "grape",
+  "lemon",
+  "peach",
+  "cherry",
+  "persimmon",
+  "orange",
+] as const;
+
+export type FruitKey = (typeof FRUITS)[number];
 
 export const fruitSrc: Record<FruitKey, ImageSourcePropType> = {
   banana: require("@/assets/fruits/banana.jpg"),

@@ -1,4 +1,5 @@
 import type { FruitKey } from "@/shared/assets/fruits";
+import { FRUITS } from "@/shared/assets/fruits";
 import { BG } from "@/shared/config/theme";
 import BottomTray from "@/widgets/game/memory/BottomTray";
 import MemoryBoard from "@/widgets/game/memory/MemoryBoard";
@@ -7,17 +8,6 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
-const FRUITS: FruitKey[] = [
-  "banana",
-  "apple",
-  "grape",
-  "lemon",
-  "peach",
-  "cherry",
-  "persimmon",
-  "orange",
-];
 
 export default function PlayScreen() {
   const { level } = useLocalSearchParams<{
@@ -28,6 +18,12 @@ export default function PlayScreen() {
   const cardCount = level === "easy" ? 4 : level === "hard" ? 8 : 6;
 
   const base = useMemo(() => FRUITS.slice(0, cardCount), [cardCount]);
+
+  // 매치 완료 과일 Set
+  const [matchedFruits, setMatchedFruits] = useState<Set<FruitKey>>(new Set());
+
+  // 카드 수/난이도 변경 시 리셋
+  useEffect(() => setMatchedFruits(new Set()), [cardCount, level]);
 
   const deck = useMemo(() => {
     const pairs = [...base, ...base];
@@ -104,7 +100,12 @@ export default function PlayScreen() {
           revealAll={phase === "countdown"}
           onMismatch={() => setWrong((w) => w + 1)}
           // 맞춘 쌍 완료(선택): 모두 맞추면 종료(성공)
-          onPairMatched={() => {
+          onPairMatched={(fruit: FruitKey) => {
+            setMatchedFruits((prev) => {
+              const next = new Set(prev);
+              next.add(fruit);
+              return next;
+            });
             const next = Math.max(0, pairLeftRef.current - 1);
             pairLeftRef.current = next;
             if (next === 0) setPhase("done");
@@ -117,7 +118,11 @@ export default function PlayScreen() {
           onLayout={(e) => setTrayH(e.nativeEvent.layout.height)}
           pointerEvents="box-none"
         >
-          <BottomTray remaining={FRUITS} style={{ marginTop: 0 }} />
+          <BottomTray
+            fruits={base}
+            matched={matchedFruits}
+            style={{ marginTop: 0 }}
+          />
         </View>
 
         <View
