@@ -21,7 +21,7 @@ export default function MemoryGameCard({
   title,
   body,
   ctaLabel,
-  image = require("@/assets/images/banana-cards.jpg"),
+  image = require("@/assets/images/banana-cards_02.png"),
   onPress,
 }: Props) {
   const inner = (
@@ -82,7 +82,7 @@ const s = StyleSheet.create({
     position: "absolute",
     right: 16,
     top: 20,
-    width: 56,
+    width: 66,
     height: 70,
     resizeMode: "contain",
   },
