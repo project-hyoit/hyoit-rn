@@ -4,7 +4,8 @@ import { BG } from "@/shared/config/theme";
 import BottomTray from "@/widgets/game/memory/BottomTray";
 import MemoryBoard from "@/widgets/game/memory/MemoryBoard";
 import PlayHeader from "@/widgets/game/memory/PlayHeader";
-import { useLocalSearchParams } from "expo-router";
+import ResultOverlay from "@/widgets/game/memory/ResultOverlay";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,11 +20,11 @@ export default function PlayScreen() {
 
   const base = useMemo(() => FRUITS.slice(0, cardCount), [cardCount]);
 
-  // 매치 완료 과일 Set
   const [matchedFruits, setMatchedFruits] = useState<Set<FruitKey>>(new Set());
-
-  // 카드 수/난이도 변경 시 리셋
   useEffect(() => setMatchedFruits(new Set()), [cardCount, level]);
+
+  const [doneType, setDoneType] = useState<null | "success" | "fail">(null);
+  const [seed, setSeed] = useState(0);
 
   const deck = useMemo(() => {
     const pairs = [...base, ...base];
@@ -32,10 +33,10 @@ export default function PlayScreen() {
       [pairs[i], pairs[j]] = [pairs[j], pairs[i]];
     }
     return pairs.map((fruit, index) => ({
-      id: `${fruit}_${index}`,
+      id: `${fruit}_${index}_${seed}`,
       fruit: fruit,
     }));
-  }, [base]);
+  }, [base, seed]);
 
   const [phase, setPhase] = useState<"countdown" | "playing" | "done">(
     "countdown"
@@ -66,7 +67,10 @@ export default function PlayScreen() {
   const hearts = Math.max(0, MAX_HP - wrong);
 
   useEffect(() => {
-    if (hearts <= 0 && phase === "playing") setPhase("done");
+    if (hearts <= 0 && phase === "playing") {
+      setPhase("done");
+      setDoneType("fail");
+    }
   }, [hearts, phase]);
 
   const pairLeftRef = React.useRef(cardCount);
@@ -75,6 +79,20 @@ export default function PlayScreen() {
   }, [cardCount]);
 
   const [trayH, setTrayH] = useState(0);
+
+  const handleRetty = () => {
+    setDoneType(null);
+    setWrong(0);
+    setMatchedFruits(new Set());
+    pairLeftRef.current = cardCount;
+    setSeed((s) => s + 1);
+    setPhase("countdown");
+    setUntilStart(3);
+  };
+
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <View style={s.page}>
@@ -95,7 +113,7 @@ export default function PlayScreen() {
 
         <MemoryBoard
           items={deck}
-          disabled={phase !== "playing"}
+          disabled={phase !== "playing" || !!doneType}
           // 틀렸을 때: HP 1 감소
           revealAll={phase === "countdown"}
           onMismatch={() => setWrong((w) => w + 1)}
@@ -108,7 +126,10 @@ export default function PlayScreen() {
             });
             const next = Math.max(0, pairLeftRef.current - 1);
             pairLeftRef.current = next;
-            if (next === 0) setPhase("done");
+            if (next === 0) {
+              setPhase("done");
+              setDoneType("success");
+            }
           }}
         />
       </ScrollView>
@@ -130,6 +151,12 @@ export default function PlayScreen() {
           pointerEvents="none"
         />
       </View>
+      <ResultOverlay
+        visible={!!doneType}
+        success={doneType === "success"}
+        onRetry={handleRetty}
+        onBack={handleBack}
+      />
     </View>
   );
 }
