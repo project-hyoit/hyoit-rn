@@ -33,32 +33,8 @@ export default function ResultOverlay({
   const badgeBounce = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (visible) {
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 160,
-          useNativeDriver: true,
-        }),
-        Animated.spring(scale, {
-          toValue: 1,
-          bounciness: 12,
-          speed: 12,
-          useNativeDriver: true,
-        }),
-        Animated.spring(badgeScale, {
-          toValue: 1,
-          bounciness: 14,
-          speed: 12,
-          useNativeDriver: true,
-        }),
-        Animated.timing(badgeBounce, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else {
+    if (!visible) {
+      // 닫힐 때
       Animated.parallel([
         Animated.timing(opacity, {
           toValue: 0,
@@ -81,8 +57,39 @@ export default function ResultOverlay({
           useNativeDriver: true,
         }),
       ]).start();
+      return;
     }
-  }, [visible, opacity, scale, badgeScale, badgeBounce]);
+
+    opacity.setValue(0);
+    scale.setValue(0.9);
+    badgeScale.setValue(0.7);
+    badgeBounce.setValue(0);
+
+    Animated.parallel([
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 160,
+        useNativeDriver: true,
+      }),
+      Animated.spring(scale, {
+        toValue: 1,
+        bounciness: 12,
+        speed: 12,
+        useNativeDriver: true,
+      }),
+      Animated.spring(badgeScale, {
+        toValue: 1,
+        bounciness: 14,
+        speed: 12,
+        useNativeDriver: true,
+      }),
+      Animated.timing(badgeBounce, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, [visible, success, opacity, scale, badgeScale, badgeBounce]);
 
   if (!visible) return null;
 
@@ -93,9 +100,9 @@ export default function ResultOverlay({
 
   return (
     <View style={s.backdrop} pointerEvents="auto">
-      {/* 배지: 카드 위 */}
       <View style={s.overlayCenter}>
         <Animated.Image
+          key={success ? "success" : "fail"}
           source={success ? ART.success : ART.fail}
           style={[
             s.badgeImage,
@@ -112,7 +119,6 @@ export default function ResultOverlay({
 
       <Animated.View style={[s.card, { opacity, transform: [{ scale }] }]}>
         <View style={s.actions}>
-          {/* 돌아가기 */}
           <Pressable
             onPress={onBack}
             style={({ pressed }) => [s.btn, pressed && s.btnPressed]}
@@ -124,7 +130,6 @@ export default function ResultOverlay({
             </View>
           </Pressable>
 
-          {/* 다시하기 */}
           <Pressable
             onPress={onRetry}
             style={({ pressed }) => [s.btn, pressed && s.btnPressed]}
@@ -136,7 +141,6 @@ export default function ResultOverlay({
                 tintColor="#111"
                 size={28}
               />
-
               <Text style={s.btnLabel}>다시하기</Text>
             </View>
           </Pressable>
