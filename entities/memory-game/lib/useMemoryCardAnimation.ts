@@ -15,13 +15,12 @@ export const useMemoryCardAnimation = ({
 }: UseMemoryCardAnimationProps) => {
   const cardAnimation = useCardFlip(itemCount, revealAll);
 
-  // revealAll 상태 변경시 모든 카드 일괄 뒤집기
   const didMount = React.useRef(false);
 
   useEffect(() => {
     if (!didMount.current) {
       didMount.current = true;
-      return; // 첫 렌더에서는 스킵 (이미 초기 값으로 맞춰져 있음)
+      return;
     }
     cardAnimation.flipAllCards(revealAll ? 1 : 0, 8);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,7 +29,6 @@ export const useMemoryCardAnimation = ({
   // 매칭된 카드는 뒤집지 않는 flipTo 함수
   const flipCardSafe = (index: number, toValue: 0 | 1) => {
     if (matchedCards.has(index)) {
-      // 매칭된 카드는 애니메이션하지 않음
       return Animated.timing(new Animated.Value(0), {
         toValue: 0,
         duration: 0,
@@ -40,7 +38,6 @@ export const useMemoryCardAnimation = ({
     return cardAnimation.flipCard(index, toValue);
   };
 
-  // 두 카드를 순차적으로 뒤집기 (mismatch시 사용)
   const flipCardsSequentially = (
     firstIndex: number,
     secondIndex: number,

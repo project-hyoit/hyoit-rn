@@ -17,7 +17,7 @@ type Props = {
 
 export default function BottomTray({ fruits, matched, style }: Props) {
   const animRef = useRef<Map<FruitKey, Animated.Value>>(new Map());
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
   if (animRef.current.size !== fruits.length) {
     fruits.forEach((k) => {
       if (!animRef.current.has(k))
