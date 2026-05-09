@@ -1,71 +1,68 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import {
+  Keyboard,
+  KeyboardAvoidingView,
   Platform,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
 export default function VerifyCodeScreen() {
-  const myCode = "927582";
   const [childCode, setChildCode] = useState("");
-  const [error, setError] = useState(false);
+
   const canNext = /^\d{6}$/.test(childCode);
+
   const handleNext = () => {
-    if (childCode === myCode) {
-      setError(false);
-      router.push("/(child)/onboarding/success");
-    } else {
-      setError(true);
-    }
+    router.push("/(child)/onboarding/success");
   };
 
   return (
-    <View style={s.wrap}>
-      <Text style={s.title} allowFontScaling={false}>
-        가족구성원 추가를 위한{"\n"}인증번호를 입력해주세요
-      </Text>
-      <View style={s.field}>
-        <Text style={s.label}>인증번호</Text>
-
-        <TextInput
-          placeholder="부모님의 인증번호를 입력해주세요"
-          placeholderTextColor="#B6B6B6"
-          keyboardType="number-pad"
-          maxLength={6}
-          value={childCode}
-          onChangeText={(v) => {
-            setChildCode(v);
-            setError(false);
-          }}
-          style={[
-            s.input,
-          ]}
-        />
-        {error && (
-          <Text style={s.errorText}>
-            인증번호가 다른 것 같아요 다시 입력해주세요
+    <KeyboardAvoidingView
+      style={s.keyboardWrap}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={s.wrap}>
+          <Text style={s.title} allowFontScaling={false}>
+            가족구성원 추가를 위한{"\n"}인증번호를 입력해주세요
           </Text>
-        )}
-      </View>
-      <View style={s.nextRow}>
-        <Pressable
-          style={({ pressed }) => [
-            s.next,
-            !canNext && s.nextDisabled,
-            pressed && canNext && { opacity: 0.9 },
-          ]}
-          disabled={!canNext}
-          onPress={handleNext}
-        >
-          <Text style={s.nextText}>다음</Text>
-          <Text style={s.nextArrow}>→</Text>
-        </Pressable>
-      </View>
-    </View>
+
+          <View style={s.field}>
+            <Text style={s.label}>인증번호</Text>
+
+            <TextInput
+              placeholder="부모님의 인증번호를 입력해주세요"
+              placeholderTextColor="#B6B6B6"
+              keyboardType="number-pad"
+              maxLength={6}
+              value={childCode}
+              onChangeText={setChildCode}
+              style={s.input}
+            />
+          </View>
+
+          <View style={s.nextRow}>
+            <Pressable
+              style={({ pressed }) => [
+                s.next,
+                !canNext && s.nextDisabled,
+                pressed && canNext && { opacity: 0.9 },
+              ]}
+              disabled={!canNext}
+              onPress={handleNext}
+            >
+              <Text style={s.nextText}>다음</Text>
+              <Text style={s.nextArrow}>→</Text>
+            </Pressable>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -78,6 +75,11 @@ const COLORS = {
 };
 
 const s = StyleSheet.create({
+  keyboardWrap: {
+    flex: 1,
+    backgroundColor: COLORS.bg,
+  },
+
   wrap: {
     flex: 1,
     backgroundColor: COLORS.bg,
@@ -112,12 +114,6 @@ const s = StyleSheet.create({
     paddingVertical: Platform.select({ ios: 14, android: 12 }),
     fontSize: 16,
     color: COLORS.text,
-  },
-
-  errorText: {
-    marginTop: 8,
-    color: "#FF4757",
-    fontSize: 12,
   },
 
   nextRow: {
