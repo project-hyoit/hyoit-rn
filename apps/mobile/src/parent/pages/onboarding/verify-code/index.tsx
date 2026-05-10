@@ -31,9 +31,15 @@ export default function VerifyCodeScreen() {
         <Text style={s.myCodeLabel} allowFontScaling={false}>
           내 인증 번호
         </Text>
-        <Text style={s.myCodeText} allowFontScaling={false}>
-          {myCode}
-        </Text>
+        <View style={s.codeRow}>
+          {myCode.split("").map((num, index) => (
+            <View key={index} style={s.codeBox}>
+              <Text style={s.codeText} allowFontScaling={false}>
+                {num}
+              </Text>
+            </View>
+          ))}
+        </View>
         <Text style={s.explanation}>자녀분 핸드폰을 통해 인증번호를 입력해주세요</Text>
       </View>
 
@@ -110,17 +116,26 @@ const s = StyleSheet.create({
     gap: 20,
   },
   myCodeLabel: { fontSize: 16, color: COLORS.text, fontWeight: "600" },
-  myCodeText: {
+  codeRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 5,
+  },
+  codeBox: {
+    width: 40,
+    height: 48,
+    backgroundColor: "#E9E9E9",
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  codeText: {
     fontSize: 32,
-    lineHeight: 40,
-    color: COLORS.text,
-    fontWeight: "800",
-    letterSpacing: 2,
-    marginTop:4,
+    fontWeight: "700",
   },
   explanation: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "500",
   },
   modalButton: {
     backgroundColor: "#000",
