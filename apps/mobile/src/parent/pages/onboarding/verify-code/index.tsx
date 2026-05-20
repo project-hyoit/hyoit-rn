@@ -62,12 +62,11 @@ export default function VerifyCodeScreen() {
           <View style={s.bottomSheet}>
             <Text style={s.sheetTitle}>자녀분이 맞으신가요?</Text>
             <View style={s.userCard}>
-              <View style={s.textarray}>
+                <View style={s.surnameCircle}>
+`````````````    <Text style={s.surnameText}>김</Text>
+  ``````````````</View>`````````````
                 <Text style={s.name}>김유찬</Text>
-                <Text style={s.specialsymbol}>|</Text>
-                <Text style={s.age}>23세</Text>
-              </View>
-              <Text style={s.phone}>010-4610-3405</Text>
+                <Text style={s.phone}>010-4610-3405</Text>
             </View>
             <View style={s.row}>
               <Pressable style={s.cancelButton} onPress={closeModal}>
@@ -178,41 +177,43 @@ const s = StyleSheet.create({
     borderRadius: 12,
   },
   sheetTitle: {
+    textAlign: "center",
     fontSize: 20,
     fontWeight: "500",
-    marginBottom: 14,
+    marginBottom: 16,
   },
   userCard: {
     backgroundColor:"#F5F5F5",
     borderRadius: 12,
-    padding: 8,
-    paddingLeft: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
     marginBottom: 36,
     justifyContent: "space-between",
-  },
-  textarray: {
-    flexDirection: "row",
+    flexDirection: "row", 
     alignItems: "center",
   },
+  surnameCircle:{
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#BCE1FF",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize:20,
+  },
+  surnameText:{
+    fontSize:20,
+    fontWeight:"600",
+  },
   name: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "600",
-  },
-  specialsymbol: {
-    fontSize: 20,
-    fontWeight: "300",
-    paddingLeft:12,
-    paddingRight:12,
-  },
-  age: {
-    fontSize: 15,
-    fontWeight: "500",
+    marginLeft:-24,
   },
   phone: {
-    marginTop: 9,
     fontSize: 16,
     fontWeight: "500",
-    color: "#7B7B7B",
+    color: "#434343",
   },
   row: {
     flexDirection: "row",
