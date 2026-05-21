@@ -62,11 +62,11 @@ export default function VerifyCodeScreen() {
           <View style={s.bottomSheet}>
             <Text style={s.sheetTitle}>자녀분이 맞으신가요?</Text>
             <View style={s.userCard}>
-                <View style={s.surnameCircle}>
-`````````````    <Text style={s.surnameText}>김</Text>
-  ``````````````</View>`````````````
-                <Text style={s.name}>김유찬</Text>
-                <Text style={s.phone}>010-4610-3405</Text>
+              <View style={s.surnameCircle}>
+                <Text style={s.surnameText}>김</Text>
+              </View>
+              <Text style={s.name}>김유찬</Text>
+              <Text style={s.phone}>010-4610-3405</Text>
             </View>
             <View style={s.row}>
               <Pressable style={s.cancelButton} onPress={closeModal}>
@@ -157,7 +157,7 @@ const s = StyleSheet.create({
   },
   recertificationText: {
     fontSize: 20,
-    fontWeight: 600,
+    fontWeight: "600",
     color: "#FFFFFF",
   },
   overlay: {
@@ -199,7 +199,6 @@ const s = StyleSheet.create({
     backgroundColor: "#BCE1FF",
     alignItems: "center",
     justifyContent: "center",
-    fontSize:20,
   },
   surnameText:{
     fontSize:20,
@@ -208,7 +207,7 @@ const s = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: "600",
-    marginLeft:-24,
+    marginLeft: -24,
   },
   phone: {
     fontSize: 16,
