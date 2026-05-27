@@ -49,9 +49,9 @@ export function KakaoLoginButton({
 const s = StyleSheet.create({
   btn: {
     alignSelf: "stretch",
-    backgroundColor: "#FDE500",
-    borderRadius: 24,
-    minHeight: 48,
+    backgroundColor: "#FBE300",
+    borderRadius:12,
+    minHeight: 60,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
@@ -66,6 +66,6 @@ const s = StyleSheet.create({
     }),
   },
   pressed: { opacity: 0.9 },
-  icon: { width: 28, height: 28, resizeMode: "contain", marginLeft: 16},
-  label: { fontSize: 18, color: COLORS.text },
+  icon: { width: 32, height: 32, resizeMode: "contain", marginLeft: 37},
+  label: { fontWeight:"600" ,fontSize: 18, color: COLORS.text },
 });
