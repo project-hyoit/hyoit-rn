@@ -23,7 +23,8 @@ export default function LoginPage() {
       <StatusBar style="dark" translucent backgroundColor="transparent" />
       <View style={styles.container}>
         <View style={styles.brand}>
-          <Image style={styles.logo} source={loginLogo} />
+          <Text style={styles.welcometext}>안녕하세요 👋{"\n"}효잇에 온걸 환영해요</Text>
+          <Text style={styles.tip}>카카오 계정으로 쉽게 로그인할 수 있어요.</Text>
         </View>
 
         <View style={[styles.actions, { paddingBottom: bottom + 40 }]}>
@@ -53,18 +54,22 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: 26,
     justifyContent: "space-between",
   },
   brand: {
-    flex: 1,
-    alignItems: "center",
+    marginTop: 124,
     justifyContent: "center",
   },
-  logo: {
-    width: 86,
-    height: 48,
-    resizeMode: "contain",
+  welcometext:{
+    fontSize: 25,
+    fontWeight: 800,
+  },
+  tip:{
+    marginTop: 12,
+    fontSize: 16,
+    fontWeight: 600,
+    color: 'rgba(0,0,0,0.7)',
   },
   actions: {
     width: "100%",
@@ -75,7 +80,7 @@ const styles = StyleSheet.create({
     color: SUBTEXT,
     fontSize: 14,
     textAlign: "center",
-    marginTop: 6,
+    marginTop: 4,
   },
   errorText: {
     marginTop: 4,
