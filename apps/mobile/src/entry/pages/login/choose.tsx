@@ -33,7 +33,7 @@ export default function ChoosePage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>어떤 분이 사용하시나요?</Text>
+      <Text style={styles.title}>어떤 분이 효잇을 사용하시나요?</Text>
         <View style={styles.index}>
           <Pressable
             style={[
@@ -104,10 +104,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   title: {
-    marginTop: 97,
-    marginBottom: 120,
+    marginTop:41,
+    marginBottom: 59,
     fontSize: 24,
-    fontWeight: "600",
+    fontWeight: "700",
     color: TEXT,
   },
   index:{
