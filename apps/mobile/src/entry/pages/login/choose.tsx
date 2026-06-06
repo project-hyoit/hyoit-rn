@@ -42,10 +42,6 @@ export default function ChoosePage() {
             ]}
             onPress={() => setSelectedRole("parent")}
           >
-            <View style={styles.imagearray}>
-              <Image style={styles.oldwoman} source={oldWomanImg} />
-              <Image style={styles.oldman} source={oldManImg} />
-            </View>
             <Text
               style={[
                 styles.roleText,
@@ -54,6 +50,10 @@ export default function ChoosePage() {
             >
               부모님
             </Text>
+            <View style={styles.imagearray}>
+              <Image style={styles.oldwoman} source={oldWomanImg} />
+              <Image style={styles.oldman} source={oldManImg} />
+            </View>
           </Pressable>
 
           <Pressable
@@ -63,10 +63,6 @@ export default function ChoosePage() {
             ]}
             onPress={() => setSelectedRole("child")}
           >
-            <View style={styles.imagearray}>
-              <Image style={styles.youngwoman} source={youngWomanImg} />
-              <Image style={styles.youngman} source={youngManImg} />
-            </View>
             <Text
               style={[
                 styles.roleText,
@@ -75,6 +71,10 @@ export default function ChoosePage() {
             >
               자녀
             </Text>
+            <View style={styles.imagearray}>
+              <Image style={styles.youngwoman} source={youngWomanImg} />
+              <Image style={styles.youngman} source={youngManImg} />
+            </View>
           </Pressable>
         </View>
       <Pressable
@@ -102,23 +102,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BG,
     paddingHorizontal: 24,
+    alignItems: "center",
   },
   title: {
     marginTop:41,
     marginBottom: 59,
     fontSize: 24,
     fontWeight: "700",
-    color: TEXT,
   },
   index:{
-    flexDirection: "row",
-    gap:20,
+    gap:14,
   },
   roleButton: {
-    width: 160,
+    width: 300,
     padding: 8,
-    paddingTop: 28,
-    paddingBottom: 28,
+    paddingVertical: 20, 
     borderRadius: 10,
     flexDirection: "column",
     alignItems: "center",
