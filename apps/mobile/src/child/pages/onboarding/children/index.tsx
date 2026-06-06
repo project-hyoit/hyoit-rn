@@ -22,6 +22,9 @@ export default function ParentInfoScreen() {
       <Text style={s.title} allowFontScaling={false}>
         안녕하세요!{"\n"}성함을 알려주세요
       </Text>
+      <Text style={s.subtitle} allowFontScaling={false}>
+        가족이 부모님을 알아볼 수 있도록 {"\n"}실명을 입력해주세요.
+      </Text>
 
       <View style={s.field}>
         <Text style={s.label} allowFontScaling={false}>
@@ -112,11 +115,18 @@ const s = StyleSheet.create({
     paddingHorizontal: 24,
   },
   title: {
-    fontSize: 24,
+    fontSize: 27,
     fontWeight: "700",
+    marginTop: 46,
     marginBottom: 12,
+    lineHeight: 32,
   },
-
+  subtitle: {
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 25,
+  },
   field: {
     marginBottom: 16,
   },
