@@ -53,9 +53,6 @@ export default function ParentInfoScreen() {
           <Text style={s.nextText} allowFontScaling={false}>
             다음
           </Text>
-          <Text style={s.nextArrow} allowFontScaling={false}>
-            →
-          </Text>
         </Pressable>
       </View>
     </View>
@@ -118,11 +115,11 @@ const s = StyleSheet.create({
   next: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    backgroundColor: COLORS.primary,
+    justifyContent: "center",
+    backgroundColor: "#1E90FF",
     borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 15,
+    width: "100%",
     ...Platform.select({
       ios: {
         shadowColor: "#000",
@@ -138,12 +135,7 @@ const s = StyleSheet.create({
   },
   nextText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "700",
-  },
-  nextArrow: {
-    color: "#fff",
-    fontSize: 16,
-    marginLeft: 2,
+    fontSize: 22,
+    fontWeight: "500",
   },
 });
