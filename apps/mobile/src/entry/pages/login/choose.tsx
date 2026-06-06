@@ -50,6 +50,7 @@ export default function ChoosePage() {
             >
               부모님
             </Text>
+            <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
             <View style={styles.imagearray}>
               <Image style={styles.oldwoman} source={oldWomanImg} />
               <Image style={styles.oldman} source={oldManImg} />
@@ -71,6 +72,7 @@ export default function ChoosePage() {
             >
               자녀
             </Text>
+            <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
             <View style={styles.imagearray}>
               <Image style={styles.youngwoman} source={youngWomanImg} />
               <Image style={styles.youngman} source={youngManImg} />
@@ -135,6 +137,12 @@ const styles = StyleSheet.create({
     color: TEXT,
     fontSize: 20,
     fontWeight: "600",
+  },
+  subtitle: {
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: 12,
+    marginTop: 16,
+    marginBottom: 14,
   },
   selectedRoleText: {
     color: PRIMARY,
