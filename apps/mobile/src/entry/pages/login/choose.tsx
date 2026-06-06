@@ -114,9 +114,9 @@ const styles = StyleSheet.create({
   },
   index:{
     gap:14,
+    width: "100%",
   },
   roleButton: {
-    width: 300,
     padding: 8,
     paddingVertical: 20, 
     borderRadius: 10,

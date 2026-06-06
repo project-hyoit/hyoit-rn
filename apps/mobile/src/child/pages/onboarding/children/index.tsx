@@ -20,7 +20,7 @@ export default function ParentInfoScreen() {
   return (
     <View style={s.wrap}>
       <Text style={s.title} allowFontScaling={false}>
-        부모님과 연결을 위해 몇 가지{"\n"}정보가 필요해요
+        안녕하세요!{"\n"}성함을 알려주세요
       </Text>
 
       <View style={s.field}>
@@ -110,14 +110,11 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.bg,
     paddingHorizontal: 24,
-    paddingTop: 120,
   },
   title: {
     fontSize: 24,
-    lineHeight: 36,
-    color: COLORS.text,
-    fontWeight: "600",
-    marginBottom: 64,
+    fontWeight: "700",
+    marginBottom: 12,
   },
 
   field: {
