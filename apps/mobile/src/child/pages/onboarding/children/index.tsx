@@ -11,11 +11,8 @@ import {
 } from "react-native";
 
 export default function ParentInfoScreen() {
-  const { name, age, phone, set } = useOnboardingStore();
-  const canNext = Boolean(name.trim() && age.trim() && phone.trim());
-
-  const ageRef = useRef<TextInput>(null);
-  const phoneRef = useRef<TextInput>(null);
+  const { name, set } = useOnboardingStore();
+  const canNext = Boolean(name.trim());
 
   return (
     <View style={s.wrap}>
@@ -28,7 +25,7 @@ export default function ParentInfoScreen() {
 
       <View style={s.field}>
         <Text style={s.label} allowFontScaling={false}>
-          이름
+          성함
         </Text>
         <TextInput
           placeholder="이름을 입력해주세요"
@@ -37,40 +34,6 @@ export default function ParentInfoScreen() {
           onChangeText={(v) => set({ name: v })}
           style={s.input}
           returnKeyType="next"
-          onSubmitEditing={() => ageRef.current?.focus()}
-        />
-      </View>
-
-      <View style={s.field}>
-        <Text style={s.label} allowFontScaling={false}>
-          나이
-        </Text>
-        <TextInput
-          ref={ageRef}
-          placeholder="나이를 입력해주세요"
-          placeholderTextColor="#B6B6B6"
-          keyboardType="number-pad"
-          value={age}
-          onChangeText={(v) => set({ age: v })}
-          style={s.input}
-          returnKeyType="next"
-          onSubmitEditing={() => phoneRef.current?.focus()}
-        />
-      </View>
-
-      <View style={s.field}>
-        <Text style={s.label} allowFontScaling={false}>
-          전화번호
-        </Text>
-        <TextInput
-          ref={phoneRef}
-          placeholder="전화번호를 입력해주세요"
-          placeholderTextColor="#B6B6B6"
-          keyboardType="phone-pad"
-          value={phone}
-          onChangeText={(v) => set({ phone: v })}
-          style={s.input}
-          returnKeyType="done"
         />
       </View>
 
@@ -131,11 +94,11 @@ const s = StyleSheet.create({
     marginBottom: 16,
   },
   label: {
-    color: COLORS.label,
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 4,
-    fontWeight: "600",
+    fontSize: 18,
+    lineHeight: 25,
+    marginTop: 57,
+    marginBottom: 3,
+    fontWeight: "800",
   },
   input: {
     borderWidth: 1,
