@@ -150,10 +150,11 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     backgroundColor: "#D9D9D9",
-    paddingVertical: 10,
+    paddingVertical: 15,
     borderRadius: 10,
     marginTop: "auto",
-    marginBottom: 96,
+    marginBottom: 64,
+    width: "100%",
   },
   activeConfirmButton: {
     backgroundColor: PRIMARY,
