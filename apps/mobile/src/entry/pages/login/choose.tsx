@@ -52,8 +52,8 @@ export default function ChoosePage() {
             </Text>
             <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
             <View style={styles.imagearray}>
-              <Image style={styles.oldwoman} source={oldWomanImg} />
-              <Image style={styles.oldman} source={oldManImg} />
+              <Image style={styles.img} source={oldWomanImg} />
+              <Image style={styles.img} source={oldManImg} />
             </View>
           </Pressable>
 
@@ -74,8 +74,8 @@ export default function ChoosePage() {
             </Text>
             <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
             <View style={styles.imagearray}>
-              <Image style={styles.youngwoman} source={youngWomanImg} />
-              <Image style={styles.youngman} source={youngManImg} />
+              <Image style={styles.img} source={youngWomanImg} />
+              <Image style={styles.img} source={youngManImg} />
             </View>
           </Pressable>
         </View>
@@ -170,28 +170,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
-  oldwoman: {
-    width: 76,
-    height: 57,
-    resizeMode: "contain",
-    marginBottom: 27,
-  },
-  oldman: {
+  img: {
     width: 70,
     height: 57,
     resizeMode: "contain",
-    marginLeft: 4,
-  },
-  youngwoman: {
-    width: 70,
-    height: 65,
-    resizeMode: "contain",
-  },
-  youngman: {
-    width: 70,
-    height: 57,
-    resizeMode: "contain",
-    marginLeft: 10,
-    marginBottom: 27,
   },
 });
