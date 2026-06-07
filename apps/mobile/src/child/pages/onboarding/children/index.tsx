@@ -20,7 +20,7 @@ export default function ParentInfoScreen() {
         안녕하세요!{"\n"}성함을 알려주세요
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        가족이 부모님을 알아볼 수 있도록 {"\n"}실명을 입력해주세요.
+        부모님께 안부를 보낼 때 {"\n"}이름이 함께 표시돼요.
       </Text>
 
       <View style={s.field}>
