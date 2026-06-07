@@ -1,6 +1,6 @@
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 import { router } from "expo-router";
-import { useRef } from "react";
+import { useState } from "react";
 import {
   Platform,
   Pressable,
@@ -13,6 +13,7 @@ import {
 export default function ParentInfoScreen() {
   const { name, set } = useOnboardingStore();
   const canNext = Boolean(name.trim());
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
     <View style={s.wrap}>
@@ -28,11 +29,16 @@ export default function ParentInfoScreen() {
           성함
         </Text>
         <TextInput
-          placeholder="이름을 입력해주세요"
+          placeholder="예 : 김효잇"
           placeholderTextColor="#B6B6B6"
           value={name}
           onChangeText={(v) => set({ name: v })}
-          style={s.input}
+          style={[
+            s.input,
+            isFocused && s.inputFocused,
+          ]}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           returnKeyType="next"
         />
       </View>
@@ -94,18 +100,24 @@ const s = StyleSheet.create({
     fontSize: 18,
     lineHeight: 25,
     marginTop: 57,
-    marginBottom: 3,
+    marginBottom: 9,
     fontWeight: "800",
   },
   input: {
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: Platform.select({ ios: 14, android: 12 }),
-    fontSize: 16,
-    color: COLORS.text,
-  },
+  borderWidth: 1,
+  borderColor: COLORS.border,
+  borderRadius: 12,
+  paddingHorizontal: 16,
+  paddingVertical: Platform.select({ ios: 14, android: 12 }),
+  fontSize: 22,
+  fontWeight: "500",
+  color: COLORS.text,
+},
+
+inputFocused: {
+  borderColor: "#66B3FF",
+  borderWidth: 2,
+},
 
   nextRow: {
     marginTop: "auto",
