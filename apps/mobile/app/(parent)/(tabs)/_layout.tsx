@@ -1,5 +1,5 @@
 import { IconSymbol } from "@/src/parent/shared/ui/IconSymbol";
-import BottomTabBar from "@/src/parent/widgets/layout/BottomTabBar";
+import { BottomTabBar } from "@/src/parent/widgets/layout";
 import { Tabs } from "expo-router";
 
 const ACTIVE = "#1E90FF";
