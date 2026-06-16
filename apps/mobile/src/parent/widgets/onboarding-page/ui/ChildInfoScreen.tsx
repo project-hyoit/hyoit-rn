@@ -79,7 +79,7 @@ export default function ChildInfoScreen() {
             pressed && canNext && s.pressed,
           ]}
           disabled={!canNext}
-          onPress={() => router.push("/onboarding/verify-code")}
+          onPress={() => router.push("/(parent)/onboarding/verify-code")}
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel="다음"
