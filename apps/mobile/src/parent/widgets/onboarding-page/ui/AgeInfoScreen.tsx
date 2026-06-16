@@ -18,7 +18,7 @@ export default function AgeInfoScreen() {
   return (
     <View style={s.wrap}>
       <Text style={s.title} allowFontScaling={false}>
-        연세를 알려주세요
+        이번에는{"\n"}연세를 알려주세요!
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
         가족 프로필에 표시될 연세를 입력해주세요.
@@ -147,4 +147,3 @@ const s = StyleSheet.create({
     fontWeight: "500",
   },
 });
-{
