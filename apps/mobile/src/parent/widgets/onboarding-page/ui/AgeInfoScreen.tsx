@@ -10,34 +10,31 @@ import {
   View,
 } from "react-native";
 
-export default function ChildInfoScreen() {
-  const { name, set } = useOnboardingStore();
-  const canNext = Boolean(name.trim());
+export default function AgeInfoScreen() {
+  const { age, set } = useOnboardingStore();
+  const canNext = Boolean(age.trim());
   const [isFocused, setIsFocused] = useState(false);
-
 
   return (
     <View style={s.wrap}>
       <Text style={s.title} allowFontScaling={false}>
-        안녕하세요!{"\n"}성함을 알려주세요
+        연세를 알려주세요
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        가족이 부모님을 알아볼 수 있도록{"\n"}실명을 입력해주세요.
+        가족 프로필에 표시될 연세를 입력해주세요.
       </Text>
 
       <View style={s.field}>
         <Text style={s.label} allowFontScaling={false}>
-          성함
+          연세
         </Text>
         <TextInput
-          placeholder="예 : 김효잇"
+          placeholder="예 : 68"
           placeholderTextColor="#B6B6B6"
-          value={name}
-          onChangeText={(v) => set({ name: v })}
-          style={[
-            s.input,
-            isFocused && s.inputFocused,
-          ]}
+          keyboardType="number-pad"
+          value={age}
+          onChangeText={(v) => set({ age: v })}
+          style={[s.input, isFocused && s.inputFocused]}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           returnKeyType="next"
@@ -52,7 +49,7 @@ export default function ChildInfoScreen() {
             pressed && canNext && { opacity: 0.9 },
           ]}
           disabled={!canNext}
-          onPress={() => router.push("/(parent)/onboarding/age-info")}
+          onPress={() => router.push("/(parent)/onboarding/verify-code")}
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel="다음"
@@ -63,7 +60,6 @@ export default function ChildInfoScreen() {
         </Pressable>
       </View>
     </View>
-
   );
 }
 
@@ -106,21 +102,19 @@ const s = StyleSheet.create({
     fontWeight: "800",
   },
   input: {
-  borderWidth: 1,
-  borderColor: COLORS.border,
-  borderRadius: 12,
-  paddingHorizontal: 16,
-  paddingVertical: Platform.select({ ios: 14, android: 12 }),
-  fontSize: 22,
-  fontWeight: "500",
-  color: COLORS.text,
-},
-
-inputFocused: {
-  borderColor: "#66B3FF",
-  borderWidth: 2,
-},
-
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: Platform.select({ ios: 14, android: 12 }),
+    fontSize: 22,
+    fontWeight: "500",
+    color: COLORS.text,
+  },
+  inputFocused: {
+    borderColor: "#66B3FF",
+    borderWidth: 2,
+  },
   nextRow: {
     marginTop: "auto",
     alignItems: "flex-end",
@@ -145,12 +139,12 @@ inputFocused: {
     }),
   },
   nextDisabled: {
-    backgroundColor: "#D9D9D9"
+    backgroundColor: "#D9D9D9",
   },
   nextText: {
     color: "#fff",
     fontSize: 22,
     fontWeight: "500",
   },
-
 });
+{
