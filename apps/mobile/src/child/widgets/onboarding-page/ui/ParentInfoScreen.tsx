@@ -10,11 +10,10 @@ import {
   View,
 } from "react-native";
 
-export default function ChildInfoScreen() {
+export default function ParentInfoScreen() {
   const { name, set } = useOnboardingStore();
   const canNext = Boolean(name.trim());
   const [isFocused, setIsFocused] = useState(false);
-
 
   return (
     <View style={s.wrap}>
@@ -22,7 +21,7 @@ export default function ChildInfoScreen() {
         안녕하세요!{"\n"}성함을 알려주세요
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        가족이 부모님을 알아볼 수 있도록{"\n"}실명을 입력해주세요.
+        부모님께 안부를 보낼 때 {"\n"}이름이 함께 표시돼요.
       </Text>
 
       <View style={s.field}>
@@ -52,7 +51,7 @@ export default function ChildInfoScreen() {
             pressed && canNext && { opacity: 0.9 },
           ]}
           disabled={!canNext}
-          onPress={() => router.push("/onboarding/verify-code")}
+          onPress={() => router.push("/(child)/onboarding/verify-code")}
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel="다음"
@@ -63,7 +62,6 @@ export default function ChildInfoScreen() {
         </Pressable>
       </View>
     </View>
-
   );
 }
 
@@ -152,5 +150,4 @@ inputFocused: {
     fontSize: 22,
     fontWeight: "500",
   },
-
 });

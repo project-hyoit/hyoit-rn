@@ -9,11 +9,9 @@ import {
   Text,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SuccessScreen() {
-  const { bottom } = useSafeAreaInsets();
-  const setOnboarded = useAuthStore((s) => s.setOnboarded);
+  const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
 
   const child = { name: "김유찬", phone: "010-4610-3405" };
 
@@ -38,7 +36,7 @@ export default function SuccessScreen() {
 
         <Pressable
           onPress={() => {
-            setOnboarded(true);
+            setParentOnboarded(true);
             router.replace("/(parent)");
           }}
           hitSlop={8}

@@ -4,24 +4,29 @@ import type { UserRole } from "@hyoit/types";
 interface AuthState {
   isSignedIn: boolean;
   role: UserRole | null;
-  hasOnboarded: boolean;
+  hasParentOnboarded: boolean;
+  hasChildOnboarded: boolean;
   setSignedIn: (value: boolean) => void;
   setRole: (role: UserRole | null) => void;
-  setOnboarded: (value: boolean) => void;
+  setParentOnboarded: (value: boolean) => void;
+  setChildOnboarded: (value: boolean) => void;
   resetAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   isSignedIn: false,
   role: null,
-  hasOnboarded: false,
+  hasParentOnboarded: false,
+  hasChildOnboarded: false,
   setSignedIn: (value) => set({ isSignedIn: value }),
   setRole: (role) => set({ role }),
-  setOnboarded: (value) => set({ hasOnboarded: value }),
+  setParentOnboarded: (value) => set({ hasParentOnboarded: value }),
+  setChildOnboarded: (value) => set({ hasChildOnboarded: value }),
   resetAuth: () =>
     set({
       isSignedIn: false,
       role: null,
-      hasOnboarded: false,
+      hasParentOnboarded: false,
+      hasChildOnboarded: false,
     }),
 }));

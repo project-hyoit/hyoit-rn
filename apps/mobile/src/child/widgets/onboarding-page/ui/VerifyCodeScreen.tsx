@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -9,8 +9,6 @@ import {
 
 export default function VerifyCodeScreen() {
   const myCode = "927582";
-  const [childCode, setChildCode] = useState("");
-  const canNext = /^\d{6}$/.test(childCode);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const openModal = () => {
@@ -40,7 +38,7 @@ export default function VerifyCodeScreen() {
             </View>
           ))}
         </View>
-        <Text style={s.explanation}>자녀분 핸드폰을 통해 인증번호를 입력해주세요</Text>
+        <Text style={s.explanation}>부모님 핸드폰을 통해 인증번호를 입력해주세요</Text>
       </View>
 
       <View style={{ marginTop: 12, alignItems: "flex-end" }}>
@@ -60,7 +58,7 @@ export default function VerifyCodeScreen() {
             onPress={closeModal} 
           />
           <View style={s.bottomSheet}>
-            <Text style={s.sheetTitle}>자녀분이 맞으신가요?</Text>
+            <Text style={s.sheetTitle}>부모님이 맞으신가요?</Text>
             <View style={s.userCard}>
               <View style={s.surnameCircle}>
                 <Text style={s.surnameText}>김</Text>
@@ -73,7 +71,7 @@ export default function VerifyCodeScreen() {
                 <Text style={s.cancel}>아니요</Text>
               </Pressable>
               <Pressable
-                onPress={() => router.push("/(parent)/onboarding/success")}
+                onPress={() => router.push("/(child)/onboarding/success")}
                 style={s.okButton}
               >
                 <Text style={s.ok}>맞아요</Text>
