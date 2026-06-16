@@ -1,5 +1,5 @@
-import ChatScreen from "@/src/parent/pages/chat";
+import ChatPage from "@/src/parent/widgets/chat-page";
 
 export default function ChatRoute() {
-  return <ChatScreen />;
+  return <ChatPage />;
 }

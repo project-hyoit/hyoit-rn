@@ -2,27 +2,22 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// 위젯
-import ChatDock from "../../widgets/chat-page/ChatDock";
-import ChatHeader from "../../widgets/chat-page/ChatHeader";
-import MessageList from "../../widgets/chat-page/MessageList";
-import QuickStartPanel from "../../widgets/chat-page/QuickStartPanel";
-
-// 빠른 질문(칩) 피처
 import { useQuickQuestions } from "../../features/chat/quick-questions";
-// Message 타입을 이 파일 안에서 직접 정의
+import { ChatDock, ChatHeader, MessageList, QuickStartPanel } from "./ui";
+
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
 
-export default function ChatScreen() {
+export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
       content: "아래있는 질문을 클릭해서 대화를 시작해보세요",
     },
   ]);
+
   const quick = useQuickQuestions();
 
   const push = (role: Message["role"], text: string) =>
@@ -31,7 +26,6 @@ export default function ChatScreen() {
   const send = (text: string) => {
     push("user", text);
 
-    // 퍼블리싱용 더미 답변
     setTimeout(() => {
       push(
         "assistant",
@@ -41,19 +35,32 @@ export default function ChatScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#F6F7F9" }}>
+    <SafeAreaView style={s.safeArea}>
       <View style={s.wrap}>
         <ChatHeader />
         <QuickStartPanel items={quick} onPick={send} />
-        <View style={{ flex: 1 }}>
+
+        <View style={s.messageArea}>
           <MessageList items={messages} />
         </View>
-        <ChatDock onSend={send} onVoice={(t) => send(t)} />
+
+        <ChatDock onSend={send} onVoice={(text) => send(text)} />
       </View>
     </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
-  wrap: { flex: 1, gap: 12, padding: 16 },
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#F6F7F9",
+  },
+  wrap: {
+    flex: 1,
+    gap: 12,
+    padding: 16,
+  },
+  messageArea: {
+    flex: 1,
+  },
 });
