@@ -56,7 +56,7 @@ export default function AgeInfoScreen() {
         이번에는{"\n"}연세를 알려주세요!
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        가족이 부모님을 더 잘 이해할 수 있도록{"\n"}연세 정보를 입력해 주세요.
+        가족이 부모님을 더 잘 이해할 수 있도록{"\n"}연세를 입력해주세요.
       </Text>
 
       <View style={s.pickerWrap}>
@@ -129,17 +129,17 @@ const s = StyleSheet.create({
     paddingHorizontal: 24,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
+    fontSize: 27,
+    fontWeight: "700",
     marginTop: 46,
     marginBottom: 12,
-    lineHeight: 40,
+    lineHeight: 32,
   },
   subtitle: {
     color: "rgba(0, 0, 0, 0.6)",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "600",
-    lineHeight: 24,
+    lineHeight: 25,
   },
   pickerWrap: {
     marginTop: 40,
