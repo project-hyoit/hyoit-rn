@@ -10,21 +10,10 @@ export default function EntryLoadingScreen() {
 
 	useEffect(() => {
 		let mounted = true;
-		const timer = setTimeout(async () => {
+		const timer = setTimeout(() => {
 			if (!mounted) return;
 
-			const authenticated = await isAuthenticated();
-			const target = resolveEntryTarget({ authenticated, role });
-
-			const routeMap: Record<string, string> = {
-				login: "/(entry)/login",
-				choose: "/(entry)/choose",
-				parent: "/(parent)",
-				child: "/(child)",
-			};
-
-			const to = routeMap[target] ?? "/(entry)/login";
-			router.replace(to);
+			router.replace("/(entry)/login");
 		}, 2000);
 
 		return () => {
