@@ -1,5 +1,4 @@
 import bananaCardsImg from "@/assets/images/banana-cards_02.png";
-import DifficultyCard from "@/src/parent/widgets/game-page/memory/DifficultyCard";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
@@ -12,7 +11,10 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import DifficultyCard from "./DifficultyCard";
+
 const PRIMARY = "#1E90FF";
+
 type Difficulty = "easy" | "normal" | "hard";
 
 export default function IntroScreen() {
@@ -115,8 +117,10 @@ const s = StyleSheet.create({
     textAlign: "center",
     marginBottom: 36,
   },
-
-  fabWrap: { position: "absolute", right: 20 },
+  fabWrap: {
+    position: "absolute",
+    right: 20,
+  },
   cta: {
     backgroundColor: PRIMARY,
     paddingHorizontal: 22,
@@ -128,5 +132,9 @@ const s = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     elevation: 3,
   },
-  ctaText: { color: "#fff", fontSize: 18, fontWeight: "800" },
+  ctaText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "800",
+  },
 });

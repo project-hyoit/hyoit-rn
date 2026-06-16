@@ -1,6 +1,5 @@
-// 라우트 래퍼: page/game 가져다 렌더
-import GameScreen from "@/src/parent/pages/game";
+import GamePage from "@/src/parent/widgets/game-page";
 
 export default function GameRoute() {
-  return <GameScreen />;
+  return <GamePage />;
 }

@@ -1,10 +1,11 @@
 import { router } from "expo-router";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Header from "../../shared/ui/section/header";
-import { MemoryGameCard } from "../../widgets/home-page";
 
-export default function GameScreen() {
+import Header from "../../shared/ui/section/header";
+import { MemoryGameCard } from "../home-page/ui";
+
+export default function GamePage() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
       <ScrollView

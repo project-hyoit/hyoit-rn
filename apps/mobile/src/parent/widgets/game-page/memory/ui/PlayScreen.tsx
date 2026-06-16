@@ -3,5 +3,6 @@ import { useLocalSearchParams } from "expo-router";
 
 export default function PlayScreen() {
   const { level } = useLocalSearchParams<{ level?: string }>();
+
   return <PlayContainer level={level} />;
 }
