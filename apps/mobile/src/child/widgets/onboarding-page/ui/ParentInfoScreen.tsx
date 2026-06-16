@@ -164,7 +164,7 @@ const s = StyleSheet.create({
     }),
   },
   nextDisabled: {
-    backgroundColor: "#D9D9D9"
+    backgroundColor: "#D9D9D9",
   },
   nextText: {
     color: "#fff",

@@ -27,30 +27,29 @@ export default function SuccessScreen() {
         연결된 부모님
       </Text>
       <View style={s.card}>
-          <Image source={mainProfileImg} style={s.avatar} />
-          <Text style={s.childName} allowFontScaling={false}>
-            {child.name}
-          </Text>
+        <Image source={mainProfileImg} style={s.avatar} />
+        <Text style={s.childName} allowFontScaling={false}>
+          {child.name}
+        </Text>
         <Text style={s.childPhone} allowFontScaling={false}>
           {child.phone}
         </Text>
       </View>
 
-        <Pressable
-          onPress={() => {
-            setOnboarded(true);
-            router.replace("/(parent)");
-          }}
-          hitSlop={8}
-          style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
-          accessibilityRole="button"
-          accessibilityLabel="시작하기"
-        >
-          <Text style={s.primaryText} allowFontScaling={false}>
-            시작하기
-          </Text>
-        </Pressable>
-      
+      <Pressable
+        onPress={() => {
+          setOnboarded(true);
+          router.replace("/(parent)");
+        }}
+        hitSlop={8}
+        style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
+        accessibilityRole="button"
+        accessibilityLabel="시작하기"
+      >
+        <Text style={s.primaryText} allowFontScaling={false}>
+          시작하기
+        </Text>
+      </Pressable>
     </View>
   );
 }
@@ -135,5 +134,5 @@ const s = StyleSheet.create({
       android: { elevation: 2 },
     }),
   },
-  primaryText: { color: "#fff", fontSize: 20, fontWeight: "700"},
+  primaryText: { color: "#fff", fontSize: 20, fontWeight: "700" },
 });
