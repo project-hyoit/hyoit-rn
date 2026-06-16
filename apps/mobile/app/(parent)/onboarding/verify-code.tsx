@@ -1,4 +1,4 @@
-import VerifyCodeScreen from "@/src/parent/pages/onboarding/verify-code";
+import { VerifyCodeScreen } from "@/src/parent/widgets/onboarding-page";
 
 export default function VerifyCodeRoute() {
   return <VerifyCodeScreen />;

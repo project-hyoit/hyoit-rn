@@ -29,9 +29,9 @@ export default function ChildInfoScreen() {
         </Text>
         <TextInput
           placeholder="이름을 입력해주세요"
-          placeholderTextColor="#B6B6B6"
+          placeholderTextColor={COLORS.placeholder}
           value={name}
-          onChangeText={(v) => set({ name: v })}
+          onChangeText={(value) => set({ name: value })}
           style={s.input}
           returnKeyType="next"
           onSubmitEditing={() => ageRef.current?.focus()}
@@ -45,10 +45,10 @@ export default function ChildInfoScreen() {
         <TextInput
           ref={ageRef}
           placeholder="나이를 입력해주세요"
-          placeholderTextColor="#B6B6B6"
+          placeholderTextColor={COLORS.placeholder}
           keyboardType="number-pad"
           value={age}
-          onChangeText={(v) => set({ age: v })}
+          onChangeText={(value) => set({ age: value })}
           style={s.input}
           returnKeyType="next"
           onSubmitEditing={() => phoneRef.current?.focus()}
@@ -62,10 +62,10 @@ export default function ChildInfoScreen() {
         <TextInput
           ref={phoneRef}
           placeholder="전화번호를 입력해주세요"
-          placeholderTextColor="#B6B6B6"
+          placeholderTextColor={COLORS.placeholder}
           keyboardType="phone-pad"
           value={phone}
-          onChangeText={(v) => set({ phone: v })}
+          onChangeText={(value) => set({ phone: value })}
           style={s.input}
           returnKeyType="done"
         />
@@ -76,7 +76,7 @@ export default function ChildInfoScreen() {
           style={({ pressed }) => [
             s.next,
             !canNext && s.nextDisabled,
-            pressed && canNext && { opacity: 0.9 },
+            pressed && canNext && s.pressed,
           ]}
           disabled={!canNext}
           onPress={() => router.push("/onboarding/verify-code")}
@@ -102,6 +102,7 @@ const COLORS = {
   text: "#000000",
   placeholder: "#B6B6B6",
   primary: "#1E90FF",
+  disabled: "#D9D9D9",
   bg: "#FFFFFF",
 };
 
@@ -119,7 +120,6 @@ const s = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 64,
   },
-
   field: {
     marginBottom: 16,
   },
@@ -139,7 +139,6 @@ const s = StyleSheet.create({
     fontSize: 16,
     color: COLORS.text,
   },
-
   nextRow: {
     marginTop: "auto",
     alignItems: "flex-end",
@@ -164,15 +163,18 @@ const s = StyleSheet.create({
     }),
   },
   nextDisabled: {
-    backgroundColor: "#D9D9D9"
+    backgroundColor: COLORS.disabled,
+  },
+  pressed: {
+    opacity: 0.9,
   },
   nextText: {
-    color: "#fff",
+    color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "700",
   },
   nextArrow: {
-    color: "#fff",
+    color: "#FFFFFF",
     fontSize: 16,
     marginLeft: 2,
   },
