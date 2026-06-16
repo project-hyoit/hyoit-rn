@@ -1,5 +1,5 @@
-import HomeScreen from "@/src/parent/pages/home";
+import HomePage from "@/src/parent/widgets/home-page";
 
 export default function HomeRoute() {
-  return <HomeScreen />;
+  return <HomePage />;
 }

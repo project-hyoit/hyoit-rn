@@ -1,5 +1,5 @@
-import ProfileScreen from "@/src/parent/pages/profile";
+import ProfilePage from "@/src/parent/widgets/profile-page";
 
 export default function ProfileRoute() {
-  return <ProfileScreen />;
+  return <ProfilePage />;
 }
