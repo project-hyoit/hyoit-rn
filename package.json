@@ -7,11 +7,6 @@
     "mobile:android": "pnpm --filter hyoit-rn android",
     "mobile:ios": "pnpm --filter hyoit-rn ios"
   },
-  "pnpm": {
-    "overrides": {
-      "react-native": "0.81.5"
-    }
-  },
   "dependencies": {
     "expo-secure-store": "~15.0.8"
   },
