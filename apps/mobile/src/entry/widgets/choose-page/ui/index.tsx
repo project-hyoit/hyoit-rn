@@ -1,14 +1,13 @@
-import { useChooseRoleAction } from "@hyoit/auth";
-import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View} from "react-native";
-
 import oldManImg from "@/src/entry/assets/images/choose/oldman.png";
 import oldWomanImg from "@/src/entry/assets/images/choose/oldwoman.png";
 import youngManImg from "@/src/entry/assets/images/choose/youngman.png";
 import youngWomanImg from "@/src/entry/assets/images/choose/youngwoman.png";
+import { useChooseRoleAction } from "@hyoit/auth";
+import { useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
-import { navigateToTarget } from "../../shared/lib/router";
+import { BG, PRIMARY, TEXT } from "@/src/entry/shared/config/theme";
+import { navigateToTarget } from "@/src/entry/shared/lib/router";
 
 type SelectedRole = "parent" | "child" | null;
 
@@ -28,55 +27,60 @@ export default function ChoosePage() {
 
   const handleConfirm = () => {
     if (!selectedRole || isPending) return;
+
     submit(selectedRole);
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>어떤 분이 사용하시나요?</Text>
-        <View style={styles.index}>
-          <Pressable
-            style={[
-              styles.roleButton,
-              selectedRole === "parent" && styles.selectedButton,
-            ]}
-            onPress={() => setSelectedRole("parent")}
-          >
-            <View style={styles.imagearray}>
-              <Image style={styles.oldwoman} source={oldWomanImg} />
-              <Image style={styles.oldman} source={oldManImg} />
-            </View>
-            <Text
-              style={[
-                styles.roleText,
-                selectedRole === "parent" && styles.selectedRoleText,
-              ]}
-            >
-              부모님
-            </Text>
-          </Pressable>
 
-          <Pressable
+      <View style={styles.roleList}>
+        <Pressable
+          style={[
+            styles.roleButton,
+            selectedRole === "parent" && styles.selectedButton,
+          ]}
+          onPress={() => setSelectedRole("parent")}
+        >
+          <View style={styles.imageRow}>
+            <Image style={styles.oldWoman} source={oldWomanImg} />
+            <Image style={styles.oldMan} source={oldManImg} />
+          </View>
+
+          <Text
             style={[
-              styles.roleButton,
-              selectedRole === "child" && styles.selectedButton,
+              styles.roleText,
+              selectedRole === "parent" && styles.selectedRoleText,
             ]}
-            onPress={() => setSelectedRole("child")}
           >
-            <View style={styles.imagearray}>
-              <Image style={styles.youngwoman} source={youngWomanImg} />
-              <Image style={styles.youngman} source={youngManImg} />
-            </View>
-            <Text
-              style={[
-                styles.roleText,
-                selectedRole === "child" && styles.selectedRoleText,
-              ]}
-            >
-              자녀
-            </Text>
-          </Pressable>
-        </View>
+            부모님
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={[
+            styles.roleButton,
+            selectedRole === "child" && styles.selectedButton,
+          ]}
+          onPress={() => setSelectedRole("child")}
+        >
+          <View style={styles.imageRow}>
+            <Image style={styles.youngWoman} source={youngWomanImg} />
+            <Image style={styles.youngMan} source={youngManImg} />
+          </View>
+
+          <Text
+            style={[
+              styles.roleText,
+              selectedRole === "child" && styles.selectedRoleText,
+            ]}
+          >
+            자녀
+          </Text>
+        </Pressable>
+      </View>
+
       <Pressable
         style={[
           styles.confirmButton,
@@ -110,9 +114,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: TEXT,
   },
-  index:{
+  roleList: {
     flexDirection: "row",
-    gap:20,
+    gap: 20,
   },
   roleButton: {
     width: 160,
@@ -126,7 +130,7 @@ const styles = StyleSheet.create({
     borderColor: "#D9D9D9",
     backgroundColor: "#FFFFFF",
   },
-  imagearray: {
+  imageRow: {
     flexDirection: "row",
   },
   selectedButton: {
@@ -164,24 +168,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
-  oldwoman: {
+  oldWoman: {
     width: 76,
     height: 57,
     resizeMode: "contain",
     marginBottom: 27,
   },
-  oldman: {
+  oldMan: {
     width: 70,
     height: 57,
     resizeMode: "contain",
     marginLeft: 4,
   },
-  youngwoman: {
+  youngWoman: {
     width: 70,
     height: 65,
     resizeMode: "contain",
   },
-  youngman: {
+  youngMan: {
     width: 70,
     height: 57,
     resizeMode: "contain",

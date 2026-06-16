@@ -1,13 +1,13 @@
+import kakaoIcon from "@/src/entry/assets/images/kakao_icon.png";
+import loginLogo from "@/src/entry/assets/images/login/login_logo.png";
 import { useLoginWithKakao } from "@hyoit/auth";
 import { KakaoLoginButton } from "@hyoit/ui";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import kakaoIcon from "@/src/entry/assets/images/kakao_icon.png";
-import loginLogo from "@/src/entry/assets/images/login/login_logo.png";
-import { BG, SUBTEXT } from "../../shared/config/theme";
-import { navigateToTarget } from "../../shared/lib/router";
+import { BG, SUBTEXT } from "@/src/entry/shared/config/theme";
+import { navigateToTarget } from "@/src/entry/shared/lib/router";
 
 export default function LoginPage() {
   const { bottom } = useSafeAreaInsets();
@@ -21,6 +21,7 @@ export default function LoginPage() {
   return (
     <View style={styles.safe}>
       <StatusBar style="dark" translucent backgroundColor="transparent" />
+
       <View style={styles.container}>
         <View style={styles.brand}>
           <Image style={styles.logo} source={loginLogo} />
