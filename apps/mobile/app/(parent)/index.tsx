@@ -2,9 +2,9 @@ import { useAuthStore } from "@hyoit/auth";
 import { Redirect } from "expo-router";
 
 export default function ParentIndex() {
-  const hasOnboarded = useAuthStore((s) => s.hasOnboarded);
+  const hasParentOnboarded = useAuthStore((s) => s.hasParentOnboarded);
 
-  if (!hasOnboarded) {
+  if (!hasParentOnboarded) {
     return <Redirect href="/(parent)/onboarding/child-info" />;
   }
 

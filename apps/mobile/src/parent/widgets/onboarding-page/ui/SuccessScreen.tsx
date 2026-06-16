@@ -5,11 +5,12 @@ import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import ConnectedChildCard from "./ConnectedChildCard";
 
 export default function SuccessScreen() {
-  const setOnboarded = useAuthStore((state) => state.setOnboarded);
+  const setParentOnboarded = useAuthStore((state) => state.setParentOnboarded);
+
   const child = { name: "김유찬", phone: "010-4610-3405" };
 
   const start = () => {
-    setOnboarded(true);
+    setParentOnboarded(true);
     router.replace("/(parent)");
   };
 

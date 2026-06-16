@@ -9,13 +9,11 @@ import {
   Text,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SuccessScreen() {
-  const { bottom } = useSafeAreaInsets();
-  const setOnboarded = useAuthStore((s) => s.setOnboarded);
+  const setChildOnboarded = useAuthStore((s) => s.setChildOnboarded);
 
-  const child = { name: "김유찬", phone: "010-4610-3405" };
+  const parent = { name: "김유찬", phone: "010-4610-3405" };
 
   return (
     <View style={s.wrap}>
@@ -26,20 +24,21 @@ export default function SuccessScreen() {
       <Text style={s.cardTitle} allowFontScaling={false}>
         연결된 부모님
       </Text>
+
       <View style={s.card}>
         <Image source={mainProfileImg} style={s.avatar} />
         <Text style={s.childName} allowFontScaling={false}>
-          {child.name}
+          {parent.name}
         </Text>
         <Text style={s.childPhone} allowFontScaling={false}>
-          {child.phone}
+          {parent.phone}
         </Text>
       </View>
 
       <Pressable
         onPress={() => {
-          setOnboarded(true);
-          router.replace("/(parent)");
+          setChildOnboarded(true);
+          router.replace("/(child)");
         }}
         hitSlop={8}
         style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
