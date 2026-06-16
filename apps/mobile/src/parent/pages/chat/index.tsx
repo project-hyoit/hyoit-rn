@@ -3,10 +3,10 @@ import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // 위젯
-import ChatDock from "../../widgets/chat/ChatDock";
-import ChatHeader from "../../widgets/chat/ChatHeader";
-import MessageList from "../../widgets/chat/MessageList";
-import QuickStartPanel from "../../widgets/chat/QuickStartPanel";
+import ChatDock from "../../widgets/chat-page/ChatDock";
+import ChatHeader from "../../widgets/chat-page/ChatHeader";
+import MessageList from "../../widgets/chat-page/MessageList";
+import QuickStartPanel from "../../widgets/chat-page/QuickStartPanel";
 
 // 빠른 질문(칩) 피처
 import { useQuickQuestions } from "../../features/chat/quick-questions";

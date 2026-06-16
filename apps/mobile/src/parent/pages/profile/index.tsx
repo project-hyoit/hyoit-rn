@@ -6,7 +6,7 @@ import {
 } from "../../entities/user/model/mock";
 import ChildList from "../../entities/user/ui/ChildList";
 import Header from "../../shared/ui/section/header";
-import ProfileSection from "../../widgets/profile/profile-section";
+import ProfileSection from "../../widgets/profile-page/profile-section";
 export default function ProfileScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>

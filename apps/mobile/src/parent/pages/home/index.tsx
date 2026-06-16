@@ -10,7 +10,7 @@ import {
   MemoryGameCard,
   MetricCard,
   WeatherCard,
-} from "../../widgets/home";
+} from "../../widgets/home-page";
 
 export default function HomeScreen() {
   return (

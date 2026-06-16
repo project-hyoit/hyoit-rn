@@ -1,5 +1,5 @@
 import bananaCardsImg from "@/assets/images/banana-cards_02.png";
-import DifficultyCard from "@/src/parent/widgets/game/memory/DifficultyCard";
+import DifficultyCard from "@/src/parent/widgets/game-page/memory/DifficultyCard";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
