@@ -34,7 +34,8 @@ export default function VerifyCodeScreen() {
         if (prev <= 1) {
           if (timerRef.current) clearInterval(timerRef.current as any);
           timerRef.current = null;
-          handleTimeout();
+          // schedule navigation asynchronously to avoid setState-in-render errors
+          setTimeout(() => handleTimeout(), 0);
           return 0;
         }
         return prev - 1;
