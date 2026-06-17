@@ -7,7 +7,8 @@ import { MEMORY_GAME } from "@/src/parent/shared/config/constants";
 import { useGridLayout } from "@/src/parent/shared/lib/hooks/useGridLayout";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
 
-import MemoryTile from "./MemoryTile";
+import MemoryTile from "./MemoryTitle";
+
 type Props = {
   items: Card[];
   cols?: number;
