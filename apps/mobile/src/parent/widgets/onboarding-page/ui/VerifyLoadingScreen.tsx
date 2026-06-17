@@ -6,29 +6,22 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import { useEffect as useEffect2 } from "react";
 
 interface VerifyLoadingScreenProps {
-  codeInput: string;
+  codeInput?: string;
 }
 
 export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenProps) {
-  const correctCode = "927582"; // 부모가 발송한 코드
   const setStore = useOnboardingStore((s) => s.set);
-
   useEffect2(() => {
     setStore({ step: 3 });
   }, [setStore]);
-
   useEffect(() => {
-    // 부모 코드 검증 시간 시뮬레이션 (2초)
+    // 부모 측 로딩 (시뮬레이션)
     const timer = setTimeout(() => {
-      if (codeInput === correctCode) {
-        router.replace("/(child)/onboarding/success");
-      } else {
-        router.replace("/(child)/onboarding/fail");
-      }
-    }, 2000);
-
+      router.replace("/(parent)/onboarding/success");
+    }, 1500);
     return () => clearTimeout(timer);
   }, [codeInput]);
+
   const rotate = useRef(new Animated.Value(0)).current;
   const pulse = useRef(new Animated.Value(0)).current;
 
@@ -57,7 +50,7 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
     <View style={s.wrap}>
       <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        부모님 정보를 확인하고{"\n"}있어요
+        인증 정보를 확인하고 있어요
       </Text>
 
       <View style={s.loadingContainer}>
@@ -67,7 +60,7 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
 
       <View style={s.messageBox}>
         <Text style={s.message} allowFontScaling={false}>
-          입력한 인증번호를 확인 중이에요.
+          연결 정보를 생성하고 있어요.
         </Text>
       </View>
     </View>
@@ -123,11 +116,6 @@ const s = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     marginTop: 40,
-  },
-  checkmark: {
-    fontSize: 24,
-    color: "#1E90FF",
-    fontWeight: "600",
   },
   message: {
     fontSize: 14,

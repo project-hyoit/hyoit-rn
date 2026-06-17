@@ -7,6 +7,7 @@ import {
   View,
   TextInput,
 } from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
 
 export default function VerifyCodeScreen() {
   // 6자리 인증코드 입력 상태
@@ -50,6 +51,7 @@ export default function VerifyCodeScreen() {
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         가족구성원 추가를 위한{"\n"}인증번호가 생성되었어요
       </Text>

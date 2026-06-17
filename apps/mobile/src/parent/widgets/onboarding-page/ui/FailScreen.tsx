@@ -1,12 +1,21 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useEffect } from "react";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 export default function FailScreen() {
   const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
+  const setStore = useOnboardingStore((s) => s.set);
+
+  useEffect(() => {
+    setStore({ step: 4 });
+  }, [setStore]);
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={4} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         인증에 실패했어요.
       </Text>

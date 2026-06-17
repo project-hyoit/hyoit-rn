@@ -1,12 +1,20 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useEffect } from "react";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 export default function SuccessScreen() {
   const { setChildOnboarded } = useAuthStore();
+  const setStore = useOnboardingStore((s) => s.set);
+  useEffect(() => {
+    setStore({ step: 4 });
+  }, [setStore]);
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={4} total={4} />
       <View style={s.content}>
         <View style={s.imageContainer}>
           <Image

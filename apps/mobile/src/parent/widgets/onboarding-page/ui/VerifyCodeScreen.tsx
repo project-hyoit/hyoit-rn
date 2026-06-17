@@ -7,9 +7,16 @@ import {
   View,
   Platform,
 } from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 export default function VerifyCodeScreen() {
   const myCode = "927582";
+  const setStore = useOnboardingStore((s) => s.set);
+
+  useEffect(() => {
+    setStore({ step: 3 });
+  }, [setStore]);
 
   const INITIAL = 180; // 3 minutes in seconds
   const [remaining, setRemaining] = useState(INITIAL);
@@ -56,16 +63,16 @@ export default function VerifyCodeScreen() {
   };
 
   const handleNext = () => {
-    // remaining이 0 이상이면(시간 내에) success로 이동, 아니면 fail로 이동
-    if (remaining > 0) {
-      router.push("/(parent)/onboarding/success");
-    } else {
-      router.replace("/(parent)/onboarding/fail");
-    }
+    // 로딩 페이지로 이동하여 내부 처리(애니메이션) 후 success/fail로 이동
+    router.push({
+      pathname: "/(parent)/onboarding/verify-loading",
+      params: { codeInput: myCode },
+    });
   };
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         가족구성원 추가를 위한{"\n"}인증번호가 생성되었어요
       </Text>

@@ -9,14 +9,23 @@ import {
   Text,
   View,
 } from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useEffect } from "react";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 export default function SuccessScreen() {
   const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
+  const setStore = useOnboardingStore((s) => s.set);
+
+  useEffect(() => {
+    setStore({ step: 4 });
+  }, [setStore]);
 
   const child = { name: "김유찬", phone: "010-4610-3405" };
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={4} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         연결이 완료되었어요!
       </Text>

@@ -1,5 +1,5 @@
 import { useChooseRoleAction } from "@hyoit/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Image, Pressable, StyleSheet, Text, View} from "react-native";
 
 import oldManImg from "@/src/entry/assets/images/choose/oldman.png";
@@ -9,11 +9,18 @@ import youngWomanImg from "@/src/entry/assets/images/choose/youngwoman.png";
 
 import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
+import ProgressBar from "../../../ui/ProgressBar";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 type SelectedRole = "parent" | "child" | null;
 
 export default function ChoosePage() {
   const [selectedRole, setSelectedRole] = useState<SelectedRole>(null);
+  const setStore = useOnboardingStore((s) => s.set);
+
+  useEffect(() => {
+    setStore({ step: 1 });
+  }, [setStore]);
 
   const { submit, isPending, error } = useChooseRoleAction({
     onSuccess: (result) => {
@@ -33,6 +40,7 @@ export default function ChoosePage() {
 
   return (
     <View style={styles.container}>
+      <ProgressBar current={1} total={4} />
       <Text style={styles.title}>어떤 분이 효잇을 사용하시나요?</Text>
         <View style={styles.index}>
           <Pressable
@@ -104,6 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BG,
     paddingHorizontal: 24,
+    paddingTop: 110,
     alignItems: "center",
   },
   title: {

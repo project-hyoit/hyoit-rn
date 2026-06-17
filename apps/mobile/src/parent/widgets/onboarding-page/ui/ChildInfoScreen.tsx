@@ -1,6 +1,6 @@
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Platform,
   Pressable,
@@ -9,15 +9,21 @@ import {
   TextInput,
   View,
 } from "react-native";
+import ProgressBar from "@/src/ui/ProgressBar";
 
 export default function ChildInfoScreen() {
   const { name, set } = useOnboardingStore();
+  const setStore = useOnboardingStore((s) => s.set);
+  useEffect(() => {
+    setStore({ step: 2 });
+  }, [setStore]);
   const canNext = Boolean(name.trim());
   const [isFocused, setIsFocused] = useState(false);
 
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={2} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         안녕하세요!{"\n"}성함을 알려주세요
       </Text>
@@ -81,6 +87,7 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.bg,
     paddingHorizontal: 24,
+    paddingTop: 110,
   },
   title: {
     fontSize: 27,

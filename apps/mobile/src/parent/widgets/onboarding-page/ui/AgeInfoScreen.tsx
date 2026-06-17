@@ -9,6 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
 
 const MIN_AGE = 1;
 const MAX_AGE = 100;
@@ -36,6 +37,10 @@ export default function AgeInfoScreen() {
   }, [age, set]);
 
   useEffect(() => {
+    set({ step: 2 });
+  }, [set]);
+
+  useEffect(() => {
     set({ age: String(selectedAge) });
   }, [selectedAge, set]);
 
@@ -52,6 +57,7 @@ export default function AgeInfoScreen() {
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={2} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         이번에는{"\n"}연세를 알려주세요!
       </Text>
@@ -127,6 +133,7 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.bg,
     paddingHorizontal: 24,
+    paddingTop: 110,
   },
   title: {
     fontSize: 27,
