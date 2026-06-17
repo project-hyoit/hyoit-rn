@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform,
 } from "react-native";
 
 export default function VerifyCodeScreen() {
@@ -80,9 +81,15 @@ export default function VerifyCodeScreen() {
         </Pressable>
       </View>
 
-      <Pressable style={s.primaryButton} onPress={handleNext}>
-        <Text style={s.primaryButtonText}>다음</Text>
-      </Pressable>
+      <View style={s.nextRow}>
+        <Pressable
+          style={({ pressed }) => [s.next, pressed && { opacity: 0.9 }]}
+          onPress={handleNext}
+          hitSlop={8}
+        >
+          <Text style={s.nextText}>다음</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -260,18 +267,32 @@ const s = StyleSheet.create({
     color: COLORS.primary,
     fontWeight: "600",
   },
-  primaryButton: {
-    backgroundColor: COLORS.primary,
-    marginTop: 24,
-    marginBottom: 58,
-    paddingVertical: 14,
-    borderRadius: 14,
+  nextRow: {
+    marginTop: "auto",
+    alignItems: "flex-end",
+    marginBottom: 64,
+  },
+  next: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    paddingVertical: 15,
+    width: "100%",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: { elevation: 2 },
+    }),
   },
-  primaryButtonText: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#FFFFFF",
+  nextText: {
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "500",
   },
 });
