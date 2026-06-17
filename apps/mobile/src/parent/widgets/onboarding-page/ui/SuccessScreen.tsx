@@ -18,11 +18,11 @@ export default function SuccessScreen() {
   return (
     <View style={s.wrap}>
       <Text style={s.title} allowFontScaling={false}>
-        자녀 분과 연결이{"\n"}완료되었어요
+        연결이 완료되었어요!
       </Text>
 
       <Text style={s.cardTitle} allowFontScaling={false}>
-        연결된 자녀분
+        이제 자녀와 가볍게 안부를 주고받을 수 있어요.
       </Text>
       <View style={s.card}>
           <Image source={mainProfileImg} style={s.avatar} />

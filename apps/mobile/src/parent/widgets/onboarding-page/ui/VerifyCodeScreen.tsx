@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -9,15 +9,47 @@ import {
 
 export default function VerifyCodeScreen() {
   const myCode = "927582";
-  const [showConfirm, setShowConfirm] = useState(false);
 
-  const openModal = () => {
-    setShowConfirm(true);
+  const INITIAL = 180; // 3 minutes in seconds
+  const [remaining, setRemaining] = useState(INITIAL);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const startTimer = () => {
+    setRemaining(INITIAL);
+    if (timerRef.current) clearInterval(timerRef.current as any);
+    timerRef.current = setInterval(() => {
+      setRemaining((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current as any);
+          timerRef.current = null;
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
   };
 
-  const closeModal = () => {
-    setShowConfirm(false);
+  useEffect(() => {
+    startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current as any);
+    };
+  }, []);
+
+  const formatTime = (sec: number) => {
+    const m = Math.floor(sec / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
   };
+
+  const handleResendSmall = () => {
+    // TODO: call resend API
+    startTimer();
+  };
+
+  const handleNext = () => router.push("/(parent)/onboarding/success");
 
   return (
     <View style={s.wrap}>
@@ -41,45 +73,16 @@ export default function VerifyCodeScreen() {
         <Text style={s.explanation}>자녀분 핸드폰을 통해 인증번호를 입력해주세요</Text>
       </View>
 
-      <View style={{ marginTop: 12, alignItems: "flex-end" }}>
-        <Pressable onPress={openModal} style={s.modalButton}>
-          <Text style={s.modalButtonText}>모달 확인</Text>
+      <View style={s.timerRow}>
+        <Text style={s.timerText}>{formatTime(remaining)}</Text>
+        <Pressable onPress={handleResendSmall} hitSlop={8}>
+          <Text style={s.resendSmall}>다시받기</Text>
         </Pressable>
       </View>
 
-      <View style={s.recertification}>
-        <Text style={s.recertificationText}>인증번호 다시 받기</Text>
-      </View>
-
-      {showConfirm && (
-        <View style={s.overlay}>
-          <Pressable 
-            style={StyleSheet.absoluteFill} 
-            onPress={closeModal} 
-          />
-          <View style={s.bottomSheet}>
-            <Text style={s.sheetTitle}>자녀분이 맞으신가요?</Text>
-            <View style={s.userCard}>
-              <View style={s.surnameCircle}>
-                <Text style={s.surnameText}>김</Text>
-              </View>
-              <Text style={s.name}>김유찬</Text>
-              <Text style={s.phone}>010-4610-3405</Text>
-            </View>
-            <View style={s.row}>
-              <Pressable style={s.cancelButton} onPress={closeModal}>
-                <Text style={s.cancel}>아니요</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => router.push("/(parent)/onboarding/success")}
-                style={s.okButton}
-              >
-                <Text style={s.ok}>맞아요</Text>
-              </Pressable>
-            </View>
-          </View>
-        </View>
-      )}
+      <Pressable style={s.primaryButton} onPress={handleNext}>
+        <Text style={s.primaryButtonText}>다음</Text>
+      </Pressable>
     </View>
   );
 }
@@ -241,5 +244,34 @@ const s = StyleSheet.create({
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
+  },
+  timerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 12,
+  },
+  timerText: {
+    fontSize: 14,
+    color: "rgba(0,0,0,0.6)",
+  },
+  resendSmall: {
+    fontSize: 14,
+    color: COLORS.primary,
+    fontWeight: "600",
+  },
+  primaryButton: {
+    backgroundColor: COLORS.primary,
+    marginTop: 24,
+    marginBottom: 58,
+    paddingVertical: 14,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  primaryButtonText: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#FFFFFF",
   },
 });
