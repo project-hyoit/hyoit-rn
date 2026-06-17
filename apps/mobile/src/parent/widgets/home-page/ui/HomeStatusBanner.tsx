@@ -67,46 +67,46 @@ export default function HomeStatusBanner({
 const s = StyleSheet.create({
   container: {
     position: "relative",
-    height: 392,
+    height: 316,
     borderRadius: 14,
     borderWidth: 1,
-    paddingTop: 36,
-    paddingLeft: 26,
-    paddingRight: 20,
+    paddingTop: 30,
+    paddingLeft: 24,
+    paddingRight: 18,
     overflow: "hidden",
   },
 
   textArea: {
-    width: "58%",
+    width: "56%",
     zIndex: 2,
   },
 
   label: {
-    marginBottom: 8,
-    fontSize: 14,
-    lineHeight: 18,
+    marginBottom: 6,
+    fontSize: 13,
+    lineHeight: 17,
     fontWeight: "900",
   },
 
   title: {
-    fontSize: 32,
-    lineHeight: 44,
+    fontSize: 28,
+    lineHeight: 38,
     fontWeight: "900",
-    letterSpacing: -0.8,
+    letterSpacing: -0.7,
   },
 
   description: {
-    marginTop: 11,
-    fontSize: 18,
-    lineHeight: 26,
+    marginTop: 10,
+    fontSize: 16,
+    lineHeight: 23,
     fontWeight: "800",
     letterSpacing: -0.3,
   },
 
   cta: {
-    marginTop: 33,
-    fontSize: 19,
-    lineHeight: 25,
+    marginTop: 28,
+    fontSize: 17,
+    lineHeight: 23,
     fontWeight: "900",
     letterSpacing: -0.3,
   },
@@ -114,20 +114,21 @@ const s = StyleSheet.create({
   characterArea: {
     position: "absolute",
     right: 8,
-    bottom: 18,
-    width: 240,
-    height: 245,
+    bottom: 20,
+    width: 210,
+    height: 210,
     alignItems: "center",
     justifyContent: "flex-end",
   },
 
   bubble: {
     position: "absolute",
-    top: 18,
-    left: 24,
-    width: 54,
-    height: 54,
-    borderRadius: 27,
+    top: 24,
+    left: 28,
+    zIndex: 2,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
@@ -139,27 +140,27 @@ const s = StyleSheet.create({
   },
 
   bubbleText: {
-    fontSize: 26,
+    fontSize: 24,
   },
 
   characterPlaceholder: {
-    width: 185,
-    height: 185,
-    borderRadius: 92.5,
+    width: 142,
+    height: 142,
+    borderRadius: 71,
     backgroundColor: "rgba(255, 255, 255, 0.72)",
     alignItems: "center",
     justifyContent: "center",
   },
 
   characterText: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: "900",
     color: "#6AA9FF",
   },
 
   badge: {
     position: "absolute",
-    top: -14,
+    top: -12,
     right: -10,
     zIndex: 4,
     width: 54,
