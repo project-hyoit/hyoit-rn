@@ -9,8 +9,6 @@ import {
 } from "react-native";
 
 export default function VerifyCodeScreen() {
-  const correctCode = "927582"; // 부모가 발송한 코드
-
   // 6자리 인증코드 입력 상태
   const [codeInputs, setCodeInputs] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(TextInput | null)[]>([null, null, null, null, null, null]);
@@ -34,11 +32,11 @@ export default function VerifyCodeScreen() {
       router.replace("/(child)/onboarding/fail");
       return;
     }
-    if (fullCode === correctCode) {
-      router.push("/(child)/onboarding/success");
-    } else {
-      router.replace("/(child)/onboarding/fail");
-    }
+    // 로딩 페이지로 이동하여 코드 검증
+    router.push({
+      pathname: "/(child)/onboarding/verify-loading",
+      params: { codeInput: fullCode },
+    });
   }, [codeInputs]);
 
   const handleCodeBackspace = useCallback((index: number) => {
