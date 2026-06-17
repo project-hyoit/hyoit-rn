@@ -1,61 +1,54 @@
 import { router } from "expo-router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   Pressable,
   StyleSheet,
   Text,
   View,
-  Platform,
+  TextInput,
 } from "react-native";
 
 export default function VerifyCodeScreen() {
-  const myCode = "927582";
+  const correctCode = "927582"; // 부모가 발송한 코드
 
-  const INITIAL = 180; // 3 minutes
-  const [remaining, setRemaining] = useState(INITIAL);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // 6자리 인증코드 입력 상태
+  const [codeInputs, setCodeInputs] = useState(["", "", "", "", "", ""]);
+  const inputRefs = useRef<(TextInput | null)[]>([null, null, null, null, null, null]);
 
-  const handleTimeout = useCallback(() => {
-    router.replace("/(child)/onboarding/fail");
-  }, []);
+  const handleCodeInput = useCallback((text: string, index: number) => {
+    // 숫자만 허용하고 1자리만 입력
+    const digit = text.replace(/[^0-9]/g, "").slice(0, 1);
+    const newInputs = [...codeInputs];
+    newInputs[index] = digit;
+    setCodeInputs(newInputs);
 
-  const startTimer = useCallback(() => {
-    setRemaining(INITIAL);
-    if (timerRef.current) clearInterval(timerRef.current as any);
-    timerRef.current = setInterval(() => {
-      setRemaining((prev) => {
-        if (prev <= 1) {
-          if (timerRef.current) clearInterval(timerRef.current as any);
-          timerRef.current = null;
-          handleTimeout();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  }, [handleTimeout]);
+    // 숫자 입력 시 다음 필드로 자동 이동
+    if (digit && index < 5) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  }, [codeInputs]);
 
-  useEffect(() => {
-    startTimer();
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current as any);
-    };
-  }, [startTimer]);
+  const handleVerifyCode = useCallback(() => {
+    const fullCode = codeInputs.join("");
+    if (fullCode.length !== 6) {
+      router.replace("/(child)/onboarding/fail");
+      return;
+    }
+    if (fullCode === correctCode) {
+      router.push("/(child)/onboarding/success");
+    } else {
+      router.replace("/(child)/onboarding/fail");
+    }
+  }, [codeInputs]);
 
-  const formatTime = (sec: number) => {
-    const m = Math.floor(sec / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = (sec % 60).toString().padStart(2, "0");
-    return `${m}:${s}`;
-  };
-
-  const handleResendSmall = () => {
-    // TODO: call resend API
-    startTimer();
-  };
-
-  const handleNext = () => router.push("/(child)/onboarding/success");
+  const handleCodeBackspace = useCallback((index: number) => {
+    const newInputs = [...codeInputs];
+    if (!newInputs[index] && index > 0) {
+      inputRefs.current[index - 1]?.focus();
+    }
+    newInputs[index] = "";
+    setCodeInputs(newInputs);
+  }, [codeInputs]);
 
   return (
     <View style={s.wrap}>
@@ -65,34 +58,41 @@ export default function VerifyCodeScreen() {
 
       <View style={s.myCodeCard}>
         <Text style={s.myCodeLabel} allowFontScaling={false}>
-          내 인증 번호
+          인증 번호 입력
         </Text>
-        <View style={s.codeRow}>
-          {myCode.split("").map((num, index) => (
-            <View key={index} style={s.codeBox}>
-              <Text style={s.codeText} allowFontScaling={false}>
-                {num}
-              </Text>
-            </View>
+        <View style={s.codeInputRow}>
+          {codeInputs.map((val, idx) => (
+            <TextInput
+              key={idx}
+              ref={(ref) => {
+                inputRefs.current[idx] = ref;
+              }}
+              style={s.codeInput}
+              value={val}
+              onChangeText={(text) => handleCodeInput(text, idx)}
+              onKeyPress={({ nativeEvent }) => {
+                if (nativeEvent.key === "Backspace") {
+                  handleCodeBackspace(idx);
+                }
+              }}
+              keyboardType="number-pad"
+              maxLength={1}
+              selectionColor="#1E90FF"
+              allowFontScaling={false}
+              caretHidden={true}
+            />
           ))}
         </View>
         <Text style={s.explanation}>부모님 핸드폰을 통해 인증번호를 입력해주세요</Text>
       </View>
 
-      <View style={s.timerRow}>
-        <Text style={s.timerText}>{formatTime(remaining)}</Text>
-        <Pressable onPress={handleResendSmall} hitSlop={8}>
-          <Text style={s.resendSmall}>다시받기</Text>
-        </Pressable>
-      </View>
-
       <View style={s.nextRow}>
         <Pressable
           style={({ pressed }) => [s.next, pressed && { opacity: 0.9 }]}
-          onPress={handleNext}
+          onPress={handleVerifyCode}
           hitSlop={8}
         >
-          <Text style={s.nextText}>다음</Text>
+          <Text style={s.nextText}>확인</Text>
         </Pressable>
       </View>
     </View>
@@ -128,22 +128,21 @@ const s = StyleSheet.create({
     gap: 20,
   },
   myCodeLabel: { fontSize: 16, color: COLORS.text, fontWeight: "600" },
-  codeRow: {
+  codeInputRow: {
     flexDirection: "row",
     gap: 8,
     marginTop: 5,
+    justifyContent: "center",
   },
-  codeBox: {
-    width: 40,
-    height: 48,
+  codeInput: {
+    width: 50,
+    height: 56,
     backgroundColor: "#E9E9E9",
     borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  codeText: {
-    fontSize: 32,
+    textAlign: "center",
+    fontSize: 28,
     fontWeight: "700",
+    color: COLORS.text,
   },
   explanation: {
     fontSize: 14,
@@ -285,15 +284,6 @@ const s = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 15,
     width: "100%",
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOpacity: 0.08,
-        shadowRadius: 8,
-        shadowOffset: { width: 0, height: 2 },
-      },
-      android: { elevation: 2 },
-    }),
   },
   nextText: {
     color: "#fff",

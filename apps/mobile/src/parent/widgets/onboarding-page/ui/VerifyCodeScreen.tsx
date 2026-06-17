@@ -55,7 +55,14 @@ export default function VerifyCodeScreen() {
     startTimer();
   };
 
-  const handleNext = () => router.push("/(parent)/onboarding/success");
+  const handleNext = () => {
+    // remaining이 0 이상이면(시간 내에) success로 이동, 아니면 fail로 이동
+    if (remaining > 0) {
+      router.push("/(parent)/onboarding/success");
+    } else {
+      router.replace("/(parent)/onboarding/fail");
+    }
+  };
 
   return (
     <View style={s.wrap}>
