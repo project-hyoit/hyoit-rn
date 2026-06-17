@@ -26,6 +26,7 @@ export default function HomeCardGrid({
             ctaLabel="확인하기"
             backgroundColor="#FFF7DC"
             ctaColor="#7A5A00"
+            visual="🌤️"
             onPress={onPressWeather}
           />
         </View>
@@ -38,6 +39,7 @@ export default function HomeCardGrid({
             ctaLabel="확인하기"
             backgroundColor="#F3EEFF"
             ctaColor="#6D45C7"
+            visual="💌"
             badgeCount={2}
             onPress={onPressRecentGreeting}
           />
@@ -53,6 +55,7 @@ export default function HomeCardGrid({
             ctaLabel="시작하기"
             backgroundColor="#EFFFF4"
             ctaColor="#25874E"
+            visual="🎴"
             onPress={onPressGame}
           />
         </View>
@@ -65,6 +68,7 @@ export default function HomeCardGrid({
             ctaLabel="바로가기"
             backgroundColor="#FFF0E8"
             ctaColor="#EF6A2E"
+            visual="🎧"
             onPress={onPressHelp}
           />
         </View>

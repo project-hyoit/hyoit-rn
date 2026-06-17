@@ -1,5 +1,7 @@
 import { SymbolView } from "expo-symbols";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+
+import HyoitLogo from "../../../assets/login/hyoit_logo_home.png";
 
 type HomeHeaderProps = {
   name: string;
@@ -17,7 +19,9 @@ export default function HomeHeader({
   return (
     <View style={s.container}>
       <View style={s.topRow}>
-        <Text style={s.logo}>효잇</Text>
+        <View style={s.logoBox}>
+          <Image source={HyoitLogo} style={s.logoImage} resizeMode="contain" />
+        </View>
 
         <View style={s.iconRow}>
           <Pressable style={s.iconButton} onPress={onPressNotification}>
@@ -25,7 +29,7 @@ export default function HomeHeader({
 
             <SymbolView
               name="bell"
-              size={24}
+              size={22}
               tintColor="#4A4A4A"
               fallback="🔔"
             />
@@ -34,7 +38,7 @@ export default function HomeHeader({
           <Pressable style={s.iconButton} onPress={onPressSetting}>
             <SymbolView
               name="gearshape"
-              size={24}
+              size={22}
               tintColor="#4A4A4A"
               fallback="⚙️"
             />
@@ -52,32 +56,40 @@ export default function HomeHeader({
 
 const s = StyleSheet.create({
   container: {
-    gap: 18,
+    paddingTop: 14,
+    marginBottom: 2,
   },
 
   topRow: {
+    height: 54,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
 
-  logo: {
-    fontSize: 34,
-    lineHeight: 40,
-    fontWeight: "900",
-    color: "#6AA9FF",
+  logoBox: {
+    width: 82,
+    height: 44,
+    justifyContent: "center",
+    alignItems: "flex-start",
+  },
+
+  logoImage: {
+    width: 72,
+    height: 42,
   },
 
   iconRow: {
     flexDirection: "row",
+    alignItems: "center",
     gap: 12,
   },
 
   iconButton: {
     position: "relative",
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
@@ -90,8 +102,8 @@ const s = StyleSheet.create({
 
   notificationDot: {
     position: "absolute",
-    top: 9,
-    right: 11,
+    top: 8,
+    right: 10,
     zIndex: 2,
     width: 8,
     height: 8,
@@ -100,21 +112,23 @@ const s = StyleSheet.create({
   },
 
   titleArea: {
-    gap: 8,
+    marginTop: 18,
+    gap: 6,
   },
 
   title: {
-    fontSize: 30,
-    lineHeight: 38,
+    fontSize: 31,
+    lineHeight: 40,
     fontWeight: "900",
     color: "#050505",
-    letterSpacing: -0.6,
+    letterSpacing: -0.9,
   },
 
   subtitle: {
     fontSize: 18,
     lineHeight: 25,
     fontWeight: "800",
-    color: "#888888",
+    color: "#8A8A8A",
+    letterSpacing: -0.2,
   },
 });

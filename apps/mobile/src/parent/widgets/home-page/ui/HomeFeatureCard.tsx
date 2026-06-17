@@ -9,6 +9,7 @@ type HomeFeatureCardProps = {
   image?: ImageSourcePropType;
   backgroundColor: string;
   ctaColor: string;
+  visual?: string;
   badgeCount?: number;
   onPress: () => void;
 };
@@ -21,6 +22,7 @@ export default function HomeFeatureCard({
   image,
   backgroundColor,
   ctaColor,
+  visual,
   badgeCount,
   onPress,
 }: HomeFeatureCardProps) {
@@ -55,7 +57,7 @@ export default function HomeFeatureCard({
         {image ? (
           <Image source={image} style={s.image} resizeMode="contain" />
         ) : (
-          <View style={s.placeholder} />
+          <Text style={s.visualText}>{visual}</Text>
         )}
       </View>
     </Pressable>
@@ -65,9 +67,12 @@ export default function HomeFeatureCard({
 const s = StyleSheet.create({
   container: {
     position: "relative",
-    minHeight: 168,
+    height: 178,
     borderRadius: 20,
-    padding: 18,
+    paddingTop: 18,
+    paddingLeft: 18,
+    paddingRight: 14,
+    paddingBottom: 14,
     overflow: "hidden",
   },
 
@@ -79,7 +84,8 @@ const s = StyleSheet.create({
     fontSize: 15,
     lineHeight: 20,
     fontWeight: "900",
-    color: "#6B6B6B",
+    color: "#666666",
+    letterSpacing: -0.2,
   },
 
   title: {
@@ -88,20 +94,21 @@ const s = StyleSheet.create({
     lineHeight: 27,
     fontWeight: "900",
     color: "#111111",
-    letterSpacing: -0.3,
+    letterSpacing: -0.4,
   },
 
   description: {
     marginTop: 8,
     fontSize: 14,
-    lineHeight: 20,
+    lineHeight: 19,
     fontWeight: "700",
-    color: "#7B7B7B",
+    color: "#777777",
+    letterSpacing: -0.2,
   },
 
   cta: {
     alignSelf: "flex-start",
-    marginTop: 14,
+    marginTop: 13,
     minHeight: 30,
     paddingHorizontal: 10,
     borderRadius: 10,
@@ -109,7 +116,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
+    backgroundColor: "rgba(255, 255, 255, 0.65)",
   },
 
   ctaText: {
@@ -120,10 +127,12 @@ const s = StyleSheet.create({
 
   visualArea: {
     position: "absolute",
-    right: 8,
-    bottom: 8,
-    width: 86,
-    height: 86,
+    right: 12,
+    bottom: 14,
+    width: 92,
+    height: 92,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   image: {
@@ -131,21 +140,19 @@ const s = StyleSheet.create({
     height: "100%",
   },
 
-  placeholder: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 24,
-    backgroundColor: "rgba(255, 255, 255, 0.55)",
+  visualText: {
+    fontSize: 58,
+    lineHeight: 70,
   },
 
   badge: {
     position: "absolute",
-    top: -8,
-    right: -2,
+    top: -3,
+    right: -3,
     zIndex: 3,
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     backgroundColor: "#1478FF",
     alignItems: "center",
     justifyContent: "center",
@@ -153,6 +160,7 @@ const s = StyleSheet.create({
 
   badgeText: {
     fontSize: 16,
+    lineHeight: 20,
     fontWeight: "900",
     color: "#FFFFFF",
   },

@@ -60,9 +60,9 @@ const s = StyleSheet.create({
   },
 
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     paddingTop: 22,
-    paddingBottom: 128,
-    gap: 16,
+    paddingBottom: 132,
+    gap: 14,
   },
 });

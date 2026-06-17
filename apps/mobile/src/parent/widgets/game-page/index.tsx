@@ -3,8 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Header from "../../shared/ui/section/header";
-import { MemoryGameCard } from "../home-page/ui";
-
+import { GameEntryCard } from "./memory/ui";
 export default function GamePage() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
@@ -14,7 +13,7 @@ export default function GamePage() {
       >
         <Header title="게임" icon="gamecontroller.fill" />
 
-        <MemoryGameCard
+        <GameEntryCard
           title="카드 맞추기"
           body={
             "같은 모양의 카드쌍의 위치를 기억해서\n알맞은 카드끼리 뒤집으세요"

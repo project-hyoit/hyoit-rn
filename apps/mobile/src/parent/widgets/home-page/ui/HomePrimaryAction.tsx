@@ -14,7 +14,7 @@ export default function HomePrimaryAction({
     <Pressable style={s.container} onPress={onPress}>
       <SymbolView
         name="paperplane.fill"
-        size={26}
+        size={30}
         tintColor="#FFFFFF"
         fallback="✈️"
       />
@@ -23,7 +23,7 @@ export default function HomePrimaryAction({
 
       <SymbolView
         name="chevron.right"
-        size={24}
+        size={26}
         tintColor="#FFFFFF"
         fallback="›"
       />
@@ -33,22 +33,28 @@ export default function HomePrimaryAction({
 
 const s = StyleSheet.create({
   container: {
-    height: 64,
+    height: 63,
     borderRadius: 16,
     backgroundColor: "#0A84FF",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 14,
-    paddingHorizontal: 20,
+    paddingHorizontal: 18,
+    shadowColor: "#1478FF",
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 3,
   },
 
   label: {
     flex: 1,
     textAlign: "center",
     fontSize: 22,
-    lineHeight: 28,
+    lineHeight: 29,
     fontWeight: "900",
     color: "#FFFFFF",
+    letterSpacing: -0.4,
   },
 });
