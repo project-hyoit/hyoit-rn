@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -15,7 +15,11 @@ export default function VerifyCodeScreen() {
   const [remaining, setRemaining] = useState(INITIAL);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const startTimer = () => {
+  const handleTimeout = useCallback(() => {
+    router.replace("/(child)/onboarding/fail");
+  }, []);
+
+  const startTimer = useCallback(() => {
     setRemaining(INITIAL);
     if (timerRef.current) clearInterval(timerRef.current as any);
     timerRef.current = setInterval(() => {
@@ -23,19 +27,20 @@ export default function VerifyCodeScreen() {
         if (prev <= 1) {
           if (timerRef.current) clearInterval(timerRef.current as any);
           timerRef.current = null;
+          handleTimeout();
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-  };
+  }, [handleTimeout]);
 
   useEffect(() => {
     startTimer();
     return () => {
       if (timerRef.current) clearInterval(timerRef.current as any);
     };
-  }, []);
+  }, [startTimer]);
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60)
