@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { IconSymbol } from "@/src/shared/ui";
 
 interface VerifyLoadingScreenProps {
   codeInput?: string;
@@ -49,17 +50,22 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
     <View style={s.wrap}>
       <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        인증 정보를 확인하고 있어요
+        자녀 정보를 확인하고 있어요
+      </Text>
+      <Text style={s.subtitle} allowFontScaling={false}>
+        잠시만 기달려주세요
       </Text>
 
       <View style={s.loadingContainer}>
         <Animated.View style={[s.ring, { transform: [{ rotate: spin }] }]} />
-        <Animated.View style={[s.innerDot, { transform: [{ scale }] }]} />
       </View>
 
       <View style={s.messageBox}>
+        <View style={s.messageIconWrap}>
+          <IconSymbol name="checkmark" size={18} color="#1E90FF" />
+        </View>
         <Text style={s.message} allowFontScaling={false}>
-          연결 정보를 생성하고 있어요.
+          입력한 연결번호를 확인 중이에요.
         </Text>
       </View>
     </View>
@@ -72,16 +78,21 @@ const s = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 24,
     paddingTop: 120,
-    justifyContent: "center",
-    alignItems: "center",
   },
   title: {
     fontSize: 24,
     lineHeight: 36,
     color: "#000000",
     fontWeight: "600",
+    marginBottom: 20,
+    textAlign: "left",
+    alignSelf: "stretch",
+  },
+  subtitle: {
+    fontSize: 14,
+    lineHeight: 25,
+    color: "#000000",
     marginBottom: 60,
-    textAlign: "center",
   },
   loadingContainer: {
     marginVertical: 40,
@@ -98,14 +109,7 @@ const s = StyleSheet.create({
     borderTopColor: "#1E90FF",
     marginBottom: 12,
   },
-  innerDot: {
-    position: "absolute",
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#1E90FF",
-    top: 52,
-  },
+
   messageBox: {
     backgroundColor: "#F0F6FF",
     borderRadius: 12,
@@ -115,6 +119,16 @@ const s = StyleSheet.create({
     alignItems: "center",
     gap: 12,
     marginTop: 40,
+  },
+  messageIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#1E90FF",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
   },
   message: {
     fontSize: 14,

@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { IconSymbol } from "@/src/shared/ui";
 
 interface VerifyLoadingScreenProps {
   codeInput: string;
@@ -61,10 +62,12 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
 
       <View style={s.loadingContainer}>
         <Animated.View style={[s.ring, { transform: [{ rotate: spin }] }]} />
-        <Animated.View style={[s.innerDot, { transform: [{ scale }] }]} />
       </View>
 
       <View style={s.messageBox}>
+        <View style={s.messageIconWrap}>
+          <IconSymbol name="checkmark" size={18} color="#1E90FF" />
+        </View>
         <Text style={s.message} allowFontScaling={false}>
           입력한 인증번호를 확인 중이에요.
         </Text>
@@ -105,14 +108,7 @@ const s = StyleSheet.create({
     borderTopColor: "#1E90FF",
     marginBottom: 12,
   },
-  innerDot: {
-    position: "absolute",
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: "#1E90FF",
-    top: 52,
-  },
+
   messageBox: {
     backgroundColor: "#F0F6FF",
     borderRadius: 12,
@@ -123,10 +119,15 @@ const s = StyleSheet.create({
     gap: 12,
     marginTop: 40,
   },
-  checkmark: {
-    fontSize: 24,
-    color: "#1E90FF",
-    fontWeight: "600",
+  messageIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#1E90FF",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
   },
   message: {
     fontSize: 14,
