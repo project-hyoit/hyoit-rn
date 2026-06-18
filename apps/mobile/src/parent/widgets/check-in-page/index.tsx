@@ -1,23 +1,91 @@
-import { StyleSheet, Text, View } from "react-native";
+import { useMemo, useState } from "react";
+import { ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function CheckInPage() {
+import {
+  mapCheckInToViewItem,
+  mockCheckInRawItems,
+  type CheckInItem,
+  type CheckInRawItem,
+} from "@/src/shared/entities/check-in";
+
+import {
+  ParentCheckInHeader,
+  ParentCheckInHistorySection,
+  ParentCheckInQuickActionSection,
+  ParentCheckInStatusBanner,
+} from "./ui";
+
+export default function ParentCheckInPage() {
+  const [rawItems, setRawItems] =
+    useState<CheckInRawItem[]>(mockCheckInRawItems);
+
+  const items = useMemo(
+    () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
+    [rawItems]
+  );
+
+  const latestItem = items[0] ?? null;
+
+  const handleSendCheckIn = (message: string) => {
+    const newItem: CheckInRawItem = {
+      id: String(Date.now()),
+      senderRole: "parent",
+      receiverRole: "child",
+      message,
+      type: "QUESTION",
+      createdAt: new Date().toISOString(),
+    };
+
+    setRawItems((prev) => [newItem, ...prev]);
+  };
+
+  const handleConfirmCheckIn = (item: CheckInItem) => {
+    if (item.direction !== "RECEIVED") return;
+
+    setRawItems((prev) =>
+      prev.map((rawItem) =>
+        rawItem.id === item.id
+          ? {
+              ...rawItem,
+              checkedAt: new Date().toISOString(),
+            }
+          : rawItem
+      )
+    );
+  };
+
   return (
-    <View style={s.container}>
-      <Text style={s.title}>안부</Text>
-    </View>
+    <SafeAreaView style={s.safeArea} edges={["top"]}>
+      <ScrollView
+        contentContainerStyle={s.container}
+        showsVerticalScrollIndicator={false}
+      >
+        <ParentCheckInHeader />
+
+        <ParentCheckInStatusBanner
+          latestItem={latestItem}
+          onConfirm={handleConfirmCheckIn}
+        />
+
+        <ParentCheckInHistorySection items={items} />
+
+        <ParentCheckInQuickActionSection onSend={handleSendCheckIn} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
     backgroundColor: "#F8F8F8",
-    padding: 24,
   },
 
-  title: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#111111",
+  container: {
+    paddingHorizontal: 24,
+    paddingTop: 18,
+    paddingBottom: 132,
+    gap: 16,
   },
 });
