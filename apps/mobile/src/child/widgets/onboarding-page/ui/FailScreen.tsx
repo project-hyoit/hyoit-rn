@@ -21,13 +21,23 @@ export default function FailScreen() {
       </Text>
 
       <Text style={s.description} allowFontScaling={false}>
-        인증 시간이 모두 지나가거나 인증에 실패했어요.
+        입력한 연결번호를 다시 확인한 뒤{"\n"}한번 더 시도해주세요.
       </Text>
 
       <View style={s.iconWrap}>
         <IconSymbol name="xmark" size={68} color="#FFFFFF" style={s.icon} />
       </View>
-
+      <View style={s.infoContainer}>
+        <Text style={s.infoTitle}>확인 내용</Text>
+        <Text style={s.infoSubtitle}>인증 정보를 확인할 수 없어요</Text>
+        <Text style={s.infoDescription}>인증 시간이 모두 지나가거나 입력된 정보가 일치하지 않을 수 있어요.</Text>
+      </View>
+      <View style={s.warningContainer}>
+        <View style={s.warningIcon}>
+          <IconSymbol name="exclamationmark" size={20} color="#FFFFFF" />
+        </View>
+        <Text style={s.warningText}>다시 시도하면 인증을 다시 시도할 수 있어요.</Text>
+      </View>
       <Pressable
         onPress={() => {
           setChildOnboarded(false);
@@ -58,20 +68,72 @@ const s = StyleSheet.create({
     marginBottom: 32,
   },
   description: {
-    fontSize: 16,
-    color: "#454545",
-    lineHeight: 28,
-    marginBottom: 40,
+    fontSize: 14,
+    opacity: 0.7,
+    lineHeight: 25,
+    fontWeight: "600",
   },
   iconWrap: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: "#5F96F6",
+    backgroundColor: "#FF6B63",
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 16,
+    marginTop: 56,
+  },
+  infoContainer: {
+    marginTop: 40,
+    padding: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    marginBottom: 20,
+  },
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#504E51",
+    marginBottom: 8,
+  },
+  infoSubtitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#000000",
+    marginBottom: 8,
+  },
+  infoDescription: {
+    fontSize: 14,
+    color: "#504E51",
+    lineHeight: 22,
+    fontWeight: "600",
+  },
+  warningContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#FFE8E8",
+    borderRadius: 12,
+    marginBottom: 24,
+    gap: 12,
+  },
+  warningIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "#FF6760",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+  warningText: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#454545",
+    lineHeight: 22,
   },
   icon: {
     width: 68,
