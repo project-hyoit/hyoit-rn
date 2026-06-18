@@ -1,6 +1,6 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
@@ -23,6 +23,10 @@ export default function FailScreen() {
       <Text style={s.description} allowFontScaling={false}>
         입력한 연결번호를 다시 확인한 뒤{"\n"}한번 더 시도해주세요.
       </Text>
+
+      <View style={s.iconWrap}>
+        <Image source={require("@/assets/images/fail-x.png")} style={s.icon} />
+      </View>
 
       <Pressable
         onPress={() => {
@@ -58,6 +62,21 @@ const s = StyleSheet.create({
     opacity: 0.7,
     lineHeight: 25,
     fontWeight: "600",
+  },
+  iconWrap: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#FF6B63",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 56,
+  },
+  icon: {
+    width: 68,
+    height: 68,
+    resizeMode: "contain",
   },
   primaryBtn: {
     marginTop: "auto",

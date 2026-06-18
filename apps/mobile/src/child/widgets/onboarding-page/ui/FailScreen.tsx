@@ -1,6 +1,6 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
@@ -22,6 +22,10 @@ export default function FailScreen() {
       <Text style={s.description} allowFontScaling={false}>
         인증 시간이 모두 지나가거나 인증에 실패했어요.
       </Text>
+
+      <View style={s.iconWrap}>
+        <Image source={require("@/assets/images/fail-x.png")} style={s.icon} />
+      </View>
 
       <Pressable
         onPress={() => {
@@ -57,6 +61,21 @@ const s = StyleSheet.create({
     color: "#454545",
     lineHeight: 28,
     marginBottom: 40,
+  },
+  iconWrap: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#5F96F6",
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  icon: {
+    width: 68,
+    height: 68,
+    resizeMode: "contain",
   },
   primaryBtn: {
     marginTop: "auto",
