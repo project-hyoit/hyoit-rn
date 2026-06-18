@@ -1,8 +1,6 @@
-import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import {
-  Image,
   Platform,
   Pressable,
   StyleSheet,
@@ -22,7 +20,7 @@ export default function SuccessScreen() {
     setStore({ step: 4 });
   }, [setStore]);
 
-  const child = { name: "김유찬", phone: "010-4610-3405" };
+  const parent = { name: "김봄", phone: "010-4610-3404" };
 
   return (
     <View style={s.wrap}>
@@ -32,7 +30,7 @@ export default function SuccessScreen() {
       </Text>
 
       <Text style={s.description} allowFontScaling={false}>
-        이제 자녀와 가볍게 안부를 주고받을 수 있어요.
+        이제 부모님과 가볍게 안부를 주고받을 수 있어요.
       </Text>
 
       <View style={s.iconWrap}>
@@ -40,7 +38,7 @@ export default function SuccessScreen() {
       </View>
       <View style={s.infoContainer}>
         <Text style={s.infoTitle}>연결된 가족</Text>
-        <Text style={s.infoSubtitle}>{child.name}님</Text>
+        <Text style={s.infoSubtitle}>{parent.name}님</Text>
         <Text style={s.infoDescription}>가족이 정상적으로 등록되었어요.</Text>
       </View>
       <View style={s.warningContainer}>
