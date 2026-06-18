@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 import type { CheckInItem } from "@/src/shared/entities/check-in";
 
@@ -15,7 +15,6 @@ export default function ParentCheckInHistorySection({
     <View style={s.section}>
       <View style={s.headerRow}>
         <Text style={s.sectionTitle}>주고받은 안부 보기</Text>
-        <Text style={s.moreText}>›</Text>
       </View>
 
       <View style={s.listBox}>
@@ -25,11 +24,15 @@ export default function ParentCheckInHistorySection({
             <Text style={s.emptyText}>표시할 안부가 없어요.</Text>
           </View>
         ) : (
-          items
-            .slice(0, 3)
-            .map((item) => (
+          <ScrollView
+            nestedScrollEnabled
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={s.listContent}
+          >
+            {items.map((item) => (
               <ParentCheckInHistoryCard key={item.id} item={item} />
-            ))
+            ))}
+          </ScrollView>
         )}
       </View>
 
@@ -63,21 +66,19 @@ const s = StyleSheet.create({
     color: "#111111",
   },
 
-  moreText: {
-    fontSize: 32,
-    lineHeight: 32,
-    fontWeight: "700",
-    color: "#777777",
-  },
-
   listBox: {
-    minHeight: 218,
+    height: 330,
     borderRadius: 12,
     borderWidth: 1.5,
     borderColor: "#DEDEDE",
     backgroundColor: "#FFFFFF",
     padding: 12,
+    overflow: "hidden",
+  },
+
+  listContent: {
     gap: 10,
+    paddingBottom: 2,
   },
 
   emptyBox: {

@@ -1,14 +1,22 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function ParentCheckInHeader() {
+import { IconSymbol } from "@/src/shared/ui/IconSymbol";
+
+interface ParentCheckInHeaderProps {
+  onPressNotification?: () => void;
+}
+
+export default function ParentCheckInHeader({
+  onPressNotification,
+}: ParentCheckInHeaderProps) {
   return (
     <View style={s.header}>
       <View style={s.placeholder} />
 
       <Text style={s.title}>안부 보내기</Text>
 
-      <Pressable style={s.iconButton} onPress={() => {}}>
-        <Text style={s.iconText}>🔔</Text>
+      <Pressable style={s.iconButton} onPress={onPressNotification}>
+        <IconSymbol name="bell.fill" size={28} color="#555555" />
       </Pressable>
     </View>
   );
@@ -37,9 +45,5 @@ const s = StyleSheet.create({
     height: 36,
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  iconText: {
-    fontSize: 18,
   },
 });

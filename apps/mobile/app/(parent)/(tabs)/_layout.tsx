@@ -1,5 +1,5 @@
-import { IconSymbol } from "@/src/parent/shared/ui/IconSymbol";
 import { BottomTabBar } from "@/src/parent/widgets/layout";
+import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { Tabs } from "expo-router";
 
 const ACTIVE = "#1E90FF";
@@ -33,7 +33,7 @@ export default function ParentTabsLayout() {
           title: "안부",
           tabBarIcon: ({ focused, size }) => (
             <IconSymbol
-              name="message.fill"
+              name="text.bubble.fill"
               size={size}
               color={focused ? ACTIVE : INACTIVE}
             />

@@ -1,5 +1,5 @@
 import mainProfileImg from "@/assets/profileimg/mainprofile.png";
-import { IconSymbol } from "@/src/parent/shared/ui/IconSymbol";
+import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface Props {
