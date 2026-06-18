@@ -6,29 +6,22 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import { IconSymbol } from "@/src/shared/ui";
 
 interface VerifyLoadingScreenProps {
-  codeInput: string;
+  codeInput?: string;
 }
 
 export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenProps) {
-  const correctCode = "927582"; // 부모가 발송한 코드
   const setStore = useOnboardingStore((s) => s.set);
-
   useEffect(() => {
     setStore({ step: 3 });
   }, [setStore]);
-
   useEffect(() => {
-    // 부모 코드 검증 시간 시뮬레이션 (2초)
+    // 부모 측 로딩 (시뮬레이션)
     const timer = setTimeout(() => {
-      if (codeInput === correctCode) {
-        router.replace("/(child)/onboarding/success");
-      } else {
-        router.replace("/(child)/onboarding/fail");
-      }
-    }, 2000);
-
+      router.replace("/(parent)/onboarding/success");
+    }, 1500);
     return () => clearTimeout(timer);
   }, [codeInput]);
+
   const rotate = useRef(new Animated.Value(0)).current;
   const pulse = useRef(new Animated.Value(0)).current;
 
@@ -57,7 +50,10 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
     <View style={s.wrap}>
       <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        부모님 정보를 확인하고{"\n"}있어요
+        부모님 정보를 확인하고 있어요
+      </Text>
+      <Text style={s.subtitle} allowFontScaling={false}>
+        잠시만 기달려주세요
       </Text>
 
       <View style={s.loadingContainer}>
@@ -69,7 +65,7 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
           <IconSymbol name="checkmark" size={18} color="#1E90FF" />
         </View>
         <Text style={s.message} allowFontScaling={false}>
-          입력한 인증번호를 확인 중이에요.
+          입력한 연결번호를 확인 중이에요.
         </Text>
       </View>
     </View>
@@ -82,16 +78,21 @@ const s = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 24,
     paddingTop: 120,
-    justifyContent: "center",
-    alignItems: "center",
   },
   title: {
     fontSize: 24,
     lineHeight: 36,
     color: "#000000",
     fontWeight: "600",
+    marginBottom: 20,
+    textAlign: "left",
+    alignSelf: "stretch",
+  },
+  subtitle: {
+    fontSize: 14,
+    lineHeight: 25,
+    color: "#000000",
     marginBottom: 60,
-    textAlign: "center",
   },
   loadingContainer: {
     marginVertical: 40,
