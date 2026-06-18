@@ -1,5 +1,6 @@
-import { SymbolView } from "expo-symbols";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+
+import { NotificationButton, SettingButton } from "@/src/shared/ui";
 
 import HyoitLogo from "../../../assets/login/hyoit_logo_home.png";
 
@@ -24,25 +25,12 @@ export default function HomeHeader({
         </View>
 
         <View style={s.iconRow}>
-          <Pressable style={s.iconButton} onPress={onPressNotification}>
-            {hasNotification && <View style={s.notificationDot} />}
+          <NotificationButton
+            hasNotification={hasNotification}
+            onPress={onPressNotification}
+          />
 
-            <SymbolView
-              name="bell"
-              size={22}
-              tintColor="#4A4A4A"
-              fallback="🔔"
-            />
-          </Pressable>
-
-          <Pressable style={s.iconButton} onPress={onPressSetting}>
-            <SymbolView
-              name="gearshape"
-              size={22}
-              tintColor="#4A4A4A"
-              fallback="⚙️"
-            />
-          </Pressable>
+          <SettingButton onPress={onPressSetting} />
         </View>
       </View>
 
@@ -61,7 +49,7 @@ const s = StyleSheet.create({
   },
 
   topRow: {
-    height: 54,
+    height: 60,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -83,32 +71,6 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-  },
-
-  iconButton: {
-    position: "relative",
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000000",
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
-  },
-
-  notificationDot: {
-    position: "absolute",
-    top: 8,
-    right: 10,
-    zIndex: 2,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#1478FF",
   },
 
   titleArea: {

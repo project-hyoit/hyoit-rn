@@ -18,7 +18,10 @@ const MAPPING = {
   "paperplane.fill": "send",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
-  "bell.fill": "notifications-none",
+  bell: "notifications-none",
+  "bell.fill": "notifications",
+  gearshape: "settings",
+  "gearshape.fill": "settings",
   "square.fill": "stop",
   pencil: "edit",
 } as const satisfies IconMapping;
