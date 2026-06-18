@@ -1,9 +1,10 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
-import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { IconSymbol } from "@/src/shared/ui";
 
 export default function FailScreen() {
   const { setChildOnboarded } = useAuthStore();
@@ -24,7 +25,7 @@ export default function FailScreen() {
       </Text>
 
       <View style={s.iconWrap}>
-        <Image source={require("@/assets/images/fail-x.png")} style={s.icon} />
+        <IconSymbol name="xmark" size={68} color="#FFFFFF" style={s.icon} />
       </View>
 
       <Pressable
@@ -75,7 +76,6 @@ const s = StyleSheet.create({
   icon: {
     width: 68,
     height: 68,
-    resizeMode: "contain",
   },
   primaryBtn: {
     marginTop: "auto",

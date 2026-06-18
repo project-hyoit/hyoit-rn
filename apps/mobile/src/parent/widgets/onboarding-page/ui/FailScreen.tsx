@@ -1,9 +1,10 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
-import { Image, Platform, Pressable, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { IconSymbol } from "@/src/shared/ui";
 
 export default function FailScreen() {
   const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
@@ -25,9 +26,13 @@ export default function FailScreen() {
       </Text>
 
       <View style={s.iconWrap}>
-        <Image source={require("@/assets/images/fail-x.png")} style={s.icon} />
+        <IconSymbol name="xmark" size={68} color="#FFFFFF" style={s.icon} />
       </View>
-
+      <View>
+        <Text>확인 내용</Text>
+        <Text>연결번호를 찾을 수 없어요</Text>
+        <Text>번호가 잘못 입력되었거나{"\n"}연결 가능 시간이 지났을 수 있어요.</Text>
+      </View>
       <Pressable
         onPress={() => {
           setParentOnboarded(false);
@@ -76,7 +81,6 @@ const s = StyleSheet.create({
   icon: {
     width: 68,
     height: 68,
-    resizeMode: "contain",
   },
   primaryBtn: {
     marginTop: "auto",

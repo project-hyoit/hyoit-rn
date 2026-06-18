@@ -1,9 +1,10 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { IconSymbol } from "@/src/shared/ui";
 
 export default function SuccessScreen() {
   const { setChildOnboarded } = useAuthStore();
@@ -17,11 +18,8 @@ export default function SuccessScreen() {
       <ProgressBar current={4} total={4} />
       <View style={s.content}>
         <View style={s.imageContainer}>
-          <Image
-            source={require("@/assets/images/success-sticker.png")}
-            style={s.image}
-          />
-        </View>
+        <IconSymbol name="checkmark" size={88} color="#FFFFFF" />
+      </View>
 
         <Text style={s.title} allowFontScaling={false}>
           연결 완료!
@@ -61,11 +59,13 @@ const s = StyleSheet.create({
     justifyContent: "center",
   },
   imageContainer: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+    backgroundColor: "#1E90FF",
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 60,
-  },
-  image: {
-    width: 200,
-    height: 200,
   },
   title: {
     fontSize: 28,
