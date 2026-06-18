@@ -12,6 +12,12 @@ interface ParentCheckInStatusBannerProps {
   onConfirm: (item: CheckInItem) => void;
 }
 
+const isMultipleNewReceived = (item: CheckInItem, pendingCount: number) => {
+  return (
+    item.direction === "RECEIVED" && item.status === "NEW" && pendingCount >= 2
+  );
+};
+
 const isNewReceived = (item: CheckInItem) => {
   return item.direction === "RECEIVED" && item.status === "NEW";
 };
@@ -53,6 +59,34 @@ export default function ParentCheckInStatusBanner({
     );
   }
 
+  if (isMultipleNewReceived(latestItem, pendingCount)) {
+    return (
+      <View style={s.multipleNewContainer}>
+        <View style={s.textArea}>
+          <Text style={s.multipleNewStatusLabel}>새 안부 {pendingCount}개</Text>
+
+          <Text style={s.multipleNewTitle}>“{latestItem.message}”</Text>
+
+          <Text style={s.multipleNewDescription}>
+            가장 최근 안부예요.{"\n"}
+            확인하지 않은 안부가 {pendingCount - 1}개 더 있어요.
+          </Text>
+
+          <View style={s.multipleConfirmButtonArea}>
+            <ConfirmCheckInButton
+              backgroundColor="#7658D6"
+              onPress={() => onConfirm(latestItem)}
+            />
+          </View>
+        </View>
+
+        <View style={s.multipleCharacterArea}>
+          <Text style={s.multipleCharacter}>🐨</Text>
+        </View>
+      </View>
+    );
+  }
+
   if (isNewReceived(latestItem)) {
     return (
       <View style={s.newContainer}>
@@ -61,19 +95,11 @@ export default function ParentCheckInStatusBanner({
         </View>
 
         <View style={s.textArea}>
-          <Text style={s.newStatusLabel}>
-            {pendingCount >= 2 ? `새 안부 ${pendingCount}개` : "새 안부 도착!"}
-          </Text>
+          <Text style={s.newStatusLabel}>새 안부 도착!</Text>
 
           <Text style={s.title}>“{latestItem.message}”</Text>
 
           <Text style={s.time}>{formatCheckInTime(latestItem.createdAt)}</Text>
-
-          {pendingCount >= 2 && (
-            <Text style={s.newDescription}>
-              확인하지 않은 안부가 {pendingCount - 1}개 더 있어요.
-            </Text>
-          )}
 
           <View style={s.confirmButtonArea}>
             <ConfirmCheckInButton onPress={() => onConfirm(latestItem)} />
@@ -217,6 +243,61 @@ const s = StyleSheet.create({
     fontSize: 96,
   },
 
+  multipleNewContainer: {
+    minHeight: 164,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: "#9D83EA",
+    backgroundColor: "#F1EAFF",
+    paddingLeft: 22,
+    paddingTop: 22,
+    paddingBottom: 18,
+    paddingRight: 8,
+    flexDirection: "row",
+    overflow: "hidden",
+  },
+
+  multipleNewStatusLabel: {
+    fontSize: 15,
+    lineHeight: 20,
+    fontWeight: "900",
+    color: "#7658D6",
+    marginBottom: 16,
+  },
+
+  multipleNewTitle: {
+    fontSize: 27,
+    lineHeight: 34,
+    fontWeight: "900",
+    color: "#050505",
+    letterSpacing: -0.5,
+  },
+
+  multipleNewDescription: {
+    marginTop: 8,
+    fontSize: 13,
+    lineHeight: 19,
+    fontWeight: "800",
+    color: "#6E6A72",
+    letterSpacing: -0.1,
+  },
+
+  multipleConfirmButtonArea: {
+    marginTop: 22,
+  },
+
+  multipleCharacterArea: {
+    width: 126,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginRight: -8,
+    marginBottom: -10,
+  },
+
+  multipleCharacter: {
+    fontSize: 84,
+  },
+
   newContainer: {
     position: "relative",
     minHeight: 164,
@@ -303,14 +384,6 @@ const s = StyleSheet.create({
     lineHeight: 18,
     fontWeight: "700",
     color: "#777777",
-  },
-
-  newDescription: {
-    marginTop: 8,
-    fontSize: 13,
-    lineHeight: 18,
-    fontWeight: "700",
-    color: "#666666",
   },
 
   divider: {
