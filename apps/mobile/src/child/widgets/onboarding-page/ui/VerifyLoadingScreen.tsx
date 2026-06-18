@@ -9,6 +9,8 @@ interface VerifyLoadingScreenProps {
   codeInput?: string;
 }
 
+const EXPECTED_CODE = "927582";
+
 export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenProps) {
   const setStore = useOnboardingStore((s) => s.set);
   useEffect(() => {
@@ -17,7 +19,11 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
   useEffect(() => {
     // 부모 측 로딩 (시뮬레이션)
     const timer = setTimeout(() => {
-      router.replace("/(parent)/onboarding/success");
+      if (codeInput === EXPECTED_CODE) {
+        router.replace("/(child)/onboarding/success");
+      } else {
+        router.replace("/(child)/onboarding/fail");
+      }
     }, 1500);
     return () => clearTimeout(timer);
   }, [codeInput]);

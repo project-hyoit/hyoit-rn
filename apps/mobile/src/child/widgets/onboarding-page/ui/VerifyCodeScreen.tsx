@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import {
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -60,43 +61,41 @@ export default function VerifyCodeScreen() {
         가족이 부모님을 알아볼 수 있도록{"\n"}실명을 입력해주세요.
       </Text>
 
-      <View style={s.myCodeCard}>
-        <Text style={s.myCodeLabel} allowFontScaling={false}>
-          인증 번호 입력
-        </Text>
-        <View style={s.codeInputRow}>
-          {codeInputs.map((val, idx) => (
-            <TextInput
-              key={idx}
-              ref={(ref) => {
-                inputRefs.current[idx] = ref;
-              }}
-              style={s.codeInput}
-              value={val}
-              onChangeText={(text) => handleCodeInput(text, idx)}
-              onKeyPress={({ nativeEvent }) => {
-                if (nativeEvent.key === "Backspace") {
-                  handleCodeBackspace(idx);
-                }
-              }}
-              keyboardType="number-pad"
-              maxLength={1}
-              selectionColor="#1E90FF"
-              allowFontScaling={false}
-              caretHidden={true}
-            />
-          ))}
+      <View style={s.indexCard}>
+        <View style={s.myCodeCard}>
+          <View style={s.codeInputRow}>
+            {codeInputs.map((val, idx) => (
+              <TextInput
+                key={idx}
+                ref={(ref) => {
+                  inputRefs.current[idx] = ref;
+                }}
+                style={s.codeInput}
+                value={val}
+                onChangeText={(text) => handleCodeInput(text, idx)}
+                onKeyPress={({ nativeEvent }) => {
+                  if (nativeEvent.key === "Backspace") {
+                    handleCodeBackspace(idx);
+                  }
+                }}
+                keyboardType="number-pad"
+                maxLength={1}
+                selectionColor="#1E90FF"
+                allowFontScaling={false}
+                caretHidden={true}
+              />
+            ))}
+          </View>
         </View>
-        <Text style={s.explanation}>부모님 핸드폰을 통해 인증번호를 입력해주세요</Text>
-      </View>
 
-      <View style={s.successHint}>
-        <View style={s.successIconWrap}>
-          <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+        <View style={s.successHint}>
+          <View style={s.successIconWrap}>
+            <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+          </View>
+          <Text style={s.successHintText} allowFontScaling={false}>
+            인증번호를 입력해주세요.
+          </Text>
         </View>
-        <Text style={s.successHintText} allowFontScaling={false}>
-          인증번호 입력 후 부모 연결이 완료됩니다.
-        </Text>
       </View>
 
       <View style={s.nextRow}>
@@ -147,32 +146,35 @@ const s = StyleSheet.create({
     marginBottom: 20,
     gap: 20,
   },
-  myCodeLabel: { fontSize: 16, color: COLORS.text, fontWeight: "600" },
   codeInputRow: {
     flexDirection: "row",
     gap: 8,
     marginTop: 5,
-    justifyContent: "center",
   },
   codeInput: {
-    width: 50,
-    height: 56,
+    width: 40,
+    height: 48,
     backgroundColor: "#E9E9E9",
     borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
     textAlign: "center",
-    fontSize: 28,
+    textAlignVertical: "center",
+    fontSize: 32,
     fontWeight: "700",
     color: COLORS.text,
-  },
-  explanation: {
-    fontSize: 14,
-    fontWeight: "500",
+    padding: 0,
   },
   successHint: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 8,
+    backgroundColor: "#F0F6FF",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 12,
   },
   successIconWrap: {
     width: 24,
@@ -301,6 +303,11 @@ const s = StyleSheet.create({
     alignItems: "center",
     marginTop: 12,
   },
+  indexCard: {
+    marginTop: 20,
+    borderRadius: 12,
+    padding: 24,
+  },
   timerText: {
     fontSize: 14,
     color: "rgba(0,0,0,0.6)",
@@ -323,6 +330,15 @@ const s = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 15,
     width: "100%",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: { elevation: 2 },
+    }),
   },
   nextText: {
     color: "#fff",
