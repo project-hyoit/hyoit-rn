@@ -23,6 +23,8 @@ const MAPPING = {
   xmark: "close",
   checkmark: "check",
   "checkmark.circle.fill": "check-circle",
+  exclamationmark: "priority-high",
+  "exclamationmark.circle.fill": "priority-high",
   gearshape: "settings",
   "gearshape.fill": "settings",
   "square.fill": "stop",

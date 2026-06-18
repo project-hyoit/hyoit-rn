@@ -28,10 +28,16 @@ export default function FailScreen() {
       <View style={s.iconWrap}>
         <IconSymbol name="xmark" size={68} color="#FFFFFF" style={s.icon} />
       </View>
-      <View>
-        <Text>확인 내용</Text>
-        <Text>연결번호를 찾을 수 없어요</Text>
-        <Text>번호가 잘못 입력되었거나{"\n"}연결 가능 시간이 지났을 수 있어요.</Text>
+      <View style={s.infoContainer}>
+        <Text style={s.infoTitle}>확인 내용</Text>
+        <Text style={s.infoSubtitle}>연결번호를 찾을 수 없어요</Text>
+        <Text style={s.infoDescription}>번호가 잘못 입력되었거나{"\n"}연결 가능 시간이 지났을 수 있어요.</Text>
+      </View>
+      <View style={s.warningContainer}>
+        <View style={s.warningIcon}>
+          <IconSymbol name="exclamationmark" size={20} color="#FFFFFF" />
+        </View>
+        <Text style={s.warningText}>번호를 다시 입력하면 다시 연결할 수 있어요.</Text>
       </View>
       <Pressable
         onPress={() => {
@@ -77,6 +83,58 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 56,
+  },
+  infoContainer: {
+    marginTop: 40,
+    padding: 16,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E0E0E0",
+    marginBottom: 20,
+  },
+  infoTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#504E51",
+    marginBottom: 8,
+  },
+  infoSubtitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#000000",
+    marginBottom: 8,
+  },
+  infoDescription: {
+    fontSize: 14,
+    color: "#504E51",
+    lineHeight: 22,
+    fontWeight: "600",
+  },
+  warningContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "#FFE8E8",
+    borderRadius: 12,
+    marginBottom: 24,
+    gap: 12,
+  },
+  warningIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: "#FF6760",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+  warningText: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#454545",
+    lineHeight: 22,
   },
   icon: {
     width: 68,
