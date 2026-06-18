@@ -14,6 +14,7 @@ import {
   ParentCheckInHeader,
   ParentCheckInHistorySection,
   ParentCheckInQuickActionSection,
+  ParentCheckInSendSuccessModal,
   ParentCheckInStatusBanner,
 } from "./ui";
 
@@ -26,6 +27,9 @@ export default function ParentCheckInPage() {
   const [rawItems, setRawItems] = useState<CheckInRawItem[]>(
     checkInMockPresets[INITIAL_PRESET]
   );
+
+  const [isSendSuccessModalVisible, setIsSendSuccessModalVisible] =
+    useState(false);
 
   const items = useMemo(
     () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
@@ -54,6 +58,7 @@ export default function ParentCheckInPage() {
     };
 
     setRawItems((prev) => [newItem, ...prev]);
+    setIsSendSuccessModalVisible(true);
   };
 
   const handleConfirmCheckIn = (item: CheckInItem) => {
@@ -71,47 +76,71 @@ export default function ParentCheckInPage() {
     );
   };
 
+  const handleCloseSendSuccessModal = () => {
+    setIsSendSuccessModalVisible(false);
+  };
+
+  const handleResendCheckIn = () => {
+    setIsSendSuccessModalVisible(false);
+  };
+
   return (
     <SafeAreaView style={s.safeArea} edges={["top"]}>
-      <ScrollView
-        contentContainerStyle={s.container}
-        showsVerticalScrollIndicator={false}
-      >
-        {__DEV__ && (
-          <View style={s.devPanel}>
-            {Object.keys(checkInMockPresets).map((key) => {
-              const typedKey = key as CheckInMockPresetKey;
-              const isActive = presetKey === typedKey;
+      <View style={s.screen}>
+        <ScrollView
+          contentContainerStyle={s.scrollContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          {__DEV__ && (
+            <View style={s.devPanel}>
+              {Object.keys(checkInMockPresets).map((key) => {
+                const typedKey = key as CheckInMockPresetKey;
+                const isActive = presetKey === typedKey;
 
-              return (
-                <Pressable
-                  key={typedKey}
-                  style={[s.devButton, isActive && s.activeDevButton]}
-                  onPress={() => handleChangePreset(typedKey)}
-                >
-                  <Text
-                    style={[s.devButtonText, isActive && s.activeDevButtonText]}
+                return (
+                  <Pressable
+                    key={typedKey}
+                    style={[s.devButton, isActive && s.activeDevButton]}
+                    onPress={() => handleChangePreset(typedKey)}
                   >
-                    {typedKey}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </View>
-        )}
+                    <Text
+                      style={[
+                        s.devButtonText,
+                        isActive && s.activeDevButtonText,
+                      ]}
+                    >
+                      {typedKey}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </View>
+          )}
 
-        <ParentCheckInHeader />
+          <ParentCheckInHeader
+            hasNotification={pendingCount > 0}
+            onPressNotification={() => {}}
+          />
 
-        <ParentCheckInStatusBanner
-          latestItem={latestItem}
-          pendingCount={pendingCount}
-          onConfirm={handleConfirmCheckIn}
+          <ParentCheckInStatusBanner
+            latestItem={latestItem}
+            pendingCount={pendingCount}
+            onConfirm={handleConfirmCheckIn}
+          />
+
+          <ParentCheckInHistorySection items={items} />
+        </ScrollView>
+
+        <View style={s.fixedQuickAction}>
+          <ParentCheckInQuickActionSection onSend={handleSendCheckIn} />
+        </View>
+
+        <ParentCheckInSendSuccessModal
+          visible={isSendSuccessModalVisible}
+          onConfirm={handleCloseSendSuccessModal}
+          onResend={handleResendCheckIn}
         />
-
-        <ParentCheckInHistorySection items={items} />
-
-        <ParentCheckInQuickActionSection onSend={handleSendCheckIn} />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
@@ -122,11 +151,26 @@ const s = StyleSheet.create({
     backgroundColor: "#F8F8F8",
   },
 
-  container: {
+  screen: {
+    flex: 1,
+  },
+
+  scrollContainer: {
     paddingHorizontal: 20,
     paddingTop: 18,
-    paddingBottom: 116,
+    paddingBottom: 230,
     gap: 18,
+  },
+
+  fixedQuickAction: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 20,
+    paddingTop: 14,
+    paddingBottom: 18,
+    backgroundColor: "#F8F8F8",
   },
 
   devPanel: {
