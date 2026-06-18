@@ -1,11 +1,10 @@
 import { useLoginWithKakao } from "@hyoit/auth";
 import { KakaoLoginButton } from "@hyoit/ui";
 import { StatusBar } from "expo-status-bar";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import kakaoIcon from "@/src/entry/assets/images/kakao_icon.png";
-import loginLogo from "@/src/entry/assets/images/login/login_logo.png";
 import { BG, SUBTEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
 

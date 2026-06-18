@@ -3,7 +3,6 @@ import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
-import { useEffect as useEffect2 } from "react";
 
 interface VerifyLoadingScreenProps {
   codeInput?: string;
@@ -11,7 +10,7 @@ interface VerifyLoadingScreenProps {
 
 export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenProps) {
   const setStore = useOnboardingStore((s) => s.set);
-  useEffect2(() => {
+  useEffect(() => {
     setStore({ step: 3 });
   }, [setStore]);
   useEffect(() => {

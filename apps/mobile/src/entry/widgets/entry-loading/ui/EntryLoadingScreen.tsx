@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Image } from "react-native";
 import { router } from "expo-router";
-import { isAuthenticated, resolveEntryTarget } from "@hyoit/auth";
 import { useAuthStore } from "@hyoit/auth";
 
 // 앱 시작 시 보여주는 로딩(스플래시) 화면
@@ -24,7 +23,7 @@ export default function EntryLoadingScreen() {
 
 	return (
 		<View style={s.wrap}>
-			<Image source={require("@/assets/images/login_logo.png")} style={s.logoSvg} />
+			<Image source={require("@/assets/login/login_logo.png")} style={s.logoSvg} />
 		</View>
 	);
 }

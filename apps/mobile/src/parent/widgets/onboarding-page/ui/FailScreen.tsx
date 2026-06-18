@@ -17,7 +17,7 @@ export default function FailScreen() {
     <View style={s.wrap}>
       <ProgressBar current={4} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        인증에 실패했어요.
+        연결에 실패했어요
       </Text>
 
       <Text style={s.description} allowFontScaling={false}>
@@ -44,14 +44,14 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
     paddingHorizontal: 24,
-    paddingTop: 120,
+    paddingTop: 146,
   },
   title: {
-    fontSize: 24,
-    lineHeight: 36,
+    fontSize: 27,
+    lineHeight: 32,
     color: "#000000",
     fontWeight: "600",
-    marginBottom: 32,
+    marginBottom: 9,
   },
   description: {
     fontSize: 16,
