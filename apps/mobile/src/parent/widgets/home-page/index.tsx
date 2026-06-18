@@ -13,8 +13,8 @@ import {
 export default function HomePage() {
   const homeStatus = "received" as HomeStatus;
 
-  const handlePressStatusBanner = () => {
-    router.push("/(parent)/(tabs)/chat");
+  const moveToCheckIn = () => {
+    router.push("/(parent)/(tabs)/check-in");
   };
 
   return (
@@ -28,23 +28,20 @@ export default function HomePage() {
           hasNotification={
             homeStatus === "received" || homeStatus === "multiple"
           }
-          onPressNotification={() => router.push("/(parent)/(tabs)/chat")}
+          onPressNotification={moveToCheckIn}
           onPressSetting={() => {}}
         />
 
-        <HomeStatusBanner
-          status={homeStatus}
-          onPress={handlePressStatusBanner}
-        />
+        <HomeStatusBanner status={homeStatus} onPress={moveToCheckIn} />
 
         <HomePrimaryAction
           label="자녀에게 안부 보내기"
-          onPress={() => router.push("/(parent)/(tabs)/chat")}
+          onPress={moveToCheckIn}
         />
 
         <HomeCardGrid
           onPressWeather={() => {}}
-          onPressRecentGreeting={() => router.push("/(parent)/(tabs)/chat")}
+          onPressRecentGreeting={moveToCheckIn}
           onPressGame={() => router.push("/(parent)/(tabs)/game")}
           onPressHelp={() => {}}
         />
