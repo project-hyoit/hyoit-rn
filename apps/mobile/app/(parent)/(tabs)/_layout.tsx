@@ -28,9 +28,9 @@ export default function ParentTabsLayout() {
       />
 
       <Tabs.Screen
-        name="chat"
+        name="check-in"
         options={{
-          title: "채팅",
+          title: "안부",
           tabBarIcon: ({ focused, size }) => (
             <IconSymbol
               name="message.fill"
