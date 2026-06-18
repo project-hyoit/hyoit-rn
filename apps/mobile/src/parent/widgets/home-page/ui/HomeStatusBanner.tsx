@@ -73,7 +73,7 @@ const s = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 24,
     paddingRight: 18,
-    overflow: "hidden",
+    overflow: "visible",
   },
 
   textArea: {
@@ -113,7 +113,7 @@ const s = StyleSheet.create({
 
   characterArea: {
     position: "absolute",
-    right: 8,
+    right: -12,
     bottom: 20,
     width: 210,
     height: 210,
@@ -160,12 +160,12 @@ const s = StyleSheet.create({
 
   badge: {
     position: "absolute",
-    top: -12,
-    right: -10,
+    top: -20,
+    right: -20,
     zIndex: 4,
-    width: 54,
-    height: 54,
-    borderRadius: 27,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
   },

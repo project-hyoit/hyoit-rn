@@ -67,13 +67,13 @@ export default function HomeFeatureCard({
 const s = StyleSheet.create({
   container: {
     position: "relative",
-    height: 178,
+    height: 210,
     borderRadius: 20,
     paddingTop: 18,
     paddingLeft: 18,
     paddingRight: 14,
     paddingBottom: 14,
-    overflow: "hidden",
+    overflow: "visible",
   },
 
   textArea: {
@@ -127,7 +127,7 @@ const s = StyleSheet.create({
 
   visualArea: {
     position: "absolute",
-    right: 12,
+    right: -8,
     bottom: 14,
     width: 92,
     height: 92,
@@ -147,20 +147,20 @@ const s = StyleSheet.create({
 
   badge: {
     position: "absolute",
-    top: -3,
-    right: -3,
+    top: 12,
+    right: 6,
     zIndex: 3,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     backgroundColor: "#1478FF",
     alignItems: "center",
     justifyContent: "center",
   },
 
   badgeText: {
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: 12,
+    lineHeight: 15,
     fontWeight: "900",
     color: "#FFFFFF",
   },
