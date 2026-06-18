@@ -1,6 +1,6 @@
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 import { router } from "expo-router";
-import { useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   Platform,
   Pressable,
@@ -9,65 +9,44 @@ import {
   TextInput,
   View,
 } from "react-native";
+import ProgressBar from "@/src/ui/ProgressBar";
 
 export default function ChildInfoScreen() {
-  const { name, age, phone, set } = useOnboardingStore();
-  const canNext = Boolean(name.trim() && age.trim() && phone.trim());
+  const { name, set } = useOnboardingStore();
+  const setStore = useOnboardingStore((s) => s.set);
+  useEffect(() => {
+    setStore({ step: 2 });
+  }, [setStore]);
+  const canNext = Boolean(name.trim());
+  const [isFocused, setIsFocused] = useState(false);
 
-  const ageRef = useRef<TextInput>(null);
-  const phoneRef = useRef<TextInput>(null);
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={2} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        자녀분과 연결을 위해 몇 가지{"\n"}정보가 필요해요
+        안녕하세요!{"\n"}성함을 알려주세요
+      </Text>
+      <Text style={s.subtitle} allowFontScaling={false}>
+        가족이 부모님을 알아볼 수 있도록{"\n"}실명을 입력해주세요.
       </Text>
 
       <View style={s.field}>
         <Text style={s.label} allowFontScaling={false}>
-          이름
+          성함
         </Text>
         <TextInput
-          placeholder="이름을 입력해주세요"
-          placeholderTextColor={COLORS.placeholder}
+          placeholder="예 : 김효잇"
+          placeholderTextColor="#B6B6B6"
           value={name}
-          onChangeText={(value) => set({ name: value })}
-          style={s.input}
+          onChangeText={(v) => set({ name: v })}
+          style={[
+            s.input,
+            isFocused && s.inputFocused,
+          ]}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
           returnKeyType="next"
-          onSubmitEditing={() => ageRef.current?.focus()}
-        />
-      </View>
-
-      <View style={s.field}>
-        <Text style={s.label} allowFontScaling={false}>
-          나이
-        </Text>
-        <TextInput
-          ref={ageRef}
-          placeholder="나이를 입력해주세요"
-          placeholderTextColor={COLORS.placeholder}
-          keyboardType="number-pad"
-          value={age}
-          onChangeText={(value) => set({ age: value })}
-          style={s.input}
-          returnKeyType="next"
-          onSubmitEditing={() => phoneRef.current?.focus()}
-        />
-      </View>
-
-      <View style={s.field}>
-        <Text style={s.label} allowFontScaling={false}>
-          전화번호
-        </Text>
-        <TextInput
-          ref={phoneRef}
-          placeholder="전화번호를 입력해주세요"
-          placeholderTextColor={COLORS.placeholder}
-          keyboardType="phone-pad"
-          value={phone}
-          onChangeText={(value) => set({ phone: value })}
-          style={s.input}
-          returnKeyType="done"
         />
       </View>
 
@@ -76,10 +55,10 @@ export default function ChildInfoScreen() {
           style={({ pressed }) => [
             s.next,
             !canNext && s.nextDisabled,
-            pressed && canNext && s.pressed,
+            pressed && canNext && { opacity: 0.9 },
           ]}
           disabled={!canNext}
-          onPress={() => router.push("/(parent)/onboarding/verify-code")}
+          onPress={() => router.push("/(parent)/onboarding/age-info")}
           hitSlop={8}
           accessibilityRole="button"
           accessibilityLabel="다음"
@@ -87,12 +66,10 @@ export default function ChildInfoScreen() {
           <Text style={s.nextText} allowFontScaling={false}>
             다음
           </Text>
-          <Text style={s.nextArrow} allowFontScaling={false}>
-            →
-          </Text>
         </Pressable>
       </View>
     </View>
+
   );
 }
 
@@ -102,7 +79,6 @@ const COLORS = {
   text: "#000000",
   placeholder: "#B6B6B6",
   primary: "#1E90FF",
-  disabled: "#D9D9D9",
   bg: "#FFFFFF",
 };
 
@@ -111,47 +87,60 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.bg,
     paddingHorizontal: 24,
-    paddingTop: 120,
+    paddingTop: 110,
   },
   title: {
-    fontSize: 24,
-    lineHeight: 36,
-    color: COLORS.text,
+    fontSize: 27,
+    fontWeight: "700",
+    marginTop: 46,
+    marginBottom: 12,
+    lineHeight: 32,
+  },
+  subtitle: {
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: 14,
     fontWeight: "600",
-    marginBottom: 64,
+    lineHeight: 25,
   },
   field: {
     marginBottom: 16,
   },
   label: {
-    color: COLORS.label,
-    fontSize: 16,
-    lineHeight: 24,
-    marginBottom: 4,
-    fontWeight: "600",
+    fontSize: 18,
+    lineHeight: 25,
+    marginTop: 57,
+    marginBottom: 9,
+    fontWeight: "800",
   },
   input: {
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: Platform.select({ ios: 14, android: 12 }),
-    fontSize: 16,
-    color: COLORS.text,
-  },
+  borderWidth: 1,
+  borderColor: COLORS.border,
+  borderRadius: 12,
+  paddingHorizontal: 16,
+  paddingVertical: Platform.select({ ios: 14, android: 12 }),
+  fontSize: 22,
+  fontWeight: "500",
+  color: COLORS.text,
+},
+
+inputFocused: {
+  borderColor: "#66B3FF",
+  borderWidth: 2,
+},
+
   nextRow: {
     marginTop: "auto",
     alignItems: "flex-end",
-    marginBottom: 106,
+    marginBottom: 64,
   },
   next: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    backgroundColor: COLORS.primary,
+    justifyContent: "center",
+    backgroundColor: "#1E90FF",
     borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 15,
+    width: "100%",
     ...Platform.select({
       ios: {
         shadowColor: "#000",
@@ -163,19 +152,12 @@ const s = StyleSheet.create({
     }),
   },
   nextDisabled: {
-    backgroundColor: COLORS.disabled,
-  },
-  pressed: {
-    opacity: 0.9,
+    backgroundColor: "#D9D9D9"
   },
   nextText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "700",
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "500",
   },
-  nextArrow: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    marginLeft: 2,
-  },
+
 });

@@ -1,42 +1,63 @@
+import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
-import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-
-import ConnectedChildCard from "./ConnectedChildCard";
+import {
+  Image,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useEffect } from "react";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 export default function SuccessScreen() {
-  const setParentOnboarded = useAuthStore((state) => state.setParentOnboarded);
+  const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
+  const setStore = useOnboardingStore((s) => s.set);
+
+  useEffect(() => {
+    setStore({ step: 4 });
+  }, [setStore]);
 
   const child = { name: "김유찬", phone: "010-4610-3405" };
 
-  const start = () => {
-    setParentOnboarded(true);
-    router.replace("/(parent)");
-  };
-
   return (
     <View style={s.wrap}>
+      <ProgressBar current={4} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        자녀 분과 연결이{"\n"}완료되었어요
+        연결이 완료되었어요!
       </Text>
 
       <Text style={s.cardTitle} allowFontScaling={false}>
-        연결된 자녀분
+        이제 자녀와 가볍게 안부를 주고받을 수 있어요.
       </Text>
-
-      <ConnectedChildCard name={child.name} phone={child.phone} />
-
-      <Pressable
-        onPress={start}
-        hitSlop={8}
-        style={({ pressed }) => [s.primaryButton, pressed && s.pressed]}
-        accessibilityRole="button"
-        accessibilityLabel="시작하기"
-      >
-        <Text style={s.primaryText} allowFontScaling={false}>
-          시작하기
+      <View style={s.card}>
+          <Image source={mainProfileImg} style={s.avatar} />
+          <Text style={s.childName} allowFontScaling={false}>
+            {child.name}
+          </Text>
+        <Text style={s.childPhone} allowFontScaling={false}>
+          {child.phone}
         </Text>
-      </Pressable>
+      </View>
+
+        <Pressable
+          onPress={() => {
+            setParentOnboarded(true);
+            router.replace("/(parent)");
+          }}
+          hitSlop={8}
+          style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
+          accessibilityRole="button"
+          accessibilityLabel="시작하기"
+        >
+          <Text style={s.primaryText} allowFontScaling={false}>
+            시작하기
+          </Text>
+        </Pressable>
+      
     </View>
   );
 }
@@ -44,6 +65,9 @@ export default function SuccessScreen() {
 const COLORS = {
   bg: "#FFFFFF",
   text: "#000000",
+  subText: "#666666",
+  cardBg: "#F5F5F5",
+  border: "#E6E6E6",
   primary: "#1E90FF",
 };
 
@@ -61,13 +85,43 @@ const s = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 44,
   },
+  card: {
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   cardTitle: {
     fontSize: 16,
     color: COLORS.text,
     fontWeight: "600",
     marginBottom: 30,
   },
-  primaryButton: {
+  avatar: {
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    borderWidth: 12,
+    borderColor: "#BCE1FF",
+  },
+  childName: {
+    marginTop: 4,
+    marginBottom: 12,
+    fontSize: 24,
+    fontWeight: "600",
+  },
+  childPhone: {
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  actions: {
+    alignItems: "center",
+  },
+  leftArrow: {
+    color: COLORS.primary,
+    fontSize: 16,
+    fontWeight: "700",
+    marginRight: 2,
+  },
+  primaryBtn: {
     marginBottom: 58,
     marginTop: "auto",
     flexDirection: "row",
@@ -88,12 +142,5 @@ const s = StyleSheet.create({
       android: { elevation: 2 },
     }),
   },
-  pressed: {
-    opacity: 0.9,
-  },
-  primaryText: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    fontWeight: "700",
-  },
+  primaryText: { color: "#fff", fontSize: 20, fontWeight: "700"},
 });

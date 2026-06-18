@@ -1,51 +1,45 @@
-import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
-import {
-  Image,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useEffect } from "react";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 export default function SuccessScreen() {
-  const setChildOnboarded = useAuthStore((s) => s.setChildOnboarded);
-
-  const parent = { name: "김유찬", phone: "010-4610-3405" };
+  const { setChildOnboarded } = useAuthStore();
+  const setStore = useOnboardingStore((s) => s.set);
+  useEffect(() => {
+    setStore({ step: 4 });
+  }, [setStore]);
 
   return (
     <View style={s.wrap}>
-      <Text style={s.title} allowFontScaling={false}>
-        부모님과 연결이{"\n"}완료되었어요
-      </Text>
+      <ProgressBar current={4} total={4} />
+      <View style={s.content}>
+        <View style={s.imageContainer}>
+          <Image
+            source={require("@/assets/images/success-sticker.png")}
+            style={s.image}
+          />
+        </View>
 
-      <Text style={s.cardTitle} allowFontScaling={false}>
-        연결된 부모님
-      </Text>
-
-      <View style={s.card}>
-        <Image source={mainProfileImg} style={s.avatar} />
-        <Text style={s.childName} allowFontScaling={false}>
-          {parent.name}
+        <Text style={s.title} allowFontScaling={false}>
+          연결 완료!
         </Text>
-        <Text style={s.childPhone} allowFontScaling={false}>
-          {parent.phone}
+
+        <Text style={s.description} allowFontScaling={false}>
+          이제 부모님께서{"\n"}당신을 보호할 준비가 되었어요.
         </Text>
       </View>
 
       <Pressable
+        style={s.button}
         onPress={() => {
           setChildOnboarded(true);
           router.replace("/(child)");
         }}
-        hitSlop={8}
-        style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
-        accessibilityRole="button"
-        accessibilityLabel="시작하기"
       >
-        <Text style={s.primaryText} allowFontScaling={false}>
+        <Text style={s.buttonText} allowFontScaling={false}>
           시작하기
         </Text>
       </Pressable>
@@ -53,85 +47,49 @@ export default function SuccessScreen() {
   );
 }
 
-const COLORS = {
-  bg: "#FFFFFF",
-  text: "#000000",
-  subText: "#666666",
-  cardBg: "#F5F5F5",
-  border: "#E6E6E6",
-  primary: "#1E90FF",
-};
-
 const s = StyleSheet.create({
   wrap: {
     flex: 1,
-    backgroundColor: COLORS.bg,
+    backgroundColor: "#FFFFFF",
     paddingHorizontal: 24,
-    paddingTop: 120,
+    paddingVertical: 40,
+    justifyContent: "space-between",
+  },
+  content: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+  },
+  imageContainer: {
+    marginBottom: 60,
+  },
+  image: {
+    width: 200,
+    height: 200,
   },
   title: {
-    fontSize: 24,
-    lineHeight: 36,
-    color: COLORS.text,
-    fontWeight: "600",
-    marginBottom: 44,
-  },
-  card: {
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  cardTitle: {
-    fontSize: 16,
-    color: COLORS.text,
-    fontWeight: "600",
-    marginBottom: 30,
-  },
-  avatar: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-    borderWidth: 12,
-    borderColor: "#BCE1FF",
-  },
-  childName: {
-    marginTop: 4,
-    marginBottom: 12,
-    fontSize: 24,
-    fontWeight: "600",
-  },
-  childPhone: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  actions: {
-    alignItems: "center",
-  },
-  leftArrow: {
-    color: COLORS.primary,
-    fontSize: 16,
+    fontSize: 28,
     fontWeight: "700",
-    marginRight: 2,
+    marginBottom: 12,
   },
-  primaryBtn: {
-    marginBottom: 58,
-    marginTop: "auto",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+  description: {
+    fontSize: 18,
+    fontWeight: "500",
+    color: "#454545",
+    textAlign: "center",
+    lineHeight: 28,
+  },
+  button: {
+    backgroundColor: "#1E90FF",
+    paddingVertical: 18,
+    paddingHorizontal: 24,
     borderRadius: 12,
-    backgroundColor: COLORS.primary,
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOpacity: 0.08,
-        shadowRadius: 8,
-        shadowOffset: { width: 0, height: 2 },
-      },
-      android: { elevation: 2 },
-    }),
+    alignItems: "center",
+    marginBottom: 20,
   },
-  primaryText: { color: "#fff", fontSize: 20, fontWeight: "700" },
+  buttonText: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "600",
+  },
 });

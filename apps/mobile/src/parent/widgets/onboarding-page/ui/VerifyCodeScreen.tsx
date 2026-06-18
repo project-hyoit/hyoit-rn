@@ -1,60 +1,115 @@
 import { router } from "expo-router";
-import { useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-
-import ConfirmChildModal from "./ConfirmChildModal";
+import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+} from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 export default function VerifyCodeScreen() {
   const myCode = "927582";
-  const [showConfirm, setShowConfirm] = useState(false);
+  const setStore = useOnboardingStore((s) => s.set);
 
-  const openModal = () => {
-    setShowConfirm(true);
+  useEffect(() => {
+    setStore({ step: 3 });
+  }, [setStore]);
+
+  const INITIAL = 180; // 3 minutes in seconds
+  const [remaining, setRemaining] = useState(INITIAL);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const handleTimeout = useCallback(() => {
+    router.replace("/(parent)/onboarding/fail");
+  }, []);
+
+  const startTimer = useCallback(() => {
+    setRemaining(INITIAL);
+    if (timerRef.current) clearInterval(timerRef.current as any);
+    timerRef.current = setInterval(() => {
+      setRemaining((prev) => {
+        if (prev <= 1) {
+          if (timerRef.current) clearInterval(timerRef.current as any);
+          timerRef.current = null;
+          // schedule navigation asynchronously to avoid setState-in-render errors
+          setTimeout(() => handleTimeout(), 0);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [handleTimeout]);
+
+  useEffect(() => {
+    startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current as any);
+    };
+  }, [startTimer]);
+
+  const formatTime = (sec: number) => {
+    const m = Math.floor(sec / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
   };
 
-  const closeModal = () => {
-    setShowConfirm(false);
+  const handleResendSmall = () => {
+    // TODO: call resend API
+    startTimer();
   };
 
-  const confirmChild = () => {
-    router.push("/(parent)/onboarding/success");
+  const handleNext = () => {
+    // 로딩 페이지로 이동하여 내부 처리(애니메이션) 후 success/fail로 이동
+    router.push({
+      pathname: "/(parent)/onboarding/verify-loading",
+      params: { codeInput: myCode },
+    });
   };
 
   return (
     <View style={s.wrap}>
+      <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        가족구성원 추가를 위한{"\n"}인증번호가 생성되었어요
+        연결번호가 만들어졌어요{"\n"}자녀에게 알려주세요
       </Text>
 
       <View style={s.myCodeCard}>
         <Text style={s.myCodeLabel} allowFontScaling={false}>
           내 인증 번호
         </Text>
-
-        <Text style={s.myCodeText} allowFontScaling={false}>
-          {myCode}
-        </Text>
-
-        <Text style={s.explanation}>
-          자녀분 핸드폰을 통해 인증번호를 입력해주세요
-        </Text>
+        <View style={s.codeRow}>
+          {myCode.split("").map((num, index) => (
+            <View key={index} style={s.codeBox}>
+              <Text style={s.codeText} allowFontScaling={false}>
+                {num}
+              </Text>
+            </View>
+          ))}
+        </View>
+        <Text style={s.explanation}>자녀분 핸드폰을 통해 인증번호를 입력해주세요</Text>
       </View>
 
-      <View style={s.modalButtonRow}>
-        <Pressable onPress={openModal} style={s.modalButton}>
-          <Text style={s.modalButtonText}>모달 확인</Text>
+      <View style={s.timerRow}>
+        <Text style={s.timerText}>{formatTime(remaining)}</Text>
+        <Pressable onPress={handleResendSmall} hitSlop={8}>
+          <Text style={s.resendSmall}>다시받기</Text>
         </Pressable>
       </View>
 
-      <Pressable style={s.recertification}>
-        <Text style={s.recertificationText}>인증번호 다시 받기</Text>
-      </Pressable>
-
-      <ConfirmChildModal
-        visible={showConfirm}
-        onClose={closeModal}
-        onConfirm={confirmChild}
-      />
+      <View style={s.nextRow}>
+        <Pressable
+          style={({ pressed }) => [s.next, pressed && { opacity: 0.9 }]}
+          onPress={handleNext}
+          hitSlop={8}
+        >
+          <Text style={s.nextText}>다음</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -62,6 +117,9 @@ export default function VerifyCodeScreen() {
 const COLORS = {
   bg: "#FFFFFF",
   text: "#000000",
+  label: "#454545",
+  border: "#B6B6B6",
+  card: "#F5F5F5",
   primary: "#1E90FF",
 };
 
@@ -84,49 +142,177 @@ const s = StyleSheet.create({
     marginBottom: 20,
     gap: 20,
   },
-  myCodeLabel: {
-    fontSize: 16,
-    color: COLORS.text,
-    fontWeight: "600",
+  myCodeLabel: { fontSize: 16, color: COLORS.text, fontWeight: "600" },
+  codeRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 5,
   },
-  myCodeText: {
+  codeBox: {
+    width: 40,
+    height: 48,
+    backgroundColor: "#E9E9E9",
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  codeText: {
     fontSize: 32,
-    lineHeight: 40,
-    color: COLORS.text,
-    fontWeight: "800",
-    letterSpacing: 2,
-    marginTop: 4,
+    fontWeight: "700",
   },
   explanation: {
     fontSize: 14,
-    fontWeight: "600",
-  },
-  modalButtonRow: {
-    marginTop: 12,
-    alignItems: "flex-end",
+    fontWeight: "500",
   },
   modalButton: {
-    backgroundColor: "#000000",
+    backgroundColor: "#000",
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 10,
   },
   modalButtonText: {
-    color: "#FFFFFF",
+    color: "#fff",
     fontWeight: "600",
   },
   recertification: {
-    backgroundColor: COLORS.primary,
+    backgroundColor:"#1E8FFF",
     marginTop: "auto",
     marginBottom: 58,
     padding: 10,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 14,
+    borderRadius:14,
   },
   recertificationText: {
     fontSize: 20,
     fontWeight: "600",
     color: "#FFFFFF",
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.3)",
+    justifyContent: "center",
+    alignItems: "center", 
+  },
+  bottomSheet: {
+    width: 364,
+    backgroundColor: "#fff",
+    padding: 24,
+    borderRadius: 12,
+  },
+  sheetTitle: {
+    textAlign: "center",
+    fontSize: 20,
+    fontWeight: "500",
+    marginBottom: 16,
+  },
+  userCard: {
+    backgroundColor:"#F5F5F5",
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    marginBottom: 36,
+    justifyContent: "space-between",
+    flexDirection: "row", 
+    alignItems: "center",
+  },
+  surnameCircle:{
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#BCE1FF",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  surnameText:{
+    fontSize:20,
+    fontWeight:"600",
+  },
+  name: {
+    fontSize: 24,
+    fontWeight: "600",
+    marginLeft: -24,
+  },
+  phone: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#434343",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cancel: {
+    color: "#262626",
+    fontSize: 20,
+    fontWeight: "500",
+  },
+  cancelButton: {
+    paddingVertical:10,
+    paddingHorizontal:48,
+    backgroundColor:"#F5F5F5",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  ok: {
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontWeight: "500",
+  },
+  okButton: {
+    paddingVertical:10,
+    paddingHorizontal:48,
+    backgroundColor: "#1E90FF",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  timerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 12,
+  },
+  timerText: {
+    fontSize: 14,
+    color: "rgba(0,0,0,0.6)",
+  },
+  resendSmall: {
+    fontSize: 14,
+    color: COLORS.primary,
+    fontWeight: "600",
+  },
+  nextRow: {
+    marginTop: "auto",
+    alignItems: "flex-end",
+    marginBottom: 64,
+  },
+  next: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    paddingVertical: 15,
+    width: "100%",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: { elevation: 2 },
+    }),
+  },
+  nextText: {
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "500",
   },
 });
