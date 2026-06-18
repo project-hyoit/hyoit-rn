@@ -42,20 +42,30 @@ export default function CustomCheckInInput({
 
 const s = StyleSheet.create({
   container: {
-    minHeight: 46,
+    minHeight: 56,
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "#E2E2E2",
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 14,
+    paddingHorizontal: 18,
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+
+    shadowColor: "#000000",
+    shadowOpacity: 0.04,
+    shadowRadius: 7,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    elevation: 1,
   },
 
   input: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 15,
+    fontWeight: "700",
     color: "#222222",
     paddingVertical: 0,
   },
@@ -69,7 +79,7 @@ const s = StyleSheet.create({
 
   sendText: {
     fontSize: 12,
-    fontWeight: "700",
+    fontWeight: "800",
     color: "#FFFFFF",
   },
 });

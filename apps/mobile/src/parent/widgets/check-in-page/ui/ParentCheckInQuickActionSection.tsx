@@ -35,12 +35,14 @@ export default function ParentCheckInQuickActionSection({
 const s = StyleSheet.create({
   section: {
     gap: 10,
+    marginTop: 26,
   },
 
   title: {
-    fontSize: 13,
-    fontWeight: "800",
+    fontSize: 15,
+    fontWeight: "900",
     color: "#111111",
+    marginBottom: 4,
   },
 
   grid: {

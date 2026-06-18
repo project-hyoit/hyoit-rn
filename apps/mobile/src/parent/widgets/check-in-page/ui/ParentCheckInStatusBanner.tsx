@@ -9,19 +9,28 @@ import { ConfirmCheckInButton } from "@/src/shared/features/check-in/confirm-che
 
 interface ParentCheckInStatusBannerProps {
   latestItem: CheckInItem | null;
+  pendingCount: number;
   onConfirm: (item: CheckInItem) => void;
 }
 
-const getBannerColor = (item: CheckInItem | null) => {
+const getBannerColor = (item: CheckInItem | null, pendingCount: number) => {
   if (!item) {
     return {
       backgroundColor: "#FFFFFF",
-      borderColor: "#E4E4E4",
-      labelColor: "#8A8A8A",
+      borderColor: "#DEDEDE",
+      labelColor: "#555555",
     };
   }
 
   if (item.direction === "RECEIVED" && item.status === "NEW") {
+    if (pendingCount >= 2) {
+      return {
+        backgroundColor: "#F1EAFF",
+        borderColor: "#9D83EA",
+        labelColor: "#7658D6",
+      };
+    }
+
     return {
       backgroundColor: "#EEF5FF",
       borderColor: "#75B7FF",
@@ -37,14 +46,6 @@ const getBannerColor = (item: CheckInItem | null) => {
     };
   }
 
-  if (item.direction === "SENT" && item.status === "WAITING_CONFIRM") {
-    return {
-      backgroundColor: "#EAF8EF",
-      borderColor: "#9CDEB2",
-      labelColor: "#3D9B5E",
-    };
-  }
-
   return {
     backgroundColor: "#EAF8EF",
     borderColor: "#9CDEB2",
@@ -54,35 +55,36 @@ const getBannerColor = (item: CheckInItem | null) => {
 
 export default function ParentCheckInStatusBanner({
   latestItem,
+  pendingCount,
   onConfirm,
 }: ParentCheckInStatusBannerProps) {
-  const color = getBannerColor(latestItem);
+  const color = getBannerColor(latestItem, pendingCount);
 
   if (!latestItem) {
     return (
-      <View
-        style={[
-          s.container,
-          {
-            backgroundColor: color.backgroundColor,
-            borderColor: color.borderColor,
-          },
-        ]}
-      >
-        <View style={s.textArea}>
-          <Text style={s.statusLabel}>안부 없음</Text>
-          <Text style={s.title}>아직 도착한 안부가 없어요!</Text>
-          <Text style={s.description}>한번 먼저 안부를 보내볼까요?</Text>
+      <View style={s.emptyContainer}>
+        <View style={s.emptyTextArea}>
+          <Text style={s.emptyStatusLabel}>안부 없음</Text>
+
+          <Text style={s.emptyTitle}>아직 도착한{"\n"}안부가 없어요!</Text>
+
+          <Text style={s.emptyDescription}>
+            한번 먼저 안부를{"\n"}보내볼까요?
+          </Text>
         </View>
 
-        <View style={s.characterBox}>
-          <Text style={s.character}>🐭</Text>
+        <View style={s.emptyCharacterArea}>
+          <Text style={s.emptyCharacter}>🐨</Text>
         </View>
       </View>
     );
   }
 
-  const statusLabel = getCheckInStatusLabel("parent", latestItem.status);
+  const statusLabel =
+    latestItem.direction === "RECEIVED" && pendingCount >= 2
+      ? `새 안부 ${pendingCount}개`
+      : getCheckInStatusLabel("parent", latestItem.status);
+
   const canConfirm =
     latestItem.direction === "RECEIVED" && latestItem.status === "NEW";
 
@@ -105,6 +107,12 @@ export default function ParentCheckInStatusBanner({
 
         <Text style={s.time}>{formatCheckInTime(latestItem.createdAt)}</Text>
 
+        {latestItem.direction === "RECEIVED" && pendingCount >= 2 && (
+          <Text style={s.description}>
+            확인하지 않은 안부가 {pendingCount - 1}개 더 있어요.
+          </Text>
+        )}
+
         {latestItem.direction === "SENT" && (
           <Text style={s.description}>
             {latestItem.status === "CONFIRMED"
@@ -120,64 +128,124 @@ export default function ParentCheckInStatusBanner({
         )}
       </View>
 
-      <View style={s.characterBox}>
-        <Text style={s.character}>🐭</Text>
+      <View style={s.characterArea}>
+        <Text style={s.character}>🐨</Text>
       </View>
     </View>
   );
 }
 
 const s = StyleSheet.create({
-  container: {
-    minHeight: 150,
+  emptyContainer: {
+    minHeight: 164,
     borderRadius: 12,
     borderWidth: 1.5,
-    padding: 16,
+    borderColor: "#DEDEDE",
+    backgroundColor: "#FFFFFF",
+    paddingLeft: 22,
+    paddingVertical: 24,
+    flexDirection: "row",
+    overflow: "hidden",
+  },
+
+  emptyTextArea: {
+    flex: 1,
+    zIndex: 1,
+  },
+
+  emptyStatusLabel: {
+    fontSize: 15,
+    lineHeight: 20,
+    fontWeight: "800",
+    color: "#555555",
+    marginBottom: 12,
+  },
+
+  emptyTitle: {
+    fontSize: 27,
+    lineHeight: 34,
+    fontWeight: "900",
+    color: "#050505",
+    marginBottom: 22,
+  },
+
+  emptyDescription: {
+    fontSize: 16,
+    lineHeight: 22,
+    fontWeight: "700",
+    color: "#8A8A8A",
+  },
+
+  emptyCharacterArea: {
+    width: 172,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginRight: -18,
+    marginBottom: -16,
+  },
+
+  emptyCharacter: {
+    fontSize: 96,
+  },
+
+  container: {
+    minHeight: 164,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    paddingLeft: 22,
+    paddingVertical: 22,
+    paddingRight: 10,
     flexDirection: "row",
     overflow: "hidden",
   },
 
   textArea: {
     flex: 1,
+    zIndex: 1,
   },
 
   statusLabel: {
-    fontSize: 12,
-    fontWeight: "800",
-    marginBottom: 8,
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: "900",
+    marginBottom: 10,
   },
 
   title: {
-    fontSize: 24,
-    lineHeight: 30,
+    fontSize: 26,
+    lineHeight: 32,
     fontWeight: "900",
-    color: "#111111",
+    color: "#050505",
   },
 
   time: {
     marginTop: 8,
     fontSize: 12,
+    fontWeight: "600",
     color: "#777777",
   },
 
   description: {
-    marginTop: 14,
-    fontSize: 12,
+    marginTop: 8,
+    fontSize: 13,
+    lineHeight: 18,
     fontWeight: "700",
-    color: "#333333",
+    color: "#666666",
   },
 
   confirmButtonArea: {
     marginTop: 14,
   },
 
-  characterBox: {
-    width: 96,
+  characterArea: {
+    width: 126,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
+    marginRight: -8,
+    marginBottom: -10,
   },
 
   character: {
-    fontSize: 58,
+    fontSize: 84,
   },
 });

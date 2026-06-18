@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
   mapCheckInToViewItem,
-  mockCheckInRawItems,
   type CheckInItem,
   type CheckInRawItem,
 } from "@/src/shared/entities/check-in";
@@ -17,8 +16,7 @@ import {
 } from "./ui";
 
 export default function ParentCheckInPage() {
-  const [rawItems, setRawItems] =
-    useState<CheckInRawItem[]>(mockCheckInRawItems);
+  const [rawItems, setRawItems] = useState<CheckInRawItem[]>([]);
 
   const items = useMemo(
     () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
@@ -26,6 +24,10 @@ export default function ParentCheckInPage() {
   );
 
   const latestItem = items[0] ?? null;
+
+  const pendingCount = items.filter(
+    (item) => item.direction === "RECEIVED" && item.status === "NEW"
+  ).length;
 
   const handleSendCheckIn = (message: string) => {
     const newItem: CheckInRawItem = {
@@ -65,6 +67,7 @@ export default function ParentCheckInPage() {
 
         <ParentCheckInStatusBanner
           latestItem={latestItem}
+          pendingCount={pendingCount}
           onConfirm={handleConfirmCheckIn}
         />
 
@@ -83,9 +86,9 @@ const s = StyleSheet.create({
   },
 
   container: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingTop: 18,
-    paddingBottom: 132,
-    gap: 16,
+    paddingBottom: 116,
+    gap: 18,
   },
 });
