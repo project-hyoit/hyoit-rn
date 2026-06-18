@@ -62,6 +62,23 @@ export const sentWaitingCheckInMock: CheckInRawItem[] = [
     type: "QUESTION",
     createdAt: "2026-06-18T15:14:00",
   },
+  {
+    id: "2",
+    senderRole: "child",
+    receiverRole: "parent",
+    message: "엄마 연락 안봐?",
+    type: "QUESTION",
+    createdAt: "2026-06-17T15:14:00",
+  },
+  {
+    id: "3",
+    senderRole: "child",
+    receiverRole: "parent",
+    message: "잘 지내고 있니?",
+    type: "QUESTION",
+    createdAt: "2026-06-16T15:14:00",
+    checkedAt: "2026-06-16T15:20:00",
+  },
 ];
 
 export const sentConfirmedCheckInMock: CheckInRawItem[] = [
@@ -73,6 +90,14 @@ export const sentConfirmedCheckInMock: CheckInRawItem[] = [
     type: "QUESTION",
     createdAt: "2026-06-18T15:14:00",
     checkedAt: "2026-06-18T15:20:00",
+  },
+  {
+    id: "2",
+    senderRole: "child",
+    receiverRole: "parent",
+    message: "엄마 연락 안봐?",
+    type: "QUESTION",
+    createdAt: "2026-06-17T15:14:00",
   },
 ];
 

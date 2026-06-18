@@ -17,7 +17,7 @@ const getStatusMark = (status: CheckInItem["status"]) => {
     case "CONFIRMED":
       return "✓";
     case "WAITING_CONFIRM":
-      return "!";
+      return "◷";
     case "CHECKED":
     default:
       return "∨";
@@ -32,7 +32,9 @@ export default function ParentCheckInHistoryCard({
   return (
     <View style={[s.card, item.status === "CHECKED" && s.checkedCard]}>
       <View style={s.content}>
-        <Text style={s.badge}>{isReceived ? "받은 안부" : "보낸 안부"}</Text>
+        <Text style={[s.badge, !isReceived && s.sentBadge]}>
+          {isReceived ? "받은 안부" : "보낸 안부"}
+        </Text>
 
         <Text style={s.message}>“{item.message}”</Text>
 
@@ -59,7 +61,14 @@ export default function ParentCheckInHistoryCard({
           item.status === "CONFIRMED" && s.confirmedCircle,
         ]}
       >
-        <Text style={s.statusCircleText}>{getStatusMark(item.status)}</Text>
+        <Text
+          style={[
+            s.statusCircleText,
+            item.status === "WAITING_CONFIRM" && s.waitingCircleText,
+          ]}
+        >
+          {getStatusMark(item.status)}
+        </Text>
       </View>
     </View>
   );
@@ -98,6 +107,11 @@ const s = StyleSheet.create({
     color: "#1478FF",
   },
 
+  sentBadge: {
+    backgroundColor: "#EAF8EF",
+    color: "#3D9B5E",
+  },
+
   message: {
     fontSize: 15,
     fontWeight: "900",
@@ -119,7 +133,7 @@ const s = StyleSheet.create({
   },
 
   waitingText: {
-    color: "#FF8A00",
+    color: "#FF7A00",
   },
 
   confirmedText: {
@@ -127,9 +141,9 @@ const s = StyleSheet.create({
   },
 
   statusCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     backgroundColor: "#BDBDBD",
     alignItems: "center",
     justifyContent: "center",
@@ -140,7 +154,9 @@ const s = StyleSheet.create({
   },
 
   waitingCircle: {
-    backgroundColor: "#FF8A00",
+    backgroundColor: "#FFFFFF",
+    borderWidth: 3,
+    borderColor: "#FF7A00",
   },
 
   confirmedCircle: {
@@ -149,7 +165,12 @@ const s = StyleSheet.create({
 
   statusCircleText: {
     fontSize: 16,
+    lineHeight: 18,
     fontWeight: "900",
     color: "#FFFFFF",
+  },
+
+  waitingCircleText: {
+    color: "#FF7A00",
   },
 });

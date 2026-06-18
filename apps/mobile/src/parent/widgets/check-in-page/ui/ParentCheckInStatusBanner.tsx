@@ -69,6 +69,12 @@ export default function ParentCheckInStatusBanner({
 
           <Text style={s.time}>{formatCheckInTime(latestItem.createdAt)}</Text>
 
+          {pendingCount >= 2 && (
+            <Text style={s.newDescription}>
+              확인하지 않은 안부가 {pendingCount - 1}개 더 있어요.
+            </Text>
+          )}
+
           <View style={s.confirmButtonArea}>
             <ConfirmCheckInButton onPress={() => onConfirm(latestItem)} />
           </View>
@@ -107,7 +113,13 @@ export default function ParentCheckInStatusBanner({
 
   if (isSentWaiting(latestItem)) {
     return (
-      <View style={s.sentWaitingContainer}>
+      <View style={s.sentContainer}>
+        <View style={s.waitingDotRow}>
+          <View style={s.waitingDot} />
+          <View style={s.waitingDot} />
+          <View style={s.waitingDot} />
+        </View>
+
         <View style={s.textArea}>
           <Text style={s.sentStatusLabel}>안부를 보냈어요</Text>
 
@@ -118,8 +130,8 @@ export default function ParentCheckInStatusBanner({
           <Text style={s.sentDescription}>자녀가 아직 확인하지 않았어요!</Text>
         </View>
 
-        <View style={s.characterArea}>
-          <Text style={s.character}>🐨</Text>
+        <View style={s.sentCharacterArea}>
+          <Text style={s.sentCharacter}>🐨</Text>
         </View>
       </View>
     );
@@ -127,9 +139,9 @@ export default function ParentCheckInStatusBanner({
 
   if (isSentConfirmed(latestItem)) {
     return (
-      <View style={s.sentConfirmedContainer}>
-        <View style={s.sentConfirmedBadge}>
-          <Text style={s.sentConfirmedBadgeText}>✓</Text>
+      <View style={s.sentContainer}>
+        <View style={s.confirmedBadge}>
+          <Text style={s.confirmedBadgeText}>✓</Text>
         </View>
 
         <View style={s.textArea}>
@@ -142,8 +154,8 @@ export default function ParentCheckInStatusBanner({
           <Text style={s.sentDescription}>자녀가 확인을 완료했어요!</Text>
         </View>
 
-        <View style={s.characterArea}>
-          <Text style={s.character}>🐨</Text>
+        <View style={s.sentCharacterArea}>
+          <Text style={s.sentCharacter}>🐨</Text>
         </View>
       </View>
     );
@@ -213,8 +225,9 @@ const s = StyleSheet.create({
     borderColor: "#66B4FF",
     backgroundColor: "#EEF5FF",
     paddingLeft: 22,
-    paddingVertical: 22,
-    paddingRight: 10,
+    paddingTop: 22,
+    paddingBottom: 18,
+    paddingRight: 8,
     flexDirection: "row",
     overflow: "visible",
   },
@@ -226,26 +239,14 @@ const s = StyleSheet.create({
     borderColor: "#66B4FF",
     backgroundColor: "#EEF5FF",
     paddingLeft: 22,
-    paddingVertical: 22,
-    paddingRight: 10,
+    paddingTop: 22,
+    paddingBottom: 18,
+    paddingRight: 8,
     flexDirection: "row",
     overflow: "hidden",
   },
 
-  sentWaitingContainer: {
-    minHeight: 164,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: "#9CDEB2",
-    backgroundColor: "#EAF8EF",
-    paddingLeft: 22,
-    paddingVertical: 22,
-    paddingRight: 10,
-    flexDirection: "row",
-    overflow: "hidden",
-  },
-
-  sentConfirmedContainer: {
+  sentContainer: {
     position: "relative",
     minHeight: 164,
     borderRadius: 12,
@@ -253,8 +254,9 @@ const s = StyleSheet.create({
     borderColor: "#9CDEB2",
     backgroundColor: "#EAF8EF",
     paddingLeft: 22,
-    paddingVertical: 22,
-    paddingRight: 10,
+    paddingTop: 22,
+    paddingBottom: 20,
+    paddingRight: 8,
     flexDirection: "row",
     overflow: "visible",
   },
@@ -284,7 +286,7 @@ const s = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     fontWeight: "900",
-    color: "#3D9B5E",
+    color: "#4C8A62",
     marginBottom: 16,
   },
 
@@ -301,6 +303,14 @@ const s = StyleSheet.create({
     lineHeight: 18,
     fontWeight: "700",
     color: "#777777",
+  },
+
+  newDescription: {
+    marginTop: 8,
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: "700",
+    color: "#666666",
   },
 
   divider: {
@@ -321,10 +331,10 @@ const s = StyleSheet.create({
   },
 
   sentDescription: {
-    marginTop: 20,
+    marginTop: 28,
     fontSize: 13,
     lineHeight: 19,
-    fontWeight: "800",
+    fontWeight: "900",
     color: "#111111",
   },
 
@@ -342,6 +352,18 @@ const s = StyleSheet.create({
 
   character: {
     fontSize: 84,
+  },
+
+  sentCharacterArea: {
+    width: 132,
+    alignItems: "center",
+    justifyContent: "flex-end",
+    marginRight: -16,
+    marginBottom: -10,
+  },
+
+  sentCharacter: {
+    fontSize: 88,
   },
 
   newBadge: {
@@ -363,21 +385,38 @@ const s = StyleSheet.create({
     color: "#FFFFFF",
   },
 
-  sentConfirmedBadge: {
+  waitingDotRow: {
     position: "absolute",
-    top: -14,
-    right: -12,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    top: 10,
+    right: 10,
+    flexDirection: "row",
+    gap: 6,
+    zIndex: 10,
+  },
+
+  waitingDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#507D62",
+  },
+
+  confirmedBadge: {
+    position: "absolute",
+    top: -10,
+    right: -8,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     backgroundColor: "#3D9B5E",
     alignItems: "center",
     justifyContent: "center",
     zIndex: 10,
   },
 
-  sentConfirmedBadgeText: {
-    fontSize: 20,
+  confirmedBadgeText: {
+    fontSize: 22,
+    lineHeight: 24,
     fontWeight: "900",
     color: "#FFFFFF",
   },
