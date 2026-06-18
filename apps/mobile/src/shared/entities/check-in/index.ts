@@ -13,7 +13,17 @@ export {
   QUICK_CHECK_IN_MESSAGES,
 } from "./model/constants";
 
-export { mockCheckInRawItems } from "./model/mock";
+export {
+  checkedCheckInMock,
+  checkInMockPresets,
+  emptyCheckInMock,
+  multipleNewCheckInMock,
+  newCheckInMock,
+  sentConfirmedCheckInMock,
+  sentWaitingCheckInMock,
+} from "./model/mock";
+
+export type { CheckInMockPresetKey } from "./model/mock";
 
 export { formatCheckInTime } from "./lib/formatCheckInTime";
 export { getCheckInOpponentLabel } from "./lib/getCheckInOpponentLabel";
