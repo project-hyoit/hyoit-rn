@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { IconSymbol } from "@/src/shared/ui";
 
 export default function VerifyCodeScreen() {
   const myCode = "927582";
@@ -77,23 +78,32 @@ export default function VerifyCodeScreen() {
       <Text style={s.title} allowFontScaling={false}>
         연결번호가 만들어졌어요{"\n"}자녀에게 알려주세요
       </Text>
+      <Text style={s.subtitle} allowFontScaling={false}>
+        아래 번호를 자녀 앱에서 입력하면{"\n"}가족 연결이 시작돼요.
+      </Text>
 
-      <View style={s.myCodeCard}>
-        <Text style={s.myCodeLabel} allowFontScaling={false}>
-          내 인증 번호
-        </Text>
-        <View style={s.codeRow}>
-          {myCode.split("").map((num, index) => (
-            <View key={index} style={s.codeBox}>
-              <Text style={s.codeText} allowFontScaling={false}>
-                {num}
-              </Text>
-            </View>
-          ))}
+    <View style={s.indexCard}>
+        <View style={s.myCodeCard}>
+          <View style={s.codeRow}>
+            {myCode.split("").map((num, index) => (
+              <View key={index} style={s.codeBox}>
+                <Text style={s.codeText} allowFontScaling={false}>
+                  {num}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
-        <Text style={s.explanation}>자녀분 핸드폰을 통해 인증번호를 입력해주세요</Text>
-      </View>
 
+        <View style={s.successHint}>
+          <View style={s.successIconWrap}>
+            <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+          </View>
+          <Text style={s.successHintText} allowFontScaling={false}>
+            번호를 자녀에게 알려주세요!.
+          </Text>
+        </View>
+      </View>
       <View style={s.timerRow}>
         <Text style={s.timerText}>{formatTime(remaining)}</Text>
         <Pressable onPress={handleResendSmall} hitSlop={8}>
@@ -135,14 +145,20 @@ const s = StyleSheet.create({
     lineHeight: 36,
     color: COLORS.text,
     fontWeight: "600",
-    marginBottom: 60,
+    marginBottom: 12,
+  },
+  subtitle: {
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 25,
+    marginBottom: 20,
   },
   myCodeCard: {
     alignItems: "center",
     marginBottom: 20,
     gap: 20,
   },
-  myCodeLabel: { fontSize: 16, color: COLORS.text, fontWeight: "600" },
   codeRow: {
     flexDirection: "row",
     gap: 8,
@@ -160,8 +176,29 @@ const s = StyleSheet.create({
     fontSize: 32,
     fontWeight: "700",
   },
-  explanation: {
+  successHint: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    marginTop: 20,
+    marginBottom: 8,
+    backgroundColor: "#F0F6FF",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+  },
+  successIconWrap: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: COLORS.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  successHintText: {
     fontSize: 14,
+    color: COLORS.text,
     fontWeight: "500",
   },
   modalButton: {
@@ -197,6 +234,13 @@ const s = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.3)",
     justifyContent: "center",
     alignItems: "center", 
+  },
+  indexCard: {
+    marginTop: 20,
+    borderColor: "rgba(0,0,0,0.2)",
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 24,
   },
   bottomSheet: {
     width: 364,

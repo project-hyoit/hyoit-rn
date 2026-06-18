@@ -8,6 +8,7 @@ import {
   TextInput,
 } from "react-native";
 import ProgressBar from "../../../../ui/ProgressBar";
+import { IconSymbol } from "@/src/shared/ui";
 
 export default function VerifyCodeScreen() {
   // 6자리 인증코드 입력 상태
@@ -53,7 +54,10 @@ export default function VerifyCodeScreen() {
     <View style={s.wrap}>
       <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        가족구성원 추가를 위한{"\n"}인증번호가 생성되었어요
+        안녕하세요!{"\n"}성함을 알려주세요
+      </Text>
+      <Text style={s.subtitle} allowFontScaling={false}>
+        가족이 부모님을 알아볼 수 있도록{"\n"}실명을 입력해주세요.
       </Text>
 
       <View style={s.myCodeCard}>
@@ -84,6 +88,15 @@ export default function VerifyCodeScreen() {
           ))}
         </View>
         <Text style={s.explanation}>부모님 핸드폰을 통해 인증번호를 입력해주세요</Text>
+      </View>
+
+      <View style={s.successHint}>
+        <View style={s.successIconWrap}>
+          <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+        </View>
+        <Text style={s.successHintText} allowFontScaling={false}>
+          인증번호 입력 후 부모 연결이 완료됩니다.
+        </Text>
       </View>
 
       <View style={s.nextRow}>
@@ -120,7 +133,14 @@ const s = StyleSheet.create({
     lineHeight: 36,
     color: COLORS.text,
     fontWeight: "600",
-    marginBottom: 60,
+    marginBottom: 12,
+  },
+  subtitle: {
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 25,
+    marginBottom: 20,
   },
   myCodeCard: {
     alignItems: "center",
@@ -146,6 +166,25 @@ const s = StyleSheet.create({
   },
   explanation: {
     fontSize: 14,
+    fontWeight: "500",
+  },
+  successHint: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 20,
+  },
+  successIconWrap: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: COLORS.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  successHintText: {
+    fontSize: 14,
+    color: COLORS.text,
     fontWeight: "500",
   },
   modalButton: {
