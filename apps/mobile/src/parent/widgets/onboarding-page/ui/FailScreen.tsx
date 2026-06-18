@@ -21,7 +21,7 @@ export default function FailScreen() {
       </Text>
 
       <Text style={s.description} allowFontScaling={false}>
-        인증 시간이 모두 지나가거나 인증에 실패했어요.
+        입력한 연결번호를 다시 확인한 뒤{"\n"}한번 더 시도해주세요.
       </Text>
 
       <Pressable
@@ -54,10 +54,10 @@ const s = StyleSheet.create({
     marginBottom: 9,
   },
   description: {
-    fontSize: 16,
-    color: "#454545",
-    lineHeight: 28,
-    marginBottom: 40,
+    fontSize: 14,
+    opacity: 0.7,
+    lineHeight: 25,
+    fontWeight: "600",
   },
   primaryBtn: {
     marginTop: "auto",
