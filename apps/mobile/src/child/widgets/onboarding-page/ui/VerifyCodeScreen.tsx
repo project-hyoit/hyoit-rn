@@ -152,8 +152,8 @@ const s = StyleSheet.create({
     marginTop: 5,
   },
   codeInput: {
-    width: 40,
-    height: 48,
+    width: 48,
+    height: 52,
     backgroundColor: "#E9E9E9",
     borderRadius: 12,
     justifyContent: "center",
@@ -271,19 +271,6 @@ const s = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  cancel: {
-    color: "#262626",
-    fontSize: 20,
-    fontWeight: "500",
-  },
-  cancelButton: {
-    paddingVertical:10,
-    paddingHorizontal:48,
-    backgroundColor:"#F5F5F5",
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   ok: {
     color: "#FFFFFF",
     fontSize: 20,
@@ -306,7 +293,6 @@ const s = StyleSheet.create({
   indexCard: {
     marginTop: 20,
     borderRadius: 12,
-    padding: 24,
   },
   timerText: {
     fontSize: 14,
