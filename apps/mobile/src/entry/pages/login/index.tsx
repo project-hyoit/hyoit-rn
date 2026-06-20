@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
   },
   welcometext:{
     fontSize: 25,
-    fontWeight: 800,
+    fontWeight: "800",
   },
   tip:{
     marginTop: 12,
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: "600",
     color: 'rgba(0,0,0,0.7)',
   },
   actions: {
