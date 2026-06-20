@@ -55,10 +55,10 @@ export default function VerifyCodeScreen() {
     <View style={s.wrap}>
       <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        안녕하세요!{"\n"}성함을 알려주세요
+        연결번호를 입력해주세요.
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        가족이 부모님을 알아볼 수 있도록{"\n"}실명을 입력해주세요.
+        아래에 연결번호를 입력하면{"\n"}가족 연결이 시작돼요.
       </Text>
 
       <View style={s.indexCard}>
