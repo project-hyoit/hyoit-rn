@@ -13,10 +13,9 @@ import ProgressBar from "@/src/ui/ProgressBar";
 
 export default function ChildInfoScreen() {
   const { name, set } = useOnboardingStore();
-  const setStore = useOnboardingStore((s) => s.set);
   useEffect(() => {
-    setStore({ step: 2 });
-  }, [setStore]);
+    set({ step: 2 });
+  }, [set]);
   const canNext = Boolean(name.trim());
   const [isFocused, setIsFocused] = useState(false);
 
