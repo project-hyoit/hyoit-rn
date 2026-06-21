@@ -1,0 +1,7 @@
+import { useLocalSearchParams } from "expo-router";
+import VerifyLoadingScreen from "@/src/child/pages/onboarding-page/ui/VerifyLoadingScreen";
+
+export default function VerifyLoadingRoute() {
+  const { codeInput } = useLocalSearchParams<{ codeInput: string }>();
+  return <VerifyLoadingScreen codeInput={codeInput || ""} />;
+}

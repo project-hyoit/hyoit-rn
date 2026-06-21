@@ -1,0 +1,161 @@
+import { router } from "expo-router";
+import { useState, useEffect } from "react";
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import ProgressBar from "../../../../ui/ProgressBar";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+
+export default function ParentInfoScreen() {
+  const { name, set } = useOnboardingStore();
+  const setStore = useOnboardingStore((s) => s.set);
+
+  useEffect(() => {
+    setStore({ step: 2 });
+  }, [setStore]);
+  const canNext = Boolean(name.trim());
+  const [isFocused, setIsFocused] = useState(false);
+
+  return (
+    <View style={s.wrap}>
+      <ProgressBar current={2} total={4} />
+      <Text style={s.title} allowFontScaling={false}>
+        안녕하세요!{"\n"}부모님 성함을 알려주세요
+      </Text>
+      <Text style={s.subtitle} allowFontScaling={false}>
+        안부를 보낼 때 {"\n"}부모님 이름이 함께 표시돼요.
+      </Text>
+
+      <View style={s.field}>
+        <Text style={s.label} allowFontScaling={false}>
+          부모님 성함
+        </Text>
+        <TextInput
+          placeholder="예 : 김효잇"
+          placeholderTextColor="#B6B6B6"
+          value={name}
+          onChangeText={(v) => set({ name: v })}
+          style={[
+            s.input,
+            isFocused && s.inputFocused,
+          ]}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          returnKeyType="next"
+        />
+      </View>
+
+      <View style={s.nextRow}>
+        <Pressable
+          style={({ pressed }) => [
+            s.next,
+            !canNext && s.nextDisabled,
+            pressed && canNext && { opacity: 0.9 },
+          ]}
+          disabled={!canNext}
+          onPress={() => router.push("/(child)/onboarding/verify-code")}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="다음"
+        >
+          <Text style={s.nextText} allowFontScaling={false}>
+            다음
+          </Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+const COLORS = {
+  border: "#B6B6B6",
+  label: "#454545",
+  text: "#000000",
+  placeholder: "#B6B6B6",
+  primary: "#1E90FF",
+  bg: "#FFFFFF",
+};
+
+const s = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    backgroundColor: COLORS.bg,
+    paddingHorizontal: 24,
+    paddingTop: 110,
+  },
+  title: {
+    fontSize: 27,
+    fontWeight: "700",
+    marginTop: 46,
+    marginBottom: 12,
+    lineHeight: 32,
+  },
+  subtitle: {
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 25,
+  },
+  field: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: 18,
+    lineHeight: 25,
+    marginTop: 57,
+    marginBottom: 9,
+    fontWeight: "800",
+  },
+  input: {
+  borderWidth: 1,
+  borderColor: COLORS.border,
+  borderRadius: 12,
+  paddingHorizontal: 16,
+  paddingVertical: Platform.select({ ios: 14, android: 12 }),
+  fontSize: 22,
+  fontWeight: "500",
+  color: COLORS.text,
+},
+
+inputFocused: {
+  borderColor: "#66B3FF",
+  borderWidth: 2,
+},
+
+  nextRow: {
+    marginTop: "auto",
+    alignItems: "flex-end",
+    marginBottom: 64,
+  },
+  next: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#1E90FF",
+    borderRadius: 12,
+    paddingVertical: 15,
+    width: "100%",
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: { elevation: 2 },
+    }),
+  },
+  nextDisabled: {
+    backgroundColor: "#D9D9D9"
+  },
+  nextText: {
+    color: "#fff",
+    fontSize: 22,
+    fontWeight: "500",
+  },
+});

@@ -1,5 +1,5 @@
 import { useChooseRoleAction } from "@hyoit/auth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Image, Pressable, StyleSheet, Text, View} from "react-native";
 
 import oldManImg from "@/src/entry/assets/images/choose/oldman.png";
@@ -9,11 +9,18 @@ import youngWomanImg from "@/src/entry/assets/images/choose/youngwoman.png";
 
 import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
+import ProgressBar from "../../../ui/ProgressBar";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 
 type SelectedRole = "parent" | "child" | null;
 
 export default function ChoosePage() {
   const [selectedRole, setSelectedRole] = useState<SelectedRole>(null);
+  const setStore = useOnboardingStore((s) => s.set);
+
+  useEffect(() => {
+    setStore({ step: 1 });
+  }, [setStore]);
 
   const { submit, isPending, error } = useChooseRoleAction({
     onSuccess: (result) => {
@@ -33,7 +40,8 @@ export default function ChoosePage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>어떤 분이 사용하시나요?</Text>
+      <ProgressBar current={1} total={4} />
+      <Text style={styles.title}>어떤 분이 효잇을 사용하시나요?</Text>
         <View style={styles.index}>
           <Pressable
             style={[
@@ -42,10 +50,6 @@ export default function ChoosePage() {
             ]}
             onPress={() => setSelectedRole("parent")}
           >
-            <View style={styles.imagearray}>
-              <Image style={styles.oldwoman} source={oldWomanImg} />
-              <Image style={styles.oldman} source={oldManImg} />
-            </View>
             <Text
               style={[
                 styles.roleText,
@@ -54,6 +58,11 @@ export default function ChoosePage() {
             >
               부모님
             </Text>
+            <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
+            <View style={styles.imagearray}>
+              <Image style={styles.img} source={oldWomanImg} />
+              <Image style={styles.img} source={oldManImg} />
+            </View>
           </Pressable>
 
           <Pressable
@@ -63,10 +72,6 @@ export default function ChoosePage() {
             ]}
             onPress={() => setSelectedRole("child")}
           >
-            <View style={styles.imagearray}>
-              <Image style={styles.youngwoman} source={youngWomanImg} />
-              <Image style={styles.youngman} source={youngManImg} />
-            </View>
             <Text
               style={[
                 styles.roleText,
@@ -75,6 +80,11 @@ export default function ChoosePage() {
             >
               자녀
             </Text>
+            <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
+            <View style={styles.imagearray}>
+              <Image style={styles.img} source={youngWomanImg} />
+              <Image style={styles.img} source={youngManImg} />
+            </View>
           </Pressable>
         </View>
       <Pressable
@@ -102,23 +112,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: BG,
     paddingHorizontal: 24,
+    paddingTop: 110,
+    alignItems: "center",
   },
   title: {
-    marginTop: 97,
-    marginBottom: 120,
+    marginTop:41,
+    marginBottom: 59,
     fontSize: 24,
-    fontWeight: "600",
-    color: TEXT,
+    fontWeight: "700",
   },
   index:{
-    flexDirection: "row",
-    gap:20,
+    gap:14,
+    width: "100%",
   },
   roleButton: {
-    width: 160,
     padding: 8,
-    paddingTop: 28,
-    paddingBottom: 28,
+    paddingVertical: 20, 
     borderRadius: 10,
     flexDirection: "column",
     alignItems: "center",
@@ -138,16 +147,23 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
   },
+  subtitle: {
+    color: "rgba(0, 0, 0, 0.6)",
+    fontSize: 12,
+    marginTop: 16,
+    marginBottom: 14,
+  },
   selectedRoleText: {
     color: PRIMARY,
     fontWeight: "700",
   },
   confirmButton: {
     backgroundColor: "#D9D9D9",
-    paddingVertical: 10,
+    paddingVertical: 15,
     borderRadius: 10,
     marginTop: "auto",
-    marginBottom: 96,
+    marginBottom: 64,
+    width: "100%",
   },
   activeConfirmButton: {
     backgroundColor: PRIMARY,
@@ -164,28 +180,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
-  oldwoman: {
-    width: 76,
-    height: 57,
-    resizeMode: "contain",
-    marginBottom: 27,
-  },
-  oldman: {
+  img: {
     width: 70,
     height: 57,
     resizeMode: "contain",
-    marginLeft: 4,
-  },
-  youngwoman: {
-    width: 70,
-    height: 65,
-    resizeMode: "contain",
-  },
-  youngman: {
-    width: 70,
-    height: 57,
-    resizeMode: "contain",
-    marginLeft: 10,
-    marginBottom: 27,
   },
 });

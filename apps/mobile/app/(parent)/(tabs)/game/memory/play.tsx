@@ -1,6 +1,5 @@
-// 라우트 래퍼: pages/game/memory/PlayScreen
-import PlayScreen from "@/src/parent/pages/game/memory/PlayScreen";
+import { PlayScreen } from "@/src/parent/pages/game-page/memory";
 
-export default function PlayRoute() {
+export default function MemoryPlayRoute() {
   return <PlayScreen />;
 }
