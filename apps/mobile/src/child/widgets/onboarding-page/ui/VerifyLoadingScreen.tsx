@@ -59,7 +59,7 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
         부모님 정보를 확인하고 있어요
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        잠시만 기달려주세요
+        잠시만 기다려주세요
       </Text>
 
       <View style={s.loadingContainer}>
