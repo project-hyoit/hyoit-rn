@@ -5,9 +5,11 @@ import ProgressBar from "../../../../ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 import { IconSymbol } from "@/src/shared/ui";
+import { mockUserProfile } from "@/src/parent/entities/user/model/mock";
 
 export default function SuccessScreen() {
   const { setChildOnboarded } = useAuthStore();
+  const parent = mockUserProfile;
   const setStore = useOnboardingStore((s) => s.set);
 
   useEffect(() => {
@@ -18,31 +20,27 @@ export default function SuccessScreen() {
     <View style={s.wrap}>
       <ProgressBar current={4} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        연결 완료!
+        연결이 완료되었어요!
       </Text>
 
       <Text style={s.description} allowFontScaling={false}>
-        이제 부모님께서{`
-`}당신을 보호할 준비가 되었어요.
+        이제 부모님과 가볍게 안부를 주고받을 수 있어요.
       </Text>
 
       <View style={s.iconWrap}>
         <IconSymbol name="checkmark" size={68} color="#FFFFFF" style={s.icon} />
       </View>
-
       <View style={s.infoContainer}>
-        <Text style={s.infoTitle}>확인 내용</Text>
-        <Text style={s.infoSubtitle}>연결이 완료되었어요</Text>
-        <Text style={s.infoDescription}>지금 바로 홈으로 이동해서 부모님과 소통을 시작해보세요.</Text>
+        <Text style={s.infoTitle}>연결된 가족</Text>
+        <Text style={s.infoSubtitle}>{parent.name}님</Text>
+        <Text style={s.infoDescription}>가족이 정상적으로 등록되었어요.</Text>
       </View>
-
       <View style={s.warningContainer}>
         <View style={s.warningIconSuccess}>
           <IconSymbol name="checkmark" size={20} color="#FFFFFF" />
         </View>
-        <Text style={s.warningText}>시작하기 버튼을 눌러 자녀 홈으로 이동하세요.</Text>
+        <Text style={s.warningText}>언제든지 가족과 안부를 주고 받을 수 있어요.</Text>
       </View>
-
       <Pressable
         onPress={() => {
           setChildOnboarded(true);
@@ -77,7 +75,6 @@ const s = StyleSheet.create({
     opacity: 0.7,
     lineHeight: 25,
     fontWeight: "600",
-    marginBottom: 20,
   },
   iconWrap: {
     width: 120,
@@ -97,6 +94,8 @@ const s = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E0E0E0",
     marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
   infoTitle: {
     fontSize: 14,
@@ -105,7 +104,7 @@ const s = StyleSheet.create({
     marginBottom: 8,
   },
   infoSubtitle: {
-    fontSize: 20,
+    fontSize: 26,
     fontWeight: "600",
     color: "#000000",
     marginBottom: 8,
