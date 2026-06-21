@@ -1,4 +1,4 @@
-import { IntroScreen } from "@/src/parent/widgets/game-page/memory";
+import { IntroScreen } from "@/src/parent/pages/game-page/memory";
 
 export default function MemoryIntroRoute() {
   return <IntroScreen />;

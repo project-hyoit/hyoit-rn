@@ -1,4 +1,4 @@
-import { SuccessScreen } from "@/src/child/widgets/onboarding-page";
+import { SuccessScreen } from "@/src/child/pages/onboarding-page";
 
 export default function SuccessRoute() {
   return <SuccessScreen />;

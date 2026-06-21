@@ -1,4 +1,4 @@
-import ParentCheckInPage from "@/src/parent/widgets/check-in-page";
+import ParentCheckInPage from "@/src/parent/pages/check-in-page";
 
 export default function CheckInRoute() {
   return <ParentCheckInPage />;
