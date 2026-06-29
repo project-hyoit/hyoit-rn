@@ -35,7 +35,7 @@ export default function ChildCard({
 const styles = StyleSheet.create({
   card: {
     marginTop: 10,
-    marginHorizontal: 18,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",

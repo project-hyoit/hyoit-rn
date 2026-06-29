@@ -7,11 +7,9 @@ interface ChildListProps {
 }
 
 export default function ChildList({ items = [] }: ChildListProps) {
-  const title = items.length === 1 ? `연결된 자녀 ${items[0].name}` : "연결된 자녀";
-
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>연결된 가족</Text>
       {items.map((child) => (
         <ChildCard
           key={child.id}
@@ -27,7 +25,7 @@ export default function ChildList({ items = [] }: ChildListProps) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 6,
+    paddingHorizontal: 18,
     paddingVertical: 4,
   },
   title: {
@@ -36,6 +34,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#1B1B1F",
     fontFamily: "Pretendard",
-    paddingLeft: 18,
   },
 });

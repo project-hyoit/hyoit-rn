@@ -63,7 +63,7 @@ export default function ProfilePage() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 0,
+    paddingHorizontal: 18,
     paddingTop: 0,
     paddingBottom: 32,
     gap: 16,
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#FFFFFF",
     paddingVertical: 18,
-    paddingHorizontal: 14,
+    paddingHorizontal: 18,
     borderBottomWidth: 1,
     borderBottomColor: "#E5E7EB",
     marginBottom: 0,
