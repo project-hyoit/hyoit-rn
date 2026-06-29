@@ -2,7 +2,14 @@ import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { mockUserProfile } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { router } from "expo-router";
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileEditPage() {
