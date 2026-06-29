@@ -70,12 +70,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F9FB",
   },
   topCard: {
-    width: "100%",
+    alignSelf: "stretch",
     backgroundColor: "#FFFFFF",
     paddingVertical: 18,
-    paddingHorizontal: 12,
+    paddingHorizontal: 24,
     borderBottomWidth: 1,
     borderBottomColor: "#E5E7EB",
+    marginHorizontal: -12,
     marginBottom: 0,
   },
   headerRow: {
@@ -92,7 +93,6 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 12,
-    backgroundColor: "#F5F7FF",
     justifyContent: "center",
     alignItems: "center",
   },
