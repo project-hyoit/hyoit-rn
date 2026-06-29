@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   title: {
     fontSize: 20,
@@ -90,6 +90,8 @@ const styles = StyleSheet.create({
     fontFamily: "Pretendard",
   },
   iconButton: {
+    position: "absolute",
+    right: 0,
     width: 42,
     height: 42,
     borderRadius: 12,
