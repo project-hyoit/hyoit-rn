@@ -92,7 +92,7 @@ export default function ProfileSettings({
 const styles = StyleSheet.create({
   wrapper: {
     width: "100%",
-    paddingHorizontal: 18,
+    paddingHorizontal: 12,
   },
   heading: {
     fontSize: 18,

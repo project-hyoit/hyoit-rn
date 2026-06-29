@@ -25,7 +25,7 @@ export default function ChildList({ items = [] }: ChildListProps) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    paddingHorizontal: 18,
+    paddingHorizontal: 12,
     paddingVertical: 4,
   },
   title: {
