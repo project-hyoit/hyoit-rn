@@ -1,3 +1,4 @@
+import { logout, useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import { useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -12,6 +13,14 @@ import ProfileSettings from "./ui/ProfileSettings";
 export default function ProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const resetAuth = useAuthStore((state) => state.resetAuth);
+
+  const handleLogout = async () => {
+    await logout();
+    resetAuth();
+    setIsLogoutModalOpen(false);
+    router.replace("/(entry)/login");
+  };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
@@ -55,7 +64,7 @@ export default function ProfilePage() {
 
         <LogoutModal
           visible={isLogoutModalOpen}
-          onConfirm={() => setIsLogoutModalOpen(false)}
+          onConfirm={handleLogout}
           onCancel={() => setIsLogoutModalOpen(false)}
         />
       </ScrollView>
