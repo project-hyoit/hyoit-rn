@@ -16,7 +16,7 @@ export default function LogoutModal({
       <View style={styles.overlay}>
         <View style={styles.box}>
           <Text style={styles.title}>로그아웃</Text>
-          <Text style={styles.text}>로그아웃 하시겠어요?</Text>
+          <Text style={styles.text}>로그아웃하면 현재 계정으로는{"\n"}더 이상 이용할 수 없어요.{"\n"}다시 이용하려면 카카오 계정으로{"\n"}로그인해야 해요.</Text>
 
           <View style={styles.buttons}>
             <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 20,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "600",
+    textAlign: "center",
   },
 
   buttons: {
