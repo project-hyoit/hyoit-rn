@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   description: {
     marginTop: 10,
     fontSize: 14,
-    color: "#6F7284",
+    fontWeight: "600",
     textAlign: "center",
     lineHeight: 20,
   },
