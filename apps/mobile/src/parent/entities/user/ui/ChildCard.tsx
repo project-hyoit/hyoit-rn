@@ -10,6 +10,11 @@ export default function ChildCard({
   name,
   isOnline = false,
 }: ChildCardProps) {
+  const statusLabel = isOnline ? "활성" : "비활성";
+  const description = isOnline
+    ? "서로의 안부를 주고받고 있어요."
+    : "현재 연결이 비활성 상태예요.";
+
   return (
     <View style={styles.card}>
       <View style={styles.leftSection}>
@@ -19,13 +24,13 @@ export default function ChildCard({
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.relation}>자녀</Text>
           </View>
-          <Text style={styles.description}>서로의 안부를 주고받고 있어요.</Text>
+          <Text style={styles.description}>{description}</Text>
         </View>
       </View>
 
       <View style={[styles.statusBadge, isOnline ? styles.active : styles.inactive]}>
         <Text style={[styles.statusText, isOnline ? styles.activeText : styles.inactiveText]}>
-          {isOnline ? "활성" : "비활성"}
+          {statusLabel}
         </Text>
       </View>
     </View>
@@ -44,10 +49,10 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   leftSection: {
+    flex: 1,
     flexDirection: "row",
     alignItems: "flex-start",
     gap: 12,
-    flex: 1,
   },
   textSection: {
     flex: 1,
