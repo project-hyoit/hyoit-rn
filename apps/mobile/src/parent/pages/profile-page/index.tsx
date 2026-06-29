@@ -18,7 +18,10 @@ export default function ProfilePage() {
       <View style={styles.topCard}>
         <View style={styles.headerRow}>
           <Text style={styles.title}>내 정보</Text>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => router.push("/(parent)/(tabs)/check-in")}
+          >
             <IconSymbol name="bell" size={24} color="#000" />
           </TouchableOpacity>
         </View>
