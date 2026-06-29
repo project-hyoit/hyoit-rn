@@ -43,7 +43,7 @@ export default function ProfilePage() {
       >
         <ProfileSection
           user={profile}
-          onPressEdit={() => setIsMenuOpen(true)}
+          onPressEdit={() => undefined}
           onPressModify={() => router.push("/(parent)/(tabs)/profile/edit")}
         />
 

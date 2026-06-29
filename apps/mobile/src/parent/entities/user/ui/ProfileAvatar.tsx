@@ -3,14 +3,18 @@ import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface Props {
+  avatarUri?: string;
   onPressEdit: () => void;
 }
 
-export default function ProfileAvatar({ onPressEdit }: Props) {
+export default function ProfileAvatar({ avatarUri, onPressEdit }: Props) {
   return (
     <View style={styles.avatarWrapper}>
       <View style={styles.avatarBackground} />
-      <Image source={mainProfileImg} style={styles.avatar} />
+      <Image
+        source={avatarUri ? { uri: avatarUri } : mainProfileImg}
+        style={styles.avatar}
+      />
 
       <TouchableOpacity style={styles.editButton} onPress={onPressEdit}>
         <View style={styles.editIconCircle}>

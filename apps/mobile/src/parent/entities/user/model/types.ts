@@ -2,6 +2,7 @@ export interface UserProfile {
   name: string;
   age: string;
   phone: string;
+  avatarUri?: string;
 }
 
 export interface ChildUser {

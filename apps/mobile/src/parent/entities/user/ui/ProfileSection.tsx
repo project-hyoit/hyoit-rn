@@ -14,7 +14,7 @@ export default function ProfileSection({ user, onPressEdit, onPressModify }: Pro
   return (
     <View style={styles.container}>
       <View style={styles.profileCard}>
-        <ProfileAvatar onPressEdit={onPressEdit} />
+        <ProfileAvatar avatarUri={user.avatarUri} onPressEdit={onPressEdit} />
 
         <ProfileInfo user={user} />
 

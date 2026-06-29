@@ -1,9 +1,11 @@
 import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import {
+  Alert,
   Image,
   Modal,
   ScrollView,
@@ -23,6 +25,7 @@ export default function ProfileEditPage() {
   const updateProfile = useUserProfileStore((state) => state.updateProfile);
   const [name, setName] = useState(profile.name);
   const [age, setAge] = useState(profile.age);
+  const [avatarUri, setAvatarUri] = useState(profile.avatarUri);
   const [isAgePickerOpen, setIsAgePickerOpen] = useState(false);
   const ageScrollRef = useRef<ScrollView>(null);
 
@@ -42,10 +45,41 @@ export default function ProfileEditPage() {
     return () => clearTimeout(timer);
   }, [age, isAgePickerOpen]);
 
+  const handlePickImage = async () => {
+    try {
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+      if (!permission.granted) {
+        Alert.alert(
+          "권한 필요",
+          "프로필 사진을 변경하려면 사진 접근 권한이 필요해요.",
+        );
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled) {
+        setAvatarUri(result.assets[0]?.uri);
+      }
+    } catch {
+      Alert.alert(
+        "사진 선택 실패",
+        "사진 선택 창을 열 수 없어요. 앱을 다시 실행한 뒤 시도해주세요.",
+      );
+    }
+  };
+
   const handleSave = () => {
     updateProfile({
       name: name.trim() || profile.name,
       age,
+      avatarUri,
     });
     router.back();
   };
@@ -80,8 +114,16 @@ export default function ProfileEditPage() {
           <View style={styles.avatarSection}>
             <View style={styles.avatarWrapper}>
               <View style={styles.avatarBackground} />
-              <Image source={mainProfileImg} style={styles.avatar} />
-              <TouchableOpacity style={styles.cameraButton} activeOpacity={0.8}>
+              <Image
+                source={avatarUri ? { uri: avatarUri } : mainProfileImg}
+                style={styles.avatar}
+              />
+              <TouchableOpacity
+                style={styles.cameraButton}
+                onPress={handlePickImage}
+                activeOpacity={0.8}
+                hitSlop={12}
+              >
                 <IconSymbol name="camera" size={20} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
@@ -275,6 +317,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 8,
     bottom: 8,
+    zIndex: 2,
     width: 42,
     height: 42,
     borderRadius: 21,
