@@ -2,9 +2,10 @@ import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Image,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,13 +15,38 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+const AGE_OPTIONS = ["10", "20", "30", "40", "50", "60", "70", "80"];
+const AGE_OPTION_HEIGHT = 52;
+
 export default function ProfileEditPage() {
   const profile = useUserProfileStore((state) => state.profile);
   const updateProfile = useUserProfileStore((state) => state.updateProfile);
   const [name, setName] = useState(profile.name);
+  const [age, setAge] = useState(profile.age);
+  const [isAgePickerOpen, setIsAgePickerOpen] = useState(false);
+  const ageScrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (!isAgePickerOpen) {
+      return;
+    }
+
+    const selectedIndex = Math.max(AGE_OPTIONS.indexOf(age), 0);
+    const timer = setTimeout(() => {
+      ageScrollRef.current?.scrollTo({
+        y: selectedIndex * AGE_OPTION_HEIGHT,
+        animated: false,
+      });
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [age, isAgePickerOpen]);
 
   const handleSave = () => {
-    updateProfile({ name: name.trim() || profile.name });
+    updateProfile({
+      name: name.trim() || profile.name,
+      age,
+    });
     router.back();
   };
 
@@ -82,8 +108,12 @@ export default function ProfileEditPage() {
 
             <View style={styles.fieldGroup}>
               <Text style={styles.label}>연령대</Text>
-              <TouchableOpacity style={styles.selectBox} activeOpacity={0.8}>
-                <Text style={styles.inputText}>{profile.age}대</Text>
+              <TouchableOpacity
+                style={styles.selectBox}
+                onPress={() => setIsAgePickerOpen(true)}
+                activeOpacity={0.8}
+              >
+                <Text style={styles.inputText}>{age}대</Text>
                 <IconSymbol name="chevron.down" size={26} color="#171A20" />
               </TouchableOpacity>
             </View>
@@ -102,6 +132,57 @@ export default function ProfileEditPage() {
           </TouchableOpacity>
         </ScrollView>
       </View>
+
+      <Modal visible={isAgePickerOpen} transparent animationType="fade">
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          onPress={() => setIsAgePickerOpen(false)}
+          activeOpacity={1}
+        >
+          <View style={styles.ageSheet}>
+            <View style={styles.ageSheetHeader}>
+              <Text style={styles.ageSheetTitle}>연령대 선택</Text>
+              <TouchableOpacity onPress={() => setIsAgePickerOpen(false)}>
+                <Text style={styles.ageSheetClose}>닫기</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView
+              ref={ageScrollRef}
+              style={styles.ageOptionList}
+              showsVerticalScrollIndicator={false}
+            >
+              {AGE_OPTIONS.map((option) => {
+                const selected = option === age;
+
+                return (
+                  <TouchableOpacity
+                    key={option}
+                    style={[
+                      styles.ageOption,
+                      selected && styles.ageOptionSelected,
+                    ]}
+                    onPress={() => {
+                      setAge(option);
+                      setIsAgePickerOpen(false);
+                    }}
+                    activeOpacity={0.8}
+                  >
+                    <Text
+                      style={[
+                        styles.ageOptionText,
+                        selected && styles.ageOptionTextSelected,
+                      ]}
+                    >
+                      {option}대
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+            </ScrollView>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -266,5 +347,55 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "800",
     color: "#F05757",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.35)",
+  },
+  ageSheet: {
+    maxHeight: 360,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    paddingBottom: 28,
+  },
+  ageSheetHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  ageSheetTitle: {
+    fontSize: 18,
+    fontWeight: "800",
+    color: "#111827",
+  },
+  ageSheetClose: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#4D79F6",
+  },
+  ageOptionList: {
+    maxHeight: AGE_OPTION_HEIGHT * 4,
+  },
+  ageOption: {
+    height: AGE_OPTION_HEIGHT,
+    borderRadius: 14,
+    justifyContent: "center",
+    paddingHorizontal: 16,
+  },
+  ageOptionSelected: {
+    backgroundColor: "#EEF3FF",
+  },
+  ageOptionText: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#333842",
+  },
+  ageOptionTextSelected: {
+    color: "#4D79F6",
   },
 });
