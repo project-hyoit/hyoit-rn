@@ -1,18 +1,29 @@
 import mainProfileImg from "@/assets/profileimg/mainprofile.png";
-import { mockUserProfile } from "@/src/parent/entities/user";
+import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { router } from "expo-router";
+import { useState } from "react";
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileEditPage() {
+  const profile = useUserProfileStore((state) => state.profile);
+  const updateProfile = useUserProfileStore((state) => state.updateProfile);
+  const [name, setName] = useState(profile.name);
+
+  const handleSave = () => {
+    updateProfile({ name: name.trim() || profile.name });
+    router.back();
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
       <View style={styles.container}>
@@ -27,7 +38,11 @@ export default function ProfileEditPage() {
 
           <Text style={styles.headerTitle}>프로필 수정</Text>
 
-          <TouchableOpacity style={styles.saveButton} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={handleSave}
+            activeOpacity={0.8}
+          >
             <Text style={styles.saveButtonText}>저장</Text>
           </TouchableOpacity>
         </View>
@@ -54,14 +69,21 @@ export default function ProfileEditPage() {
             <View style={styles.fieldGroup}>
               <Text style={styles.label}>이름</Text>
               <View style={styles.inputBox}>
-                <Text style={styles.inputText}>{mockUserProfile.name}</Text>
+                <TextInput
+                  value={name}
+                  onChangeText={setName}
+                  style={styles.inputText}
+                  placeholder="이름"
+                  placeholderTextColor="#A0A4AF"
+                  returnKeyType="done"
+                />
               </View>
             </View>
 
             <View style={styles.fieldGroup}>
               <Text style={styles.label}>연령대</Text>
               <TouchableOpacity style={styles.selectBox} activeOpacity={0.8}>
-                <Text style={styles.inputText}>60대</Text>
+                <Text style={styles.inputText}>{profile.age}대</Text>
                 <IconSymbol name="chevron.down" size={26} color="#171A20" />
               </TouchableOpacity>
             </View>
@@ -227,6 +249,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     color: "#333842",
+    padding: 0,
   },
   withdrawButton: {
     marginTop: 68,

@@ -7,13 +7,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
-import { ChildList, mockChildUsers, mockUserProfile, ProfileSection } from "../../entities/user";
+import { ChildList, mockChildUsers, ProfileSection, useUserProfileStore } from "../../entities/user";
 import ProfileSettings from "./ui/ProfileSettings";
 
 export default function ProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
+  const profile = useUserProfileStore((state) => state.profile);
 
   const handleLogout = async () => {
     await logout();
@@ -41,7 +42,7 @@ export default function ProfilePage() {
         showsVerticalScrollIndicator={false}
       >
         <ProfileSection
-          user={mockUserProfile}
+          user={profile}
           onPressEdit={() => setIsMenuOpen(true)}
           onPressModify={() => router.push("/(parent)/(tabs)/profile/edit")}
         />
