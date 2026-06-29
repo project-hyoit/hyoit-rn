@@ -2,7 +2,7 @@ import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { mockUserProfile } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { router } from "expo-router";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProfileEditPage() {
@@ -25,7 +25,10 @@ export default function ProfileEditPage() {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.content}>
+        <ScrollView
+          contentContainerStyle={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.avatarSection}>
             <View style={styles.avatarWrapper}>
               <View style={styles.avatarBackground} />
@@ -68,7 +71,7 @@ export default function ProfileEditPage() {
           <TouchableOpacity style={styles.withdrawButton} activeOpacity={0.8}>
             <Text style={styles.withdrawButtonText}>회원 탈퇴</Text>
           </TouchableOpacity>
-        </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -128,9 +131,9 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   content: {
-    flex: 1,
     paddingHorizontal: 12,
     paddingTop: 24,
+    paddingBottom: 32,
   },
   avatarSection: {
     alignItems: "center",
@@ -216,8 +219,7 @@ const styles = StyleSheet.create({
     color: "#333842",
   },
   withdrawButton: {
-    marginTop: "auto",
-    marginBottom: 32,
+    marginTop: 68,
     height: 56,
     borderRadius: 16,
     borderWidth: 1.5,

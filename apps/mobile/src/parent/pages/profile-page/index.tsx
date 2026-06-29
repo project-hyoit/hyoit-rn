@@ -31,7 +31,7 @@ export default function ProfilePage() {
         <ProfileSection
           user={mockUserProfile}
           onPressEdit={() => setIsMenuOpen(true)}
-          onPressModify={() => router.push("/(parent)/profile-edit")}
+          onPressModify={() => router.push("/(parent)/(tabs)/profile/edit")}
         />
 
         <ChildList items={mockChildUsers} />
