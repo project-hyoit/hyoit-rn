@@ -8,19 +8,25 @@ type ChildCardProps = Omit<ChildUser, "id">;
 
 export default function ChildCard({
   name,
-  phone,
   isOnline = false,
 }: ChildCardProps) {
   return (
     <View style={styles.card}>
       <View style={styles.leftSection}>
         <Image source={mainProfileImg} style={styles.img} />
-        <Text style={styles.name}>{name}</Text>
+        <View style={styles.textSection}>
+          <View style={styles.nameRow}>
+            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.relation}>자녀</Text>
+          </View>
+          <Text style={styles.description}>서로의 안부를 주고받고 있어요.</Text>
+        </View>
       </View>
 
-      <View style={styles.rightSection}>
-        <Text style={styles.phone}>{phone}</Text>
-        {isOnline && <View style={styles.online} />}
+      <View style={[styles.statusBadge, isOnline ? styles.active : styles.inactive]}>
+        <Text style={[styles.statusText, isOnline ? styles.activeText : styles.inactiveText]}>
+          {isOnline ? "활성" : "비활성"}
+        </Text>
       </View>
     </View>
   );
@@ -28,48 +34,77 @@ export default function ChildCard({
 
 const styles = StyleSheet.create({
   card: {
-    marginTop: 8,
-    marginHorizontal: 24,
+    marginTop: 10,
+    marginHorizontal: 18,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    minHeight: 60,
     backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    paddingHorizontal: 16,
+    borderRadius: 18,
+    padding: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
   },
-
   leftSection: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
+    gap: 12,
+    flex: 1,
   },
-
-  rightSection: {
+  textSection: {
+    flex: 1,
+  },
+  nameRow: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 8,
+    flexWrap: "wrap",
   },
-
   img: {
-    width: 34,
-    height: 34,
+    width: 54,
+    height: 54,
+    borderRadius: 14,
   },
-
   name: {
-    fontSize: 24,
-    fontWeight: "600",
-    marginLeft: 12,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#111827",
   },
-
-  phone: {
+  relation: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#6B7280",
+  },
+  description: {
+    marginTop: 6,
+    fontSize: 13,
+    color: "#6B7280",
+    lineHeight: 18,
+  },
+  statusBadge: {
+    minWidth: 54,
+    borderRadius: 999,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    alignItems: "center",
+  },
+  active: {
+    backgroundColor: "#E6F8EF",
+  },
+  inactive: {
+    backgroundColor: "#F4F4F5",
+  },
+  statusText: {
     fontSize: 12,
-    fontWeight: "600",
-    marginRight: 6,
+    fontWeight: "700",
   },
-
-  online: {
-    width: 12,
-    height: 12,
-    backgroundColor: "#50CD5C",
-    borderRadius: 12,
+  activeText: {
+    color: "#2B8A3E",
+  },
+  inactiveText: {
+    color: "#6B7280",
   },
 });

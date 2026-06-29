@@ -1,47 +1,27 @@
-import { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import type { UserProfile } from "@/src/parent/entities/user/model/types";
-import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
-import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
-
-import ConnectedChildrenTitle from "./ConnectedChildrenTitle";
-import LogoutButton from "./LogoutButton";
 import ProfileAvatar from "./ProfileAvatar";
 import ProfileInfo from "./ProfileInfo";
 
 interface Props {
   user: UserProfile;
+  onPressEdit: () => void;
+  onPressModify: () => void;
 }
 
-export default function ProfileSection({ user }: Props) {
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+export default function ProfileSection({ user, onPressEdit, onPressModify }: Props) {
   return (
-    <View>
-      <View style={styles.container}>
-        <ProfileAvatar onPressEdit={() => setIsMenuOpen(true)} />
+    <View style={styles.container}>
+      <View style={styles.profileCard}>
+        <ProfileAvatar onPressEdit={onPressEdit} />
 
         <ProfileInfo user={user} />
 
-        <LogoutButton onPress={() => setIsLogoutModalOpen(true)} />
-
-        <ProfileMenu
-          visible={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          onSelectAlbum={() => setIsMenuOpen(false)}
-          onDefault={() => setIsMenuOpen(false)}
-        />
-
-        <LogoutModal
-          visible={isLogoutModalOpen}
-          onConfirm={() => setIsLogoutModalOpen(false)}
-          onCancel={() => setIsLogoutModalOpen(false)}
-        />
+        <TouchableOpacity style={styles.modifyButton} onPress={onPressModify}>
+          <Text style={styles.modifyButtonText}>프로필 수정</Text>
+        </TouchableOpacity>
       </View>
-
-      <ConnectedChildrenTitle />
     </View>
   );
 }
@@ -49,6 +29,35 @@ export default function ProfileSection({ user }: Props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginTop: 30,
+    marginTop: 16,
+  },
+  profileCard: {
+    width: "100%",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 4,
+  },
+  modifyButton: {
+    marginTop: 16,
+    width: "100%",
+    height: 48,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#DDE0EE",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modifyButtonText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#1F3EA8",
   },
 });

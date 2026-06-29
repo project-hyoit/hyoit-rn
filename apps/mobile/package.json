@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
+    "@google/generative-ai": "^0.24.1",
     "@hyoit/auth": "workspace:*",
     "@hyoit/storage": "workspace:*",
     "@hyoit/types": "workspace:*",
@@ -61,5 +62,4 @@
     "typescript": "~5.8.3"
   },
   "private": true
-  
 }

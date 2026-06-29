@@ -29,6 +29,8 @@ const MAPPING = {
   "gearshape.fill": "settings",
   "square.fill": "stop",
   pencil: "edit",
+  camera: "photo-camera",
+  questionmark: "help-outline",
 } as const satisfies IconMapping;
 
 export function IconSymbol({

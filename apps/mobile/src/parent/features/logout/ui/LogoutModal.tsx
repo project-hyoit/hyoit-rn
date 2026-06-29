@@ -19,12 +19,12 @@ export default function LogoutModal({
           <Text style={styles.text}>로그아웃 하시겠어요?</Text>
 
           <View style={styles.buttons}>
-            <TouchableOpacity style={styles.cancleButton} onPress={onCancel}>
-              <Text style={styles.cancel}>로그아웃</Text>
+            <TouchableOpacity style={styles.logoutButton} onPress={onConfirm}>
+              <Text style={styles.logoutText}>로그아웃</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.noButton} onPress={onConfirm}>
-              <Text style={styles.no}>아니요</Text>
+            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+              <Text style={styles.cancelText}>아니요</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 
   box: {
     width: 356,
-    paddingVertical: 28,
     backgroundColor: "#fff",
     padding: 28,
     borderRadius: 12,
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 28,
     fontSize: 24,
     fontWeight: "bold",
   },
@@ -68,13 +66,13 @@ const styles = StyleSheet.create({
     gap: 16,
   },
 
-  cancel: {
+  logoutText: {
     color: "#1E90FF",
     fontWeight: "bold",
     fontSize: 16,
   },
 
-  cancleButton: {
+  logoutButton: {
     width: 142,
     height: 48,
     borderColor: "#1E90FF",
@@ -84,13 +82,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  no: {
+  cancelText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 16,
   },
 
-  noButton: {
+  cancelButton: {
     width: 142,
     height: 48,
     backgroundColor: "#1E90FF",

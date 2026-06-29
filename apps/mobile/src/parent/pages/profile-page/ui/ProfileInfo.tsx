@@ -7,33 +7,46 @@ interface Props {
 
 export default function ProfileInfo({ user }: Props) {
   return (
-    <>
-      <Text style={styles.name}>{user.name}</Text>
-
-      <View style={styles.info}>
-        <Text style={styles.infoText}>{user.age}세</Text>
-        <Text style={styles.infoText}>{user.phone}</Text>
+    <View style={styles.container}>
+      <Text style={styles.name}>{user.name}님</Text>
+      <View style={styles.accountBadge}>
+        <Text style={styles.accountBadgeText}>부모님 계정</Text>
       </View>
-    </>
+      <Text style={styles.description}>
+        효잇으로 가족과 연결되어 있어요.
+      </Text>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    marginTop: 20,
+  },
   name: {
     fontFamily: "Pretendard",
-    fontSize: 32,
-    fontWeight: "bold",
-    marginTop: 24,
+    fontSize: 28,
+    fontWeight: "800",
+    color: "#121212",
   },
-  info: {
-    flexDirection: "row",
-    alignItems: "center",
+  accountBadge: {
     marginTop: 8,
-    gap: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 999,
+    backgroundColor: "#EEF2FF",
   },
-  infoText: {
-    fontFamily: "Pretendard",
-    fontSize: 12,
-    fontWeight: "600",
+  accountBadgeText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#1F3EA8",
+  },
+  description: {
+    marginTop: 10,
+    fontSize: 14,
+    color: "#6F7284",
+    textAlign: "center",
+    lineHeight: 20,
   },
 });
