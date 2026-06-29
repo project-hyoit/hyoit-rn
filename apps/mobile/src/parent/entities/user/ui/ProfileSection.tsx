@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import type { UserProfile } from "@/src/parent/entities/user/model/types";
+import type { UserProfile } from "../model/types";
 import ProfileAvatar from "./ProfileAvatar";
 import ProfileInfo from "./ProfileInfo";
 

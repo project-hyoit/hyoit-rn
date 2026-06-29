@@ -3,10 +3,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
-import { mockChildUsers, mockUserProfile } from "../../entities/user/model/mock";
-import ChildList from "../../entities/user/ui/ChildList";
+import { ChildList, mockChildUsers, mockUserProfile, ProfileSection } from "../../entities/user";
 import ProfileSettings from "./ui/ProfileSettings";
-import { ProfileSection } from "./ui";
 import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
 

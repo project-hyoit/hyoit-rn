@@ -1,5 +1,6 @@
-import type { UserProfile } from "@/src/parent/entities/user/model/types";
 import { StyleSheet, Text, View } from "react-native";
+
+import type { UserProfile } from "../model/types";
 
 interface Props {
   user: UserProfile;
