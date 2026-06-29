@@ -85,8 +85,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FBFCFE",
+    paddingHorizontal: 12,
   },
   header: {
+    alignSelf: "stretch",
     height: 64,
     flexDirection: "row",
     alignItems: "center",
@@ -94,11 +96,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderBottomWidth: 1,
     borderBottomColor: "#ECEEF3",
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
+    marginHorizontal: -12,
   },
   headerIconButton: {
     position: "absolute",
-    left: 16,
+    left: 24,
     width: 42,
     height: 42,
     justifyContent: "center",
@@ -112,7 +115,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     position: "absolute",
-    right: 16,
+    right: 24,
     minWidth: 64,
     height: 42,
     borderRadius: 16,
@@ -131,7 +134,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
   },
   content: {
-    paddingHorizontal: 12,
     paddingTop: 24,
     paddingBottom: 32,
   },
@@ -183,6 +185,7 @@ const styles = StyleSheet.create({
   },
   form: {
     marginTop: 32,
+    paddingHorizontal: 12,
     gap: 20,
   },
   fieldGroup: {
@@ -220,6 +223,7 @@ const styles = StyleSheet.create({
   },
   withdrawButton: {
     marginTop: 68,
+    marginHorizontal: 12,
     height: 56,
     borderRadius: 16,
     borderWidth: 1.5,
