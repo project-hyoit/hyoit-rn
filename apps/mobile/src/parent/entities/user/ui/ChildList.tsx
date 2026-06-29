@@ -7,9 +7,11 @@ interface ChildListProps {
 }
 
 export default function ChildList({ items = [] }: ChildListProps) {
+  const title = items.length === 1 ? `연결된 자녀 ${items[0].name}` : "연결된 자녀";
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>연결된 가족</Text>
+      <Text style={styles.title}>{title}</Text>
       {items.map((child) => (
         <ChildCard
           key={child.id}

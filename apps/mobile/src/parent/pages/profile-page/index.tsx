@@ -20,11 +20,13 @@ export default function ProfilePage() {
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerRow}>
-          <Text style={styles.title}>내 정보</Text>
-          <TouchableOpacity style={styles.iconButton}>
-            <IconSymbol name="bell" size={24} color="#000" />
-          </TouchableOpacity>
+        <View style={styles.topCard}>
+          <View style={styles.headerRow}>
+            <Text style={styles.title}>내 정보</Text>
+            <TouchableOpacity style={styles.iconButton}>
+              <IconSymbol name="bell" size={24} color="#000" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <ProfileSection
@@ -61,16 +63,25 @@ export default function ProfilePage() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 14,
-    paddingTop: 24,
+    paddingHorizontal: 0,
+    paddingTop: 0,
     paddingBottom: 32,
     gap: 16,
+    backgroundColor: "#F8F9FB",
+  },
+  topCard: {
+    width: "100%",
+    backgroundColor: "#FFFFFF",
+    paddingVertical: 18,
+    paddingHorizontal: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E7EB",
+    marginBottom: 0,
   },
   headerRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 4,
   },
   title: {
     fontSize: 20,

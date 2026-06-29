@@ -33,16 +33,10 @@ const styles = StyleSheet.create({
   },
   profileCard: {
     width: "100%",
-    backgroundColor: "#FFFFFF",
     borderRadius: 24,
     paddingVertical: 24,
     paddingHorizontal: 20,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 8 },
-    elevation: 4,
   },
   modifyButton: {
     marginTop: 16,
