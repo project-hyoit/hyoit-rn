@@ -1,6 +1,7 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
+import { router } from "expo-router";
 
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { ChildList, mockChildUsers, mockUserProfile, ProfileSection } from "../../entities/user";
@@ -30,7 +31,7 @@ export default function ProfilePage() {
         <ProfileSection
           user={mockUserProfile}
           onPressEdit={() => setIsMenuOpen(true)}
-          onPressModify={() => setIsMenuOpen(true)}
+          onPressModify={() => router.push("/(parent)/profile-edit")}
         />
 
         <ChildList items={mockChildUsers} />
