@@ -15,6 +15,7 @@ import { IconSymbol } from "@/src/shared/ui";
 
 export default function SuccessScreen() {
   const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
+  const name = useOnboardingStore((s) => s.name);
   const age = useOnboardingStore((s) => s.age);
   const setStore = useOnboardingStore((s) => s.set);
   const updateProfile = useUserProfileStore((s) => s.updateProfile);
@@ -52,7 +53,7 @@ export default function SuccessScreen() {
       </View>
       <Pressable
         onPress={() => {
-          updateProfile({ age });
+          updateProfile({ name: name.trim(), age });
           setParentOnboarded(true);
           router.replace("/(parent)");
         }}
