@@ -29,27 +29,35 @@ export default function VerifyCodeScreen() {
 
   const startTimer = useCallback(() => {
     setRemaining(INITIAL);
-    if (timerRef.current) clearInterval(timerRef.current as any);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
     timerRef.current = setInterval(() => {
-      setRemaining((prev) => {
-        if (prev <= 1) {
-          if (timerRef.current) clearInterval(timerRef.current as any);
-          timerRef.current = null;
-          // schedule navigation asynchronously to avoid setState-in-render errors
-          setTimeout(() => handleTimeout(), 0);
-          return 0;
-        }
-        return prev - 1;
-      });
+      setRemaining((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
-  }, [handleTimeout]);
+  }, []);
 
   useEffect(() => {
     startTimer();
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current as any);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     };
   }, [startTimer]);
+
+  useEffect(() => {
+    if (remaining !== 0) {
+      return;
+    }
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    handleTimeout();
+  }, [handleTimeout, remaining]);
 
   const formatTime = (sec: number) => {
     const m = Math.floor(sec / 60)
