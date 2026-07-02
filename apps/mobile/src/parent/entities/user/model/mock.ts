@@ -9,7 +9,7 @@ export const mockUserProfile: UserProfile = {
 export const mockChildUsers: ChildUser[] = [
   {
     id: "1",
-    name: "김유찬",
+    name: "김봄",
     phone: "010-4610-3404",
     isOnline: true,
   },

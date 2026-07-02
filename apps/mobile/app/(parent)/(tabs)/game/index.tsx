@@ -1,4 +1,4 @@
-import GamePage from "@/src/parent/widgets/game-page";
+import GamePage from "@/src/parent/pages/game-page";
 
 export default function GameRoute() {
   return <GamePage />;

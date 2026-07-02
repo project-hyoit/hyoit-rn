@@ -16,15 +16,15 @@ export default function LogoutModal({
       <View style={styles.overlay}>
         <View style={styles.box}>
           <Text style={styles.title}>로그아웃</Text>
-          <Text style={styles.text}>로그아웃 하시겠어요?</Text>
+          <Text style={styles.text}>로그아웃하면 현재 계정으로는{"\n"}더 이상 이용할 수 없어요.{"\n"}다시 이용하려면 카카오 계정으로{"\n"}로그인해야 해요.</Text>
 
           <View style={styles.buttons}>
-            <TouchableOpacity style={styles.cancleButton} onPress={onCancel}>
-              <Text style={styles.cancel}>로그아웃</Text>
+            <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+              <Text style={styles.cancelText}>취소</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.noButton} onPress={onConfirm}>
-              <Text style={styles.no}>아니요</Text>
+            <TouchableOpacity style={styles.logoutButton} onPress={onConfirm}>
+              <Text style={styles.logoutText}>로그아웃</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
 
   box: {
     width: 356,
-    paddingVertical: 28,
     backgroundColor: "#fff",
     padding: 28,
     borderRadius: 12,
@@ -51,7 +50,6 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 28,
     fontSize: 24,
     fontWeight: "bold",
   },
@@ -59,7 +57,8 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 20,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
+    textAlign: "center",
   },
 
   buttons: {
@@ -68,32 +67,32 @@ const styles = StyleSheet.create({
     gap: 16,
   },
 
-  cancel: {
-    color: "#1E90FF",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
-
-  cancleButton: {
-    width: 142,
-    height: 48,
-    borderColor: "#1E90FF",
-    borderWidth: 1,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  no: {
+  logoutText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 16,
   },
 
-  noButton: {
+  logoutButton: {
     width: 142,
     height: 48,
     backgroundColor: "#1E90FF",
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  cancelText: {
+    color: "#1E90FF",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+
+  cancelButton: {
+    width: 142,
+    height: 48,
+    borderColor: "#1E90FF",
+    borderWidth: 1,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",

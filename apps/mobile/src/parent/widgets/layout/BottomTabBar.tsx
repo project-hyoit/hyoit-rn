@@ -1,7 +1,8 @@
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { IconSymbol } from "../../shared/ui/IconSymbol";
+
+import { IconSymbol } from "@/src/shared/ui";
 
 const ACTIVE = "#1E90FF";
 const INACTIVE = "#D9D9D9";
@@ -21,29 +22,28 @@ export default function BottomTabBar({
         const isFocused = state.index === index;
         const { options } = descriptors[route.key];
 
+        const color = isFocused ? ACTIVE : INACTIVE;
+
         const onPress = () => {
-          const e = navigation.emit({
+          const event = navigation.emit({
             type: "tabPress",
             target: route.key,
             canPreventDefault: true,
           });
-          if (!isFocused && !e.defaultPrevented)
+
+          if (!isFocused && !event.defaultPrevented) {
             navigation.navigate(route.name);
+          }
         };
 
-        const Icon = options.tabBarIcon?.({
+        const icon = options.tabBarIcon?.({
           focused: isFocused,
-          color: isFocused ? ACTIVE : INACTIVE,
+          color,
           size: 24,
-        }) ?? (
-          <IconSymbol
-            name="square.fill"
-            size={24}
-            color={isFocused ? ACTIVE : INACTIVE}
-          />
-        );
+        }) ?? <IconSymbol name="square.fill" size={24} color={color} />;
 
-        const label = options.title;
+        const label =
+          typeof options.title === "string" ? options.title : route.name;
 
         return (
           <Pressable
@@ -55,9 +55,10 @@ export default function BottomTabBar({
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : undefined}
           >
-            <View style={styles.iconWrap}>{Icon}</View>
+            <View style={styles.iconWrap}>{icon}</View>
+
             <Text
-              style={[styles.label, { color: isFocused ? ACTIVE : INACTIVE }]}
+              style={[styles.label, { color }]}
               numberOfLines={1}
               ellipsizeMode="clip"
               allowFontScaling={false}
@@ -81,16 +82,23 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     paddingHorizontal: 0,
     overflow: "visible",
+
     ...Platform.select({
       ios: {
-        shadowColor: "#000",
+        shadowColor: "#000000",
         shadowOpacity: 0.06,
         shadowRadius: 8,
-        shadowOffset: { width: 0, height: -2 },
+        shadowOffset: {
+          width: 0,
+          height: -2,
+        },
       },
-      android: { elevation: 10 },
+      android: {
+        elevation: 10,
+      },
     }),
   },
+
   item: {
     flex: 1,
     height: 48,
@@ -99,6 +107,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     overflow: "visible",
   },
+
   iconWrap: {
     width: 30,
     height: 24,
@@ -107,6 +116,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     overflow: "visible",
   },
+
   label: {
     fontSize: 12,
     lineHeight: 16,

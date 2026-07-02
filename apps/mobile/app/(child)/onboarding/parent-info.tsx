@@ -1,5 +1,5 @@
-import { ParentInfoScreen } from "@/src/child/widgets/onboarding-page";
+import { ParentInfoScreen } from "@/src/child/pages/onboarding-page";
 
-export default function ParentInfoRoute() {
+export default function UserInfoRoute() {
   return <ParentInfoScreen />;
 }

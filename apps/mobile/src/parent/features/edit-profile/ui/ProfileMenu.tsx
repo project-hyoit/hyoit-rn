@@ -23,11 +23,11 @@ export default function ProfileMenu({
         activeOpacity={1}
       />
       <View style={styles.menu}>
-        <TouchableOpacity onPress={onSelectAlbum}>
-          <Text style={styles.item1}>앨범에서 사진 선택</Text>
+        <TouchableOpacity style={styles.menuItem} onPress={onSelectAlbum}>
+          <Text style={styles.itemText}>앨범에서 사진 선택</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onDefault}>
-          <Text style={styles.item2}>기본 프로필 적용</Text>
+        <TouchableOpacity style={styles.menuItem} onPress={onDefault}>
+          <Text style={styles.itemText}>기본 프로필 적용</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -36,9 +36,8 @@ export default function ProfileMenu({
 
 const styles = StyleSheet.create({
   overlay: {
-    position: "absolute",
-    top: 0,
-    right: 0,
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 10,
   },
 
   background: {
@@ -48,22 +47,20 @@ const styles = StyleSheet.create({
   menu: {
     position: "absolute",
     top: 140,
-    right: -100,
+    right: 16,
     backgroundColor: "#fff",
     borderRadius: 12,
     elevation: 6,
-    width: 128,
-    height: 96,
-    alignItems: "center",
+    width: 180,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
 
-  item1: {
-    fontSize: 14,
-    marginTop: 16,
+  menuItem: {
+    paddingVertical: 10,
   },
 
-  item2: {
+  itemText: {
     fontSize: 14,
-    marginTop: 20,
   },
 });
