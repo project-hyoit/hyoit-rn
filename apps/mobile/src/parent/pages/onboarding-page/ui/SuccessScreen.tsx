@@ -10,11 +10,14 @@ import {
 import ProgressBar from "../../../../ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui";
 
 export default function SuccessScreen() {
   const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
+  const age = useOnboardingStore((s) => s.age);
   const setStore = useOnboardingStore((s) => s.set);
+  const updateProfile = useUserProfileStore((s) => s.updateProfile);
 
   useEffect(() => {
     setStore({ step: 4 });
@@ -49,6 +52,7 @@ export default function SuccessScreen() {
       </View>
       <Pressable
         onPress={() => {
+          updateProfile({ age });
           setParentOnboarded(true);
           router.replace("/(parent)");
         }}

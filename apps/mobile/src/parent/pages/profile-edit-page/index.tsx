@@ -1,4 +1,5 @@
 import mainProfileImg from "@/assets/profileimg/mainprofile.png";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import * as ImagePicker from "expo-image-picker";
@@ -17,14 +18,31 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const AGE_OPTIONS = ["10", "20", "30", "40", "50", "60", "70", "80"];
+const MIN_AGE = 1;
+const MAX_AGE = 100;
+const AGE_OPTIONS = Array.from({ length: MAX_AGE }, (_, index) =>
+  String(index + MIN_AGE),
+);
 const AGE_OPTION_HEIGHT = 52;
+
+const normalizeAge = (value?: string) => {
+  const parsed = Number(value);
+
+  if (!Number.isFinite(parsed)) {
+    return "60";
+  }
+
+  return String(Math.min(Math.max(parsed, MIN_AGE), MAX_AGE));
+};
 
 export default function ProfileEditPage() {
   const profile = useUserProfileStore((state) => state.profile);
   const updateProfile = useUserProfileStore((state) => state.updateProfile);
+  const onboardingAge = useOnboardingStore((state) => state.age);
   const [name, setName] = useState(profile.name);
-  const [age, setAge] = useState(profile.age);
+  const [age, setAge] = useState(() =>
+    normalizeAge(profile.age || onboardingAge),
+  );
   const [avatarUri, setAvatarUri] = useState(profile.avatarUri);
   const [isAgePickerOpen, setIsAgePickerOpen] = useState(false);
   const ageScrollRef = useRef<ScrollView>(null);
@@ -40,7 +58,7 @@ export default function ProfileEditPage() {
         y: selectedIndex * AGE_OPTION_HEIGHT,
         animated: false,
       });
-    }, 0);
+    }, 50);
 
     return () => clearTimeout(timer);
   }, [age, isAgePickerOpen]);
@@ -149,13 +167,13 @@ export default function ProfileEditPage() {
             </View>
 
             <View style={styles.fieldGroup}>
-              <Text style={styles.label}>연령대</Text>
+              <Text style={styles.label}>나이</Text>
               <TouchableOpacity
                 style={styles.selectBox}
                 onPress={() => setIsAgePickerOpen(true)}
                 activeOpacity={0.8}
               >
-                <Text style={styles.inputText}>{age}대</Text>
+                <Text style={styles.inputText}>{age}살</Text>
                 <IconSymbol name="chevron.down" size={26} color="#171A20" />
               </TouchableOpacity>
             </View>
@@ -183,7 +201,7 @@ export default function ProfileEditPage() {
         >
           <View style={styles.ageSheet}>
             <View style={styles.ageSheetHeader}>
-              <Text style={styles.ageSheetTitle}>연령대 선택</Text>
+              <Text style={styles.ageSheetTitle}>나이 선택</Text>
               <TouchableOpacity onPress={() => setIsAgePickerOpen(false)}>
                 <Text style={styles.ageSheetClose}>닫기</Text>
               </TouchableOpacity>
@@ -216,7 +234,7 @@ export default function ProfileEditPage() {
                         selected && styles.ageOptionTextSelected,
                       ]}
                     >
-                      {option}대
+                      {option}살
                     </Text>
                   </TouchableOpacity>
                 );
