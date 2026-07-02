@@ -24,6 +24,7 @@ export default function AgeInfoScreen() {
     [age]
   );
   const [selectedAge, setSelectedAge] = useState(initialAge);
+  const initialAgeRef = useRef(initialAge);
   const scrollRef = useRef<ScrollView>(null);
   const ages = useMemo(
     () => Array.from({ length: MAX_AGE - MIN_AGE + 1 }, (_, index) => MIN_AGE + index),
@@ -45,9 +46,16 @@ export default function AgeInfoScreen() {
   }, [selectedAge, set]);
 
   useEffect(() => {
-    const index = Math.min(Math.max(selectedAge - MIN_AGE, 0), ages.length - 1);
-    scrollRef.current?.scrollTo({ y: index * ITEM_HEIGHT, animated: false });
-  }, [ages.length, selectedAge]);
+    const index = Math.min(
+      Math.max(initialAgeRef.current - MIN_AGE, 0),
+      ages.length - 1
+    );
+    const timer = setTimeout(() => {
+      scrollRef.current?.scrollTo({ y: index * ITEM_HEIGHT, animated: false });
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [ages.length]);
 
   const handleScrollEnd = (offsetY: number) => {
     const index = Math.round(offsetY / ITEM_HEIGHT);
