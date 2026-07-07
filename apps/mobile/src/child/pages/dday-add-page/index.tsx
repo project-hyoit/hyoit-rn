@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import {
   Alert,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,61 +17,97 @@ import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 const NAME_LIMIT = 20;
 const MEMO_LIMIT = 100;
+const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
+const MONTH_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
+  month: "long",
+});
+const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  weekday: "short",
+});
 
-const normalizeDateInput = (value: string) => {
-  const matched = value.match(/^(\d{4})[.\-/\s]+(\d{1,2})[.\-/\s]+(\d{1,2})/);
-
-  if (!matched) {
-    return null;
-  }
-
-  const [, yearText, monthText, dayText] = matched;
-  const year = Number(yearText);
-  const month = Number(monthText);
-  const day = Number(dayText);
-  const date = new Date(year, month - 1, day);
-
-  if (
-    date.getFullYear() !== year ||
-    date.getMonth() !== month - 1 ||
-    date.getDate() !== day
-  ) {
-    return null;
-  }
-
+const getDateKey = (date: Date) => {
   return [
-    String(year).padStart(4, "0"),
-    String(month).padStart(2, "0"),
-    String(day).padStart(2, "0"),
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
   ].join("-");
+};
+
+const toDate = (value: string) => {
+  const [year, month, day] = value.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const formatSelectedDate = (value: string) => {
+  return DATE_FORMATTER.format(toDate(value)).replace(/\./g, ".");
+};
+
+const createCalendarDays = (monthDate: Date) => {
+  const year = monthDate.getFullYear();
+  const month = monthDate.getMonth();
+  const firstDate = new Date(year, month, 1);
+  const firstDay = firstDate.getDay();
+  const start = new Date(year, month, 1 - firstDay);
+
+  return Array.from({ length: 42 }, (_, index) => {
+    const date = new Date(start);
+    date.setDate(start.getDate() + index);
+
+    return {
+      date,
+      key: getDateKey(date),
+      isCurrentMonth: date.getMonth() === month,
+    };
+  });
 };
 
 export default function ChildDdayAddPage() {
   const addItem = useDdayStore((state) => state.addItem);
   const [title, setTitle] = useState("");
-  const [dateText, setDateText] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [monthDate, setMonthDate] = useState(() => {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+  });
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [memo, setMemo] = useState("");
+  const todayKey = getDateKey(new Date());
 
   const handleSave = () => {
-    const normalizedDate = normalizeDateInput(dateText);
-
     if (!title.trim()) {
       Alert.alert("일정 이름 필요", "디데이 이름을 입력해주세요.");
       return;
     }
 
-    if (!normalizedDate) {
-      Alert.alert("날짜 확인", "날짜를 2026. 08. 10 형식으로 입력해주세요.");
+    if (!selectedDate) {
+      Alert.alert("날짜 선택", "달력에서 날짜를 선택해주세요.");
       return;
     }
 
     addItem({
       title: title.trim(),
-      date: normalizedDate,
+      date: selectedDate,
       memo: memo.trim() || undefined,
     });
     router.back();
   };
+
+  const moveMonth = (amount: number) => {
+    setMonthDate(
+      (prev) => new Date(prev.getFullYear(), prev.getMonth() + amount, 1),
+    );
+  };
+
+  const handleSelectDate = (date: Date) => {
+    setSelectedDate(getDateKey(date));
+    setMonthDate(new Date(date.getFullYear(), date.getMonth(), 1));
+    setIsCalendarOpen(false);
+  };
+
+  const calendarDays = createCalendarDays(monthDate);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
@@ -106,16 +143,21 @@ export default function ChildDdayAddPage() {
 
         <View style={styles.fieldGroup}>
           <Text style={styles.label}>날짜</Text>
-          <View style={styles.dateInputBox}>
-            <TextInput
-              value={dateText}
-              onChangeText={setDateText}
-              style={styles.inputText}
-              placeholder="2026. 08. 10"
-              placeholderTextColor="#A0A4AF"
-            />
+          <TouchableOpacity
+            style={styles.dateInputBox}
+            onPress={() => setIsCalendarOpen(true)}
+            activeOpacity={0.8}
+          >
+            <Text
+              style={[
+                styles.inputText,
+                !selectedDate && styles.placeholderText,
+              ]}
+            >
+              {selectedDate ? formatSelectedDate(selectedDate) : "날짜 선택"}
+            </Text>
             <IconSymbol name="calendar" size={23} color="#6B7280" />
-          </View>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.fieldGroup}>
@@ -144,6 +186,88 @@ export default function ChildDdayAddPage() {
           <Text style={styles.saveButtonText}>저장하기</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal visible={isCalendarOpen} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <View style={styles.calendarSheet}>
+            <View style={styles.calendarHeader}>
+              <TouchableOpacity
+                style={styles.monthButton}
+                onPress={() => moveMonth(-1)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.monthArrow}>‹</Text>
+              </TouchableOpacity>
+
+              <View style={styles.monthTitleRow}>
+                <Text style={styles.monthText}>
+                  {MONTH_FORMATTER.format(monthDate)}
+                </Text>
+                <Text style={styles.yearText}>{monthDate.getFullYear()}년</Text>
+              </View>
+
+              <TouchableOpacity
+                style={styles.monthButton}
+                onPress={() => moveMonth(1)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.monthArrow}>›</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.weekRow}>
+              {WEEKDAYS.map((day) => (
+                <Text key={day} style={styles.weekday}>
+                  {day}
+                </Text>
+              ))}
+            </View>
+
+            <View style={styles.dayGrid}>
+              {calendarDays.map((day) => {
+                const isToday = day.key === todayKey;
+                const isSelected = day.key === selectedDate;
+
+                return (
+                  <TouchableOpacity
+                    key={day.key}
+                    style={styles.dayCell}
+                    onPress={() => handleSelectDate(day.date)}
+                    activeOpacity={0.75}
+                  >
+                    <View
+                      style={[
+                        styles.dayCircle,
+                        isToday && styles.todayDayCircle,
+                        isSelected && styles.selectedDayCircle,
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.dayText,
+                          !day.isCurrentMonth && styles.mutedDayText,
+                          isToday && styles.todayDayText,
+                          isSelected && styles.selectedDayText,
+                        ]}
+                      >
+                        {day.date.getDate()}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+            <TouchableOpacity
+              style={styles.closeCalendarButton}
+              onPress={() => setIsCalendarOpen(false)}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.closeCalendarText}>닫기</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -215,6 +339,9 @@ const styles = StyleSheet.create({
     color: "#333842",
     padding: 0,
   },
+  placeholderText: {
+    color: "#A0A4AF",
+  },
   memoBox: {
     minHeight: 118,
     borderRadius: 8,
@@ -259,5 +386,115 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "900",
     color: "#FFFFFF",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0,0,0,0.35)",
+    paddingHorizontal: 14,
+    paddingBottom: 26,
+  },
+  calendarSheet: {
+    borderRadius: 16,
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 18,
+    paddingTop: 18,
+    paddingBottom: 18,
+  },
+  calendarHeader: {
+    height: 38,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  monthButton: {
+    width: 36,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  monthArrow: {
+    fontSize: 25,
+    fontWeight: "900",
+    color: "#111111",
+  },
+  monthTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  monthText: {
+    fontSize: 22,
+    fontWeight: "900",
+    color: "#4D79F6",
+  },
+  yearText: {
+    fontSize: 17,
+    fontWeight: "900",
+    color: "#111111",
+  },
+  weekRow: {
+    flexDirection: "row",
+    marginBottom: 8,
+  },
+  weekday: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 14,
+    fontWeight: "800",
+    color: "#4B5563",
+  },
+  dayGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  dayCell: {
+    width: `${100 / 7}%`,
+    height: 39,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dayCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  todayDayCircle: {
+    backgroundColor: "#EAF3FF",
+  },
+  selectedDayCircle: {
+    backgroundColor: "#4D79F6",
+  },
+  dayText: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#111827",
+  },
+  mutedDayText: {
+    color: "#B8BDC6",
+  },
+  todayDayText: {
+    color: "#4D79F6",
+    fontWeight: "900",
+  },
+  selectedDayText: {
+    color: "#FFFFFF",
+  },
+  closeCalendarButton: {
+    height: 48,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#DADDE3",
+    marginTop: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  closeCalendarText: {
+    fontSize: 15,
+    fontWeight: "900",
+    color: "#333842",
   },
 });
