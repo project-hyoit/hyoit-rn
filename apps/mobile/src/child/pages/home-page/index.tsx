@@ -1,13 +1,60 @@
 import { router } from "expo-router";
-import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import type { ReactNode } from "react";
+import { useMemo } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import HyoitLogo from "@/src/parent/assets/login/hyoit_logo_home.png";
-import { NotificationButton, SettingButton } from "@/src/shared/ui";
+import { useDdayStore } from "@/src/child/entities/dday";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { IconSymbol } from "@/src/shared/ui/IconSymbol";
+
+const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
+  month: "long",
+  day: "numeric",
+  weekday: "short",
+});
+
+const toDate = (value: string) => {
+  const [year, month, day] = value.split("-").map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const getDday = (date: string) => {
+  const target = toDate(date);
+  const today = new Date();
+  const startOfTarget = new Date(
+    target.getFullYear(),
+    target.getMonth(),
+    target.getDate(),
+  );
+  const startOfToday = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  );
+  const diff = Math.ceil(
+    (startOfTarget.getTime() - startOfToday.getTime()) / 86400000,
+  );
+
+  if (diff === 0) return "D-Day";
+  if (diff > 0) return `D-${diff}`;
+  return `D+${Math.abs(diff)}`;
+};
 
 export default function ChildHomePage() {
+  const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
+  const ddayItems = useDdayStore((state) => state.items);
+
+  const nextDday = useMemo(() => {
+    return [...ddayItems].sort((a, b) => a.date.localeCompare(b.date))[0];
+  }, [ddayItems]);
+
   const moveToCheckIn = () => {
     router.push("/(child)/(tabs)/check-in");
+  };
+
+  const moveToDday = () => {
+    router.push("/(child)/(tabs)/dday");
   };
 
   return (
@@ -17,135 +64,139 @@ export default function ChildHomePage() {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <View style={styles.topRow}>
-            <Image source={HyoitLogo} style={styles.logo} resizeMode="contain" />
-
-            <View style={styles.iconRow}>
-              <NotificationButton
-                hasNotification
-                onPress={moveToCheckIn}
-              />
-              <SettingButton onPress={() => {}} />
+          <View style={styles.headerTopRow}>
+            <View style={styles.logoCircle}>
+              <Text style={styles.logoText}>효잇</Text>
             </View>
+
+            <Pressable style={styles.notificationButton} onPress={moveToCheckIn}>
+              <IconSymbol name="bell" size={25} color="#111111" />
+              <View style={styles.notificationBadge}>
+                <Text style={styles.notificationBadgeText}>2</Text>
+              </View>
+            </Pressable>
           </View>
 
-          <View style={styles.titleArea}>
-            <Text style={styles.title}>오늘도 반가워요, 00님</Text>
-            <Text style={styles.subtitle}>부모님께 따뜻한 안부를 전해요.</Text>
+          <View style={styles.titleRow}>
+            <View style={styles.titleArea}>
+              <Text style={styles.greeting}>{childName}님, 안녕하세요!</Text>
+              <Text style={styles.heroTitle}>
+                오늘도 부모님의 안부를{"\n"}챙겨보세요 😊
+              </Text>
+            </View>
+
+            <View style={styles.personCircle}>
+              <Text style={styles.personCircleText}>🙂</Text>
+            </View>
           </View>
         </View>
 
-        <Pressable style={styles.statusBanner} onPress={moveToCheckIn}>
+        <Pressable style={styles.statusCard} onPress={moveToCheckIn}>
           <View style={styles.statusTextArea}>
-            <Text style={styles.statusLabel}>새 안부 도착!</Text>
-            <Text style={styles.statusTitle}>부모님이 안부를 보냈어요</Text>
-            <Text style={styles.statusDescription}>
-              확인 버튼을 누르면 부모님이 안심할 수 있어요.
+            <Text style={styles.statusLabel}>부모님 안부 상태</Text>
+            <Text style={styles.statusTitle}>
+              부모님이 아직 확인하지 않았어요
             </Text>
-            <Text style={styles.statusCta}>확인하러 가기</Text>
+            <Text style={styles.statusMessage}>“잘 지내고 있니?”</Text>
+            <Text style={styles.statusMeta}>오늘 오후 3:14에 보냈어요</Text>
           </View>
 
-          <View style={styles.characterArea}>
-            <View style={styles.bubble}>
-              <Text style={styles.bubbleText}>💌</Text>
-            </View>
-            <View style={styles.characterPlaceholder}>
-              <Text style={styles.characterText}>효잇</Text>
-            </View>
+          <View style={styles.statusVisual}>
+            <Text style={styles.statusVisualText}>♡</Text>
+          </View>
+
+          <View style={styles.statusButton}>
+            <Text style={styles.statusButtonText}>안부 다시 보내기</Text>
           </View>
         </Pressable>
 
         <Pressable style={styles.primaryAction} onPress={moveToCheckIn}>
-          <Text style={styles.primaryIcon}>✈️</Text>
-          <Text style={styles.primaryLabel}>부모님께 안부 보내기</Text>
-          <Text style={styles.primaryArrow}>›</Text>
+          <IconSymbol name="paperplane.fill" size={27} color="#4D79F6" />
+          <Text style={styles.primaryActionText}>부모님께 안부 보내기</Text>
         </Pressable>
 
-        <View style={styles.grid}>
-          <FeatureCard
-            eyebrow="오늘의 안부"
-            title="받은 안부"
-            description={"부모님이 보낸\n안부를 확인해요."}
-            ctaLabel="확인하기"
-            backgroundColor="#F3EEFF"
-            ctaColor="#6D45C7"
-            visual="💬"
-            badgeCount={1}
-            onPress={moveToCheckIn}
-          />
-          <FeatureCard
-            eyebrow="빠른 답장"
-            title="잘 지내요"
-            description={"한 번 누르면\n바로 안부를 보내요."}
-            ctaLabel="보내기"
-            backgroundColor="#EFFFF4"
-            ctaColor="#25874E"
-            visual="✅"
-            onPress={moveToCheckIn}
-          />
-          <FeatureCard
-            eyebrow="가족 연결"
-            title="부모님 정보"
-            description={"연결된 부모님을\n확인해요."}
-            ctaLabel="보기"
-            backgroundColor="#FFF7DC"
-            ctaColor="#7A5A00"
-            visual="👪"
-            onPress={() => {}}
-          />
-          <FeatureCard
-            eyebrow="도움말"
-            title="효잇 사용 방법"
-            description={"궁금한 내용을\n확인할 수 있어요."}
-            ctaLabel="바로가기"
-            backgroundColor="#FFF0E8"
-            ctaColor="#EF6A2E"
-            visual="🎧"
-            onPress={() => {}}
-          />
+        <View style={styles.cardGrid}>
+          <View style={styles.cardRow}>
+            <View style={styles.cardCol}>
+              <HomeCard onPress={moveToDday}>
+                <Text style={styles.cardEyebrow}>디데이</Text>
+                {nextDday ? (
+                  <>
+                    <Text style={styles.ddayText}>
+                      {getDday(nextDday.date)}
+                    </Text>
+                    <Text style={styles.cardTitle}>{nextDday.title}</Text>
+                    <Text style={styles.cardDescription}>
+                      {DATE_FORMATTER.format(toDate(nextDday.date))}
+                    </Text>
+                  </>
+                ) : (
+                  <>
+                    <Text style={styles.emptyDdayText}>D-Day</Text>
+                    <Text style={styles.cardTitle}>일정이 없어요</Text>
+                    <Text style={styles.cardDescription}>새 일정을 추가해요</Text>
+                  </>
+                )}
+              </HomeCard>
+            </View>
+
+            <View style={styles.cardCol}>
+              <HomeCard onPress={moveToCheckIn}>
+                <View style={styles.cardHeaderRow}>
+                  <Text style={styles.cardEyebrow}>안부 기록</Text>
+                  <IconSymbol name="chevron.right" size={22} color="#4B5563" />
+                </View>
+                <Text style={styles.recordCount}>새 기록 2개</Text>
+                <Text style={styles.cardDescription}>
+                  최근 안부 상태를{"\n"}확인할 수 있어요
+                </Text>
+              </HomeCard>
+            </View>
+          </View>
+
+          <View style={styles.cardRow}>
+            <View style={styles.cardCol}>
+              <HomeCard onPress={() => {}}>
+                <Text style={styles.cardEyebrow}>오늘의 한마디</Text>
+                <Text style={styles.cardBodyText}>
+                  오늘도{"\n"}따뜻한 하루{"\n"}보내세요 🍀
+                </Text>
+                <View style={styles.cardVisualCircle}>
+                  <Text style={styles.cardVisualText}>🌱</Text>
+                </View>
+              </HomeCard>
+            </View>
+
+            <View style={styles.cardCol}>
+              <HomeCard onPress={() => {}}>
+                <Text style={styles.cardEyebrow}>오늘의 날씨</Text>
+                <View style={styles.weatherRow}>
+                  <Text style={styles.weatherTemp}>22°</Text>
+                  <Text style={styles.weatherLabel}>흐림</Text>
+                </View>
+                <Text style={styles.cardDescription}>최고 24° / 최저 19°</Text>
+                <View style={styles.cardVisualCircle}>
+                  <Text style={styles.cardVisualText}>☁️</Text>
+                </View>
+              </HomeCard>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-type FeatureCardProps = {
-  eyebrow: string;
-  title: string;
-  description: string;
-  ctaLabel: string;
-  backgroundColor: string;
-  ctaColor: string;
-  visual: string;
-  badgeCount?: number;
-  onPress: () => void;
-};
-
-function FeatureCard({
-  eyebrow,
-  title,
-  description,
-  ctaLabel,
-  backgroundColor,
-  ctaColor,
-  visual,
-  badgeCount,
+function HomeCard({
+  children,
   onPress,
-}: FeatureCardProps) {
+}: {
+  children: ReactNode;
+  onPress: () => void;
+}) {
   return (
-    <Pressable style={[styles.featureCard, { backgroundColor }]} onPress={onPress}>
-      {typeof badgeCount === "number" && badgeCount > 0 && (
-        <View style={styles.featureBadge}>
-          <Text style={styles.featureBadgeText}>{badgeCount}</Text>
-        </View>
-      )}
-      <Text style={[styles.featureEyebrow, { color: ctaColor }]}>{eyebrow}</Text>
-      <Text style={styles.featureTitle}>{title}</Text>
-      <Text style={styles.featureDescription}>{description}</Text>
-      <View style={styles.featureBottomRow}>
-        <Text style={[styles.featureCta, { color: ctaColor }]}>{ctaLabel}</Text>
-        <Text style={styles.featureVisual}>{visual}</Text>
-      </View>
+    <Pressable style={styles.smallCard} onPress={onPress}>
+      {children}
     </Pressable>
   );
 }
@@ -165,203 +216,284 @@ const styles = StyleSheet.create({
     paddingTop: 14,
     marginBottom: 2,
   },
-  topRow: {
+  headerTopRow: {
     height: 60,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
   },
-  logo: {
+  logoCircle: {
     width: 72,
     height: 42,
-  },
-  iconRow: {
-    flexDirection: "row",
+    borderRadius: 21,
+    backgroundColor: "#EAF3FF",
     alignItems: "center",
-    gap: 12,
+    justifyContent: "center",
+  },
+  logoText: {
+    fontSize: 16,
+    fontWeight: "900",
+    color: "#4D79F6",
+  },
+  titleRow: {
+    minHeight: 150,
+    marginTop: 18,
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   titleArea: {
-    marginTop: 18,
-    gap: 6,
+    flex: 1,
+    paddingBottom: 10,
   },
-  title: {
-    fontSize: 31,
-    lineHeight: 40,
-    fontWeight: "900",
-    color: "#050505",
-  },
-  subtitle: {
+  greeting: {
     fontSize: 18,
     lineHeight: 25,
     fontWeight: "800",
     color: "#8A8A8A",
+    letterSpacing: -0.2,
   },
-  statusBanner: {
-    position: "relative",
-    minHeight: 316,
+  heroTitle: {
+    marginTop: 10,
+    fontSize: 29,
+    lineHeight: 40,
+    fontWeight: "900",
+    color: "#111111",
+    letterSpacing: -0.7,
+  },
+  notificationButton: {
+    width: 44,
+    height: 44,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  notificationBadge: {
+    position: "absolute",
+    top: 2,
+    right: 2,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: "#EB5757",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  notificationBadgeText: {
+    fontSize: 12,
+    lineHeight: 14,
+    fontWeight: "900",
+    color: "#FFFFFF",
+  },
+  personCircle: {
+    width: 132,
+    height: 132,
+    borderRadius: 66,
+    backgroundColor: "#D9EAFF",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 8,
+  },
+  personCircleText: {
+    fontSize: 45,
+  },
+  statusCard: {
+    height: 316,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "#66B4FF",
+    borderColor: "#DCE7FF",
     backgroundColor: "#EEF5FF",
     paddingTop: 30,
     paddingLeft: 24,
     paddingRight: 18,
-    overflow: "visible",
+    overflow: "hidden",
   },
   statusTextArea: {
-    width: "58%",
+    width: "61%",
     zIndex: 2,
   },
   statusLabel: {
-    marginBottom: 6,
-    fontSize: 13,
-    lineHeight: 17,
+    fontSize: 15,
+    lineHeight: 20,
     fontWeight: "900",
-    color: "#1478FF",
+    color: "#4D79F6",
   },
   statusTitle: {
-    fontSize: 28,
-    lineHeight: 38,
-    fontWeight: "900",
-    color: "#050505",
-  },
-  statusDescription: {
-    marginTop: 10,
-    fontSize: 16,
-    lineHeight: 23,
-    fontWeight: "800",
-    color: "#58769A",
-  },
-  statusCta: {
-    marginTop: 28,
-    fontSize: 17,
-    lineHeight: 23,
-    fontWeight: "900",
-    color: "#1478FF",
-  },
-  characterArea: {
-    position: "absolute",
-    right: -12,
-    bottom: 20,
-    width: 210,
-    height: 210,
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  bubble: {
-    position: "absolute",
-    top: 24,
-    left: 28,
-    zIndex: 2,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  bubbleText: {
-    fontSize: 24,
-  },
-  characterPlaceholder: {
-    width: 142,
-    height: 142,
-    borderRadius: 71,
-    backgroundColor: "rgba(255, 255, 255, 0.72)",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  characterText: {
+    marginTop: 14,
     fontSize: 25,
-    fontWeight: "900",
-    color: "#6AA9FF",
-  },
-  primaryAction: {
-    height: 63,
-    borderRadius: 16,
-    backgroundColor: "#0A84FF",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 14,
-    paddingHorizontal: 18,
-  },
-  primaryIcon: {
-    fontSize: 27,
-  },
-  primaryLabel: {
-    flex: 1,
-    textAlign: "center",
-    fontSize: 22,
-    lineHeight: 29,
-    fontWeight: "900",
-    color: "#FFFFFF",
-  },
-  primaryArrow: {
-    fontSize: 32,
     lineHeight: 34,
-    fontWeight: "800",
-    color: "#FFFFFF",
-  },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  featureCard: {
-    width: "48%",
-    minHeight: 176,
-    borderRadius: 14,
-    padding: 16,
-    overflow: "visible",
-  },
-  featureBadge: {
-    position: "absolute",
-    top: -8,
-    right: -8,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: "#FF5C72",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  featureBadgeText: {
-    fontSize: 15,
-    fontWeight: "900",
-    color: "#FFFFFF",
-  },
-  featureEyebrow: {
-    fontSize: 12,
-    lineHeight: 16,
-    fontWeight: "900",
-  },
-  featureTitle: {
-    marginTop: 8,
-    fontSize: 21,
-    lineHeight: 27,
     fontWeight: "900",
     color: "#111111",
   },
-  featureDescription: {
-    marginTop: 8,
-    fontSize: 13,
-    lineHeight: 19,
+  statusMessage: {
+    marginTop: 16,
+    fontSize: 16,
+    lineHeight: 23,
     fontWeight: "800",
-    color: "#666666",
+    color: "#526071",
   },
-  featureBottomRow: {
-    marginTop: "auto",
+  statusMeta: {
+    marginTop: 5,
+    fontSize: 15,
+    lineHeight: 21,
+    fontWeight: "800",
+    color: "#728096",
+  },
+  statusVisual: {
+    position: "absolute",
+    right: 28,
+    top: 110,
+    width: 86,
+    height: 64,
+    borderRadius: 22,
+    backgroundColor: "#D8E8FF",
+    borderWidth: 2,
+    borderColor: "#9BBEFF",
+    alignItems: "center",
+    justifyContent: "center",
+    transform: [{ rotate: "8deg" }],
+  },
+  statusVisualText: {
+    fontSize: 41,
+    lineHeight: 45,
+    fontWeight: "900",
+    color: "#FFFFFF",
+  },
+  statusButton: {
+    position: "absolute",
+    left: 22,
+    right: 22,
+    bottom: 20,
+    height: 59,
+    borderRadius: 11,
+    backgroundColor: "#4D79F6",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  statusButtonText: {
+    fontSize: 19,
+    fontWeight: "900",
+    color: "#FFFFFF",
+  },
+  primaryAction: {
+    height: 64,
+    borderRadius: 13,
+    borderWidth: 1,
+    borderColor: "#D8DDE8",
+    backgroundColor: "#FFFFFF",
     flexDirection: "row",
-    alignItems: "flex-end",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+  },
+  primaryActionText: {
+    fontSize: 18,
+    fontWeight: "900",
+    color: "#4D79F6",
+  },
+  cardGrid: {
+    gap: 12,
+  },
+  cardRow: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  cardCol: {
+    flex: 1,
+  },
+  smallCard: {
+    position: "relative",
+    height: 210,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    backgroundColor: "#FFFFFF",
+    paddingTop: 18,
+    paddingLeft: 18,
+    paddingRight: 14,
+    paddingBottom: 14,
+    overflow: "hidden",
+  },
+  cardHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
   },
-  featureCta: {
-    fontSize: 13,
-    lineHeight: 18,
+  cardEyebrow: {
+    fontSize: 15,
+    lineHeight: 20,
     fontWeight: "900",
+    color: "#3A3A42",
   },
-  featureVisual: {
-    fontSize: 35,
+  ddayText: {
+    marginTop: 18,
+    fontSize: 30,
+    lineHeight: 36,
+    fontWeight: "900",
+    color: "#4D79F6",
+  },
+  emptyDdayText: {
+    marginTop: 18,
+    fontSize: 28,
+    lineHeight: 34,
+    fontWeight: "900",
+    color: "#B8BDC6",
+  },
+  cardTitle: {
+    marginTop: 10,
+    fontSize: 15,
+    lineHeight: 21,
+    fontWeight: "900",
+    color: "#333333",
+  },
+  cardDescription: {
+    marginTop: 4,
+    fontSize: 14,
+    lineHeight: 21,
+    fontWeight: "800",
+    color: "#7A808A",
+  },
+  recordCount: {
+    marginTop: 18,
+    fontSize: 22,
+    lineHeight: 28,
+    fontWeight: "900",
+    color: "#F05656",
+  },
+  cardBodyText: {
+    marginTop: 20,
+    fontSize: 16,
+    lineHeight: 25,
+    fontWeight: "900",
+    color: "#4A4A4A",
+  },
+  cardVisualCircle: {
+    position: "absolute",
+    right: 14,
+    bottom: 14,
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: "#F1F5F9",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cardVisualText: {
+    fontSize: 40,
+  },
+  weatherRow: {
+    marginTop: 22,
+    flexDirection: "row",
+    alignItems: "baseline",
+    gap: 8,
+  },
+  weatherTemp: {
+    fontSize: 30,
+    lineHeight: 36,
+    fontWeight: "900",
+    color: "#111111",
+  },
+  weatherLabel: {
+    fontSize: 16,
+    fontWeight: "900",
+    color: "#4A4A4A",
   },
 });
