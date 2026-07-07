@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import mainProfileImg from "@/assets/profileimg/mainprofile.png";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
 import ProfileSettings from "@/src/parent/pages/profile-page/ui/ProfileSettings";
@@ -32,6 +33,8 @@ export default function ChildProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
+  const onboardingName = useOnboardingStore((state) => state.name);
+  const displayName = onboardingName.trim() || childProfile.name;
 
   const handleLogout = async () => {
     await logout();
@@ -70,7 +73,7 @@ export default function ChildProfilePage() {
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.name}>{childProfile.name}님</Text>
+          <Text style={styles.name}>{displayName}님</Text>
           <View style={styles.accountBadge}>
             <Text style={styles.accountBadgeText}>자녀 계정</Text>
           </View>
