@@ -6,6 +6,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useDdayStore } from "@/src/child/entities/dday";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import {
+  formatCheckInTime,
+  sentConfirmedCheckInMock,
+  sentWaitingCheckInMock,
+  type CheckInRawItem,
+} from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
@@ -41,6 +47,15 @@ const getDday = (date: string) => {
   return `D+${Math.abs(diff)}`;
 };
 
+const getLatestSentCheckIn = (items: CheckInRawItem[]) => {
+  return [...items]
+    .filter((item) => item.senderRole === "child")
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )[0];
+};
+
 export default function ChildHomePage() {
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
@@ -48,6 +63,40 @@ export default function ChildHomePage() {
   const nextDday = useMemo(() => {
     return [...ddayItems].sort((a, b) => a.date.localeCompare(b.date))[0];
   }, [ddayItems]);
+
+  const latestSentCheckIn = useMemo(
+    () => getLatestSentCheckIn(sentWaitingCheckInMock),
+    [],
+  );
+
+  const newReceivedCheckInCount = useMemo(() => {
+    return sentConfirmedCheckInMock.filter(
+      (item) => item.receiverRole === "child" && !item.checkedAt,
+    ).length;
+  }, []);
+
+  const recordCountLabel =
+    newReceivedCheckInCount > 0
+      ? `새 기록 ${newReceivedCheckInCount}개`
+      : "새 기록 없음";
+
+  const checkInStatusTitle = latestSentCheckIn
+    ? latestSentCheckIn.checkedAt
+      ? "부모님이 확인했어요"
+      : "부모님이 아직 확인하지 않았어요"
+    : "최근에 보낸 안부가 없어요";
+
+  const checkInStatusMessage = latestSentCheckIn
+    ? `“${latestSentCheckIn.message}”`
+    : "부모님께 안부를 보내보세요";
+
+  const checkInStatusMeta = latestSentCheckIn
+    ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
+    : "아래 버튼으로 바로 보낼 수 있어요";
+
+  const checkInActionLabel = latestSentCheckIn
+    ? "안부 다시 보내기"
+    : "안부 보내기";
 
   const moveToCheckIn = () => {
     router.push("/(child)/(tabs)/check-in");
@@ -94,11 +143,9 @@ export default function ChildHomePage() {
         <Pressable style={styles.statusCard} onPress={moveToCheckIn}>
           <View style={styles.statusTextArea}>
             <Text style={styles.statusLabel}>부모님 안부 상태</Text>
-            <Text style={styles.statusTitle}>
-              부모님이 아직 확인하지 않았어요
-            </Text>
-            <Text style={styles.statusMessage}>“잘 지내고 있니?”</Text>
-            <Text style={styles.statusMeta}>오늘 오후 3:14에 보냈어요</Text>
+            <Text style={styles.statusTitle}>{checkInStatusTitle}</Text>
+            <Text style={styles.statusMessage}>{checkInStatusMessage}</Text>
+            <Text style={styles.statusMeta}>{checkInStatusMeta}</Text>
           </View>
 
           <View style={styles.statusVisual}>
@@ -106,7 +153,7 @@ export default function ChildHomePage() {
           </View>
 
           <View style={styles.statusButton}>
-            <Text style={styles.statusButtonText}>안부 다시 보내기</Text>
+            <Text style={styles.statusButtonText}>{checkInActionLabel}</Text>
           </View>
         </Pressable>
 
@@ -146,9 +193,18 @@ export default function ChildHomePage() {
                   <Text style={styles.cardEyebrow}>안부 기록</Text>
                   <IconSymbol name="chevron.right" size={22} color="#4B5563" />
                 </View>
-                <Text style={styles.recordCount}>새 기록 2개</Text>
+                <Text
+                  style={[
+                    styles.recordCount,
+                    newReceivedCheckInCount === 0 && styles.emptyRecordCount,
+                  ]}
+                >
+                  {recordCountLabel}
+                </Text>
                 <Text style={styles.cardDescription}>
-                  최근 안부 상태를{"\n"}확인할 수 있어요
+                  {newReceivedCheckInCount > 0
+                    ? "최근 안부 상태를\n확인할 수 있어요"
+                    : "새로 도착한\n안부가 없어요"}
                 </Text>
               </HomeCard>
             </View>
@@ -457,6 +513,9 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     fontWeight: "900",
     color: "#F05656",
+  },
+  emptyRecordCount: {
+    color: "#9CA3AF",
   },
   cardBodyText: {
     marginTop: 20,
