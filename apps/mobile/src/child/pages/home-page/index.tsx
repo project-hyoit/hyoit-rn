@@ -280,14 +280,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   logoCircle: {
-    width: 82,
+    width: 50,
     height: 42,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   logoImage: {
-    width: 72,
-    height: 42,
+    width: 50,
+    height: 28,
   },
   titleRow: {
     minHeight: 150,
