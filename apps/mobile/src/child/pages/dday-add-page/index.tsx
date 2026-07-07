@@ -21,12 +21,6 @@ const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
 const MONTH_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
   month: "long",
 });
-const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-  weekday: "short",
-});
 
 const getDateKey = (date: Date) => {
   return [
@@ -42,7 +36,13 @@ const toDate = (value: string) => {
 };
 
 const formatSelectedDate = (value: string) => {
-  return DATE_FORMATTER.format(toDate(value)).replace(/\./g, ".");
+  const date = toDate(value);
+  const weekday = WEEKDAYS[date.getDay()];
+
+  return `${date.getFullYear()}. ${String(date.getMonth() + 1).padStart(
+    2,
+    "0",
+  )}. ${String(date.getDate()).padStart(2, "0")} (${weekday})`;
 };
 
 const createCalendarDays = (monthDate: Date) => {
@@ -199,11 +199,11 @@ export default function ChildDdayAddPage() {
                 <Text style={styles.monthArrow}>‹</Text>
               </TouchableOpacity>
 
-              <View style={styles.monthTitleRow}>
+              <View style={styles.monthTitleColumn}>
+                <Text style={styles.yearText}>{monthDate.getFullYear()}년</Text>
                 <Text style={styles.monthText}>
                   {MONTH_FORMATTER.format(monthDate)}
                 </Text>
-                <Text style={styles.yearText}>{monthDate.getFullYear()}년</Text>
               </View>
 
               <TouchableOpacity
@@ -389,48 +389,52 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.35)",
-    paddingHorizontal: 14,
-    paddingBottom: 26,
+    paddingHorizontal: 18,
   },
   calendarSheet: {
+    width: "100%",
+    maxWidth: 380,
     borderRadius: 16,
     backgroundColor: "#FFFFFF",
-    paddingHorizontal: 18,
-    paddingTop: 18,
+    paddingHorizontal: 16,
+    paddingTop: 20,
     paddingBottom: 18,
   },
   calendarHeader: {
-    height: 38,
+    minHeight: 58,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 16,
   },
   monthButton: {
-    width: 36,
-    height: 36,
+    width: 44,
+    height: 44,
     alignItems: "center",
     justifyContent: "center",
   },
   monthArrow: {
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: "900",
     color: "#111111",
   },
-  monthTitleRow: {
-    flexDirection: "row",
+  monthTitleColumn: {
     alignItems: "center",
-    gap: 8,
+    justifyContent: "center",
+    gap: 4,
   },
   monthText: {
-    fontSize: 22,
+    fontSize: 23,
+    lineHeight: 28,
     fontWeight: "900",
     color: "#4D79F6",
   },
   yearText: {
-    fontSize: 17,
+    fontSize: 15,
+    lineHeight: 20,
     fontWeight: "900",
     color: "#111111",
   },
@@ -451,14 +455,14 @@ const styles = StyleSheet.create({
   },
   dayCell: {
     width: `${100 / 7}%`,
-    height: 39,
+    height: 42,
     alignItems: "center",
     justifyContent: "center",
   },
   dayCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     alignItems: "center",
     justifyContent: "center",
   },
