@@ -38,6 +38,20 @@ export default function ChildTabsLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "내 정보",
+          tabBarIcon: ({ focused, size }) => (
+            <IconSymbol
+              name="person.fill"
+              size={size}
+              color={focused ? ACTIVE : INACTIVE}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
