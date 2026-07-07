@@ -81,7 +81,11 @@ export default function ChildProfilePage() {
             효잇으로 부모님과 안부를 주고받고 있어요.
           </Text>
 
-          <TouchableOpacity style={styles.modifyButton} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.modifyButton}
+            onPress={() => router.push("/(child)/(tabs)/profile/edit")}
+            activeOpacity={0.8}
+          >
             <Text style={styles.modifyButtonText}>프로필 수정</Text>
           </TouchableOpacity>
         </View>
