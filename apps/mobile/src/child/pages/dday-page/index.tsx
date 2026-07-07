@@ -151,11 +151,11 @@ export default function ChildDdayPage() {
               <Text style={styles.monthArrow}>‹</Text>
             </TouchableOpacity>
 
-            <View style={styles.monthTitleRow}>
+            <View style={styles.monthTitleColumn}>
+              <Text style={styles.yearText}>{monthDate.getFullYear()}년</Text>
               <Text style={styles.monthText}>
                 {MONTH_FORMATTER.format(monthDate)}
               </Text>
-              <Text style={styles.yearText}>{monthDate.getFullYear()}년</Text>
             </View>
 
             <TouchableOpacity
@@ -326,41 +326,43 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: "#E5E7EB",
-    paddingHorizontal: 18,
-    paddingTop: 16,
+    paddingHorizontal: 16,
+    paddingTop: 20,
     paddingBottom: 18,
     backgroundColor: "#FFFFFF",
   },
   monthHeader: {
-    height: 38,
+    minHeight: 58,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 16,
   },
   monthButton: {
-    width: 36,
-    height: 36,
+    width: 44,
+    height: 44,
     alignItems: "center",
     justifyContent: "center",
   },
   monthArrow: {
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: "900",
     color: "#111111",
   },
-  monthTitleRow: {
-    flexDirection: "row",
+  monthTitleColumn: {
     alignItems: "center",
-    gap: 8,
+    justifyContent: "center",
+    gap: 4,
   },
   monthText: {
-    fontSize: 22,
+    fontSize: 23,
+    lineHeight: 28,
     fontWeight: "900",
     color: "#4D79F6",
   },
   yearText: {
-    fontSize: 17,
+    fontSize: 15,
+    lineHeight: 20,
     fontWeight: "900",
     color: "#111111",
   },
@@ -381,14 +383,14 @@ const styles = StyleSheet.create({
   },
   dayCell: {
     width: `${100 / 7}%`,
-    height: 39,
+    height: 42,
     alignItems: "center",
     justifyContent: "center",
   },
   dayCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 34,
+    height: 34,
+    borderRadius: 17,
     alignItems: "center",
     justifyContent: "center",
   },
