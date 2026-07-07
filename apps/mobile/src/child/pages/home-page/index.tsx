@@ -115,7 +115,7 @@ export default function ChildHomePage() {
         <View style={styles.header}>
           <View style={styles.headerTopRow}>
             <View style={styles.logoCircle}>
-              <Text style={styles.logoText}>효잇</Text>
+              <IconSymbol name="house.fill" size={25} color="#4D79F6" />
             </View>
 
             <Pressable style={styles.notificationButton} onPress={moveToCheckIn}>
@@ -285,11 +285,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#EAF3FF",
     alignItems: "center",
     justifyContent: "center",
-  },
-  logoText: {
-    fontSize: 16,
-    fontWeight: "900",
-    color: "#4D79F6",
   },
   titleRow: {
     minHeight: 150,
