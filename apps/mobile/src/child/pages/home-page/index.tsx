@@ -1,11 +1,12 @@
 import { router } from "expo-router";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useDdayStore } from "@/src/child/entities/dday";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import HyoitLogo from "@/src/parent/assets/login/hyoit_logo_home.png";
 import {
   formatCheckInTime,
   sentConfirmedCheckInMock,
@@ -115,7 +116,7 @@ export default function ChildHomePage() {
         <View style={styles.header}>
           <View style={styles.headerTopRow}>
             <View style={styles.logoCircle}>
-              <IconSymbol name="house.fill" size={25} color="#4D79F6" />
+              <Image source={HyoitLogo} style={styles.logoImage} resizeMode="contain" />
             </View>
 
             <Pressable style={styles.notificationButton} onPress={moveToCheckIn}>
@@ -279,12 +280,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   logoCircle: {
-    width: 72,
+    width: 82,
     height: 42,
-    borderRadius: 21,
-    backgroundColor: "#EAF3FF",
     alignItems: "center",
     justifyContent: "center",
+  },
+  logoImage: {
+    width: 72,
+    height: 42,
   },
   titleRow: {
     minHeight: 150,
