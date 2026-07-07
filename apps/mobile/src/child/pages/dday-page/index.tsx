@@ -199,7 +199,7 @@ export default function ChildDdayPage() {
                         style={[
                           styles.dayCircle,
                           isToday && styles.todayDayCircle,
-                          isSelected && styles.selectedDayCircle,
+                          isSelected && styles.eventDayCircle,
                         ]}
                       >
                         <Text
@@ -404,22 +404,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   dayCircle: {
-    width: 36,
-    height: 36,
+    width: 34,
+    aspectRatio: 1,
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
   },
-  selectedDayCircle: {
+  eventDayCircle: {
     backgroundColor: "#4D79F6",
+    borderRadius: 999,
   },
   todayDayCircle: {
     backgroundColor: "#EAF3FF",
   },
   dayText: {
     fontSize: 16,
+    lineHeight: 20,
     fontWeight: "700",
     color: "#111827",
+    includeFontPadding: false,
+    textAlign: "center",
   },
   mutedDayText: {
     color: "#B8BDC6",
