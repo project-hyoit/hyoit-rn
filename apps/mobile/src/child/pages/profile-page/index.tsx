@@ -66,7 +66,7 @@ export default function ChildProfilePage() {
             <Image source={mainProfileImg} style={styles.avatar} />
             <TouchableOpacity
               style={styles.editAvatarButton}
-              onPress={() => setIsMenuOpen(true)}
+              onPress={() => router.push("/(child)/(tabs)/profile/edit")}
               activeOpacity={0.8}
             >
               <IconSymbol name="camera" size={18} color="#FFFFFF" />
