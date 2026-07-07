@@ -82,6 +82,12 @@ const getDateKey = (date: Date) => {
   ].join("-");
 };
 
+const toCalendarRows = <T,>(days: T[]) => {
+  return Array.from({ length: Math.ceil(days.length / 7) }, (_, index) =>
+    days.slice(index * 7, index * 7 + 7),
+  );
+};
+
 export default function ChildDdayPage() {
   const items = useDdayStore((state) => state.items);
   const deleteItem = useDdayStore((state) => state.deleteItem);
@@ -105,6 +111,10 @@ export default function ChildDdayPage() {
   const calendarDays = useMemo(
     () => createCalendarDays(monthDate),
     [monthDate],
+  );
+  const calendarRows = useMemo(
+    () => toCalendarRows(calendarDays),
+    [calendarDays],
   );
 
   const moveMonth = (amount: number) => {
@@ -176,34 +186,38 @@ export default function ChildDdayPage() {
           </View>
 
           <View style={styles.dayGrid}>
-            {calendarDays.map((day) => {
-              const hasEvent = eventDates.has(day.key);
-              const isToday = day.key === todayKey;
-              const isSelected = hasEvent;
+            {calendarRows.map((row, rowIndex) => (
+              <View key={rowIndex} style={styles.dayRow}>
+                {row.map((day) => {
+                  const hasEvent = eventDates.has(day.key);
+                  const isToday = day.key === todayKey;
+                  const isSelected = hasEvent;
 
-              return (
-                <View key={day.key} style={styles.dayCell}>
-                  <View
-                    style={[
-                      styles.dayCircle,
-                      isToday && styles.todayDayCircle,
-                      isSelected && styles.selectedDayCircle,
-                    ]}
-                  >
-                    <Text
-                      style={[
-                        styles.dayText,
-                        !day.isCurrentMonth && styles.mutedDayText,
-                        isToday && styles.todayDayText,
-                        isSelected && styles.selectedDayText,
-                      ]}
-                    >
-                      {day.date.getDate()}
-                    </Text>
-                  </View>
-                </View>
-              );
-            })}
+                  return (
+                    <View key={day.key} style={styles.dayCell}>
+                      <View
+                        style={[
+                          styles.dayCircle,
+                          isToday && styles.todayDayCircle,
+                          isSelected && styles.selectedDayCircle,
+                        ]}
+                      >
+                        <Text
+                          style={[
+                            styles.dayText,
+                            !day.isCurrentMonth && styles.mutedDayText,
+                            isToday && styles.todayDayText,
+                            isSelected && styles.selectedDayText,
+                          ]}
+                        >
+                          {day.date.getDate()}
+                        </Text>
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            ))}
           </View>
         </View>
 
@@ -378,12 +392,14 @@ const styles = StyleSheet.create({
     color: "#4B5563",
   },
   dayGrid: {
+    gap: 2,
+  },
+  dayRow: {
+    height: 42,
     flexDirection: "row",
-    flexWrap: "wrap",
   },
   dayCell: {
-    width: `${100 / 7}%`,
-    height: 42,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },

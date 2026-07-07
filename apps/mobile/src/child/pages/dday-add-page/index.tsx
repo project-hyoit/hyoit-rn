@@ -64,6 +64,12 @@ const createCalendarDays = (monthDate: Date) => {
   });
 };
 
+const toCalendarRows = <T,>(days: T[]) => {
+  return Array.from({ length: Math.ceil(days.length / 7) }, (_, index) =>
+    days.slice(index * 7, index * 7 + 7),
+  );
+};
+
 export default function ChildDdayAddPage() {
   const addItem = useDdayStore((state) => state.addItem);
   const [title, setTitle] = useState("");
@@ -107,7 +113,7 @@ export default function ChildDdayAddPage() {
     setIsCalendarOpen(false);
   };
 
-  const calendarDays = createCalendarDays(monthDate);
+  const calendarRows = toCalendarRows(createCalendarDays(monthDate));
 
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
@@ -224,38 +230,42 @@ export default function ChildDdayAddPage() {
             </View>
 
             <View style={styles.dayGrid}>
-              {calendarDays.map((day) => {
-                const isToday = day.key === todayKey;
-                const isSelected = day.key === selectedDate;
+              {calendarRows.map((row, rowIndex) => (
+                <View key={rowIndex} style={styles.dayRow}>
+                  {row.map((day) => {
+                    const isToday = day.key === todayKey;
+                    const isSelected = day.key === selectedDate;
 
-                return (
-                  <TouchableOpacity
-                    key={day.key}
-                    style={styles.dayCell}
-                    onPress={() => handleSelectDate(day.date)}
-                    activeOpacity={0.75}
-                  >
-                    <View
-                      style={[
-                        styles.dayCircle,
-                        isToday && styles.todayDayCircle,
-                        isSelected && styles.selectedDayCircle,
-                      ]}
-                    >
-                      <Text
-                        style={[
-                          styles.dayText,
-                          !day.isCurrentMonth && styles.mutedDayText,
-                          isToday && styles.todayDayText,
-                          isSelected && styles.selectedDayText,
-                        ]}
+                    return (
+                      <TouchableOpacity
+                        key={day.key}
+                        style={styles.dayCell}
+                        onPress={() => handleSelectDate(day.date)}
+                        activeOpacity={0.75}
                       >
-                        {day.date.getDate()}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
+                        <View
+                          style={[
+                            styles.dayCircle,
+                            isToday && styles.todayDayCircle,
+                            isSelected && styles.selectedDayCircle,
+                          ]}
+                        >
+                          <Text
+                            style={[
+                              styles.dayText,
+                              !day.isCurrentMonth && styles.mutedDayText,
+                              isToday && styles.todayDayText,
+                              isSelected && styles.selectedDayText,
+                            ]}
+                          >
+                            {day.date.getDate()}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              ))}
             </View>
 
             <TouchableOpacity
@@ -450,12 +460,14 @@ const styles = StyleSheet.create({
     color: "#4B5563",
   },
   dayGrid: {
+    gap: 2,
+  },
+  dayRow: {
+    height: 42,
     flexDirection: "row",
-    flexWrap: "wrap",
   },
   dayCell: {
-    width: `${100 / 7}%`,
-    height: 42,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
