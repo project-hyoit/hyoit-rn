@@ -25,7 +25,6 @@ const childProfile = {
 
 const connectedParent = {
   name: "김유찬",
-  phone: "010-4610-3405",
   isOnline: true,
 };
 
@@ -104,7 +103,6 @@ export default function ChildProfilePage() {
                 <Text style={styles.parentDescription}>
                   서로의 안부를 주고받고 있어요.
                 </Text>
-                <Text style={styles.phone}>{connectedParent.phone}</Text>
               </View>
             </View>
 
@@ -301,12 +299,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#6B7280",
     lineHeight: 18,
-  },
-  phone: {
-    marginTop: 4,
-    fontSize: 12,
-    fontWeight: "600",
-    color: "#8A8A8A",
   },
   activeBadge: {
     minWidth: 54,
