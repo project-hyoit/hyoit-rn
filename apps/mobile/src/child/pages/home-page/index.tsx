@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   heroTitle: {
     marginTop: 10,
-    fontSize: 29,
+    fontSize: 22,
     lineHeight: 40,
     fontWeight: "900",
     color: "#111111",
