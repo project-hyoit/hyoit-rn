@@ -318,7 +318,7 @@ const styles = StyleSheet.create({
   },
   statusTitle: {
     marginTop: 14,
-    fontSize: 25,
+    fontSize: 20,
     lineHeight: 34,
     fontWeight: "900",
     color: "#111111",
