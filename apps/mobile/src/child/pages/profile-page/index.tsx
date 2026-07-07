@@ -62,13 +62,14 @@ export default function ChildProfilePage() {
       >
         <View style={styles.profileCard}>
           <View style={styles.avatarWrap}>
+            <View style={styles.avatarBackground} />
             <Image source={mainProfileImg} style={styles.avatar} />
             <TouchableOpacity
               style={styles.editAvatarButton}
               onPress={() => setIsMenuOpen(true)}
               activeOpacity={0.8}
             >
-              <IconSymbol name="camera" size={16} color="#FFFFFF" />
+              <IconSymbol name="camera" size={18} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
 
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "700",
+    fontFamily: "Pretendard",
   },
   iconButton: {
     position: "absolute",
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 12,
     paddingTop: 16,
-    paddingBottom: 132,
+    paddingBottom: 32,
     gap: 16,
     backgroundColor: "#F8F9FB",
   },
@@ -180,27 +182,42 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     paddingHorizontal: 20,
     alignItems: "center",
+    marginTop: 16,
   },
   avatarWrap: {
     position: "relative",
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  avatarBackground: {
+    position: "absolute",
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: "#F5F7FF",
+    top: -10,
+    left: -10,
   },
   avatar: {
-    width: 96,
-    height: 96,
-    borderRadius: 30,
+    width: 160,
+    height: 160,
+    borderRadius: 80,
   },
   editAvatarButton: {
     position: "absolute",
-    right: -4,
-    bottom: -4,
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    backgroundColor: "#1E90FF",
+    right: 8,
+    bottom: 8,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: "#1F3EA8",
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 3,
-    borderColor: "#F8F9FB",
+    shadowColor: "#000000",
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
   },
   name: {
     marginTop: 20,
@@ -256,6 +273,7 @@ const styles = StyleSheet.create({
     color: "#1B1B1F",
   },
   parentCard: {
+    marginTop: 10,
     width: "100%",
     flexDirection: "row",
     alignItems: "center",
