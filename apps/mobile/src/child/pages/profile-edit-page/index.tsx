@@ -124,15 +124,8 @@ export default function ChildProfileEditPage() {
             </View>
 
             <View style={styles.fieldGroup}>
-              <Text style={styles.label}>계정 유형</Text>
-              <View style={styles.readOnlyBox}>
-                <Text style={styles.inputText}>자녀 계정</Text>
-              </View>
-            </View>
-
-            <View style={styles.fieldGroup}>
               <Text style={styles.label}>연결 가족</Text>
-              <View style={styles.readOnlyBox}>
+              <View style={styles.inputBox}>
                 <Text style={styles.inputText}>부모님</Text>
               </View>
             </View>
@@ -267,15 +260,6 @@ const styles = StyleSheet.create({
     color: "#2F333C",
   },
   inputBox: {
-    height: 56,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: "#E7E9EF",
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    paddingHorizontal: 16,
-  },
-  readOnlyBox: {
     height: 56,
     borderRadius: 16,
     borderWidth: 1,
