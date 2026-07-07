@@ -1,8 +1,10 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Alert,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -72,6 +74,7 @@ const toCalendarRows = <T,>(days: T[]) => {
 
 export default function ChildDdayAddPage() {
   const addItem = useDdayStore((state) => state.addItem);
+  const scrollRef = useRef<ScrollView>(null);
   const [title, setTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const [monthDate, setMonthDate] = useState(() => {
@@ -115,83 +118,98 @@ export default function ChildDdayAddPage() {
 
   const calendarRows = toCalendarRows(createCalendarDays(monthDate));
 
+  const handleMemoFocus = () => {
+    setTimeout(() => {
+      scrollRef.current?.scrollToEnd({ animated: true });
+    }, 120);
+  };
+
   return (
     <SafeAreaView style={styles.safeArea} edges={["top"]}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.headerIconButton}
-          onPress={() => router.back()}
-          activeOpacity={0.7}
-        >
-          <IconSymbol name="arrow.left" size={28} color="#111111" />
-        </TouchableOpacity>
-
-        <Text style={styles.headerTitle}>디데이 추가</Text>
-      </View>
-
-      <ScrollView
-        contentContainerStyle={styles.container}
-        showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView
+        style={styles.keyboardAvoidingView}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
       >
-        <View style={styles.fieldGroup}>
-          <Text style={styles.label}>일정 이름</Text>
-          <View style={styles.inputBox}>
-            <TextInput
-              value={title}
-              onChangeText={(value) => setTitle(value.slice(0, NAME_LIMIT))}
-              style={styles.inputText}
-              placeholder="일정 이름"
-              placeholderTextColor="#A0A4AF"
-            />
-          </View>
-          <Text style={styles.counter}>{title.length}/{NAME_LIMIT}</Text>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.headerIconButton}
+            onPress={() => router.back()}
+            activeOpacity={0.7}
+          >
+            <IconSymbol name="arrow.left" size={28} color="#111111" />
+          </TouchableOpacity>
+
+          <Text style={styles.headerTitle}>디데이 추가</Text>
         </View>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.label}>날짜</Text>
-          <TouchableOpacity
-            style={styles.dateInputBox}
-            onPress={() => setIsCalendarOpen(true)}
-            activeOpacity={0.8}
-          >
-            <Text
-              style={[
-                styles.inputText,
-                !selectedDate && styles.placeholderText,
-              ]}
+        <ScrollView
+          ref={scrollRef}
+          contentContainerStyle={styles.container}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View style={styles.fieldGroup}>
+            <Text style={styles.label}>일정 이름</Text>
+            <View style={styles.inputBox}>
+              <TextInput
+                value={title}
+                onChangeText={(value) => setTitle(value.slice(0, NAME_LIMIT))}
+                style={styles.inputText}
+                placeholder="일정 이름"
+                placeholderTextColor="#A0A4AF"
+              />
+            </View>
+            <Text style={styles.counter}>{title.length}/{NAME_LIMIT}</Text>
+          </View>
+
+          <View style={styles.fieldGroup}>
+            <Text style={styles.label}>날짜</Text>
+            <TouchableOpacity
+              style={styles.dateInputBox}
+              onPress={() => setIsCalendarOpen(true)}
+              activeOpacity={0.8}
             >
-              {selectedDate ? formatSelectedDate(selectedDate) : "날짜 선택"}
-            </Text>
-            <IconSymbol name="calendar" size={23} color="#6B7280" />
+              <Text
+                style={[
+                  styles.inputText,
+                  !selectedDate && styles.placeholderText,
+                ]}
+              >
+                {selectedDate ? formatSelectedDate(selectedDate) : "날짜 선택"}
+              </Text>
+              <IconSymbol name="calendar" size={23} color="#6B7280" />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.fieldGroup}>
+            <Text style={styles.label}>메모 (선택)</Text>
+            <View style={styles.memoBox}>
+              <TextInput
+                value={memo}
+                onChangeText={(value) => setMemo(value.slice(0, MEMO_LIMIT))}
+                onFocus={handleMemoFocus}
+                style={styles.memoText}
+                placeholder="메모를 입력해주세요"
+                placeholderTextColor="#A0A4AF"
+                multiline
+                textAlignVertical="top"
+              />
+            </View>
+            <Text style={styles.counter}>{memo.length}/{MEMO_LIMIT}</Text>
+          </View>
+        </ScrollView>
+
+        <View style={styles.footer}>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={handleSave}
+            activeOpacity={0.85}
+          >
+            <Text style={styles.saveButtonText}>저장하기</Text>
           </TouchableOpacity>
         </View>
-
-        <View style={styles.fieldGroup}>
-          <Text style={styles.label}>메모 (선택)</Text>
-          <View style={styles.memoBox}>
-            <TextInput
-              value={memo}
-              onChangeText={(value) => setMemo(value.slice(0, MEMO_LIMIT))}
-              style={styles.memoText}
-              placeholder="메모를 입력해주세요"
-              placeholderTextColor="#A0A4AF"
-              multiline
-              textAlignVertical="top"
-            />
-          </View>
-          <Text style={styles.counter}>{memo.length}/{MEMO_LIMIT}</Text>
-        </View>
-      </ScrollView>
-
-      <View style={styles.footer}>
-        <TouchableOpacity
-          style={styles.saveButton}
-          onPress={handleSave}
-          activeOpacity={0.85}
-        >
-          <Text style={styles.saveButtonText}>저장하기</Text>
-        </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
 
       <Modal visible={isCalendarOpen} transparent animationType="fade">
         <View style={styles.modalOverlay}>
@@ -287,6 +305,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFFFFF",
   },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   header: {
     height: 64,
     flexDirection: "row",
@@ -376,10 +397,6 @@ const styles = StyleSheet.create({
     color: "#8A8A8A",
   },
   footer: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
     paddingHorizontal: 14,
     paddingTop: 18,
     paddingBottom: 26,
