@@ -47,9 +47,9 @@ const normalizeDateInput = (value: string) => {
 
 export default function ChildDdayAddPage() {
   const addItem = useDdayStore((state) => state.addItem);
-  const [title, setTitle] = useState("엄마 병원 가는 날");
-  const [dateText, setDateText] = useState("2026. 08. 10");
-  const [memo, setMemo] = useState("공복으로 방문하기");
+  const [title, setTitle] = useState("");
+  const [dateText, setDateText] = useState("");
+  const [memo, setMemo] = useState("");
 
   const handleSave = () => {
     const normalizedDate = normalizeDateInput(dateText);

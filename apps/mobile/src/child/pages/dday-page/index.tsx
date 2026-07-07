@@ -74,11 +74,23 @@ const createCalendarDays = (monthDate: Date) => {
   });
 };
 
+const getDateKey = (date: Date) => {
+  return [
+    date.getFullYear(),
+    String(date.getMonth() + 1).padStart(2, "0"),
+    String(date.getDate()).padStart(2, "0"),
+  ].join("-");
+};
+
 export default function ChildDdayPage() {
   const items = useDdayStore((state) => state.items);
   const deleteItem = useDdayStore((state) => state.deleteItem);
-  const [monthDate, setMonthDate] = useState(() => new Date(2026, 7, 1));
+  const [monthDate, setMonthDate] = useState(() => {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+  });
   const [selectedItem, setSelectedItem] = useState<DdayItem | null>(null);
+  const todayKey = useMemo(() => getDateKey(new Date()), []);
 
   const sortedItems = useMemo(
     () => [...items].sort((a, b) => a.date.localeCompare(b.date)),
@@ -166,6 +178,7 @@ export default function ChildDdayPage() {
           <View style={styles.dayGrid}>
             {calendarDays.map((day) => {
               const hasEvent = eventDates.has(day.key);
+              const isToday = day.key === todayKey;
               const isSelected = hasEvent;
 
               return (
@@ -173,6 +186,7 @@ export default function ChildDdayPage() {
                   <View
                     style={[
                       styles.dayCircle,
+                      isToday && styles.todayDayCircle,
                       isSelected && styles.selectedDayCircle,
                     ]}
                   >
@@ -180,6 +194,7 @@ export default function ChildDdayPage() {
                       style={[
                         styles.dayText,
                         !day.isCurrentMonth && styles.mutedDayText,
+                        isToday && styles.todayDayText,
                         isSelected && styles.selectedDayText,
                       ]}
                     >
@@ -195,30 +210,36 @@ export default function ChildDdayPage() {
         <Text style={styles.sectionTitle}>다가오는 일정</Text>
 
         <View style={styles.list}>
-          {sortedItems.map((item) => (
-            <Pressable
-              key={item.id}
-              style={styles.scheduleCard}
-              onLongPress={() => setSelectedItem(item)}
-            >
-              <Text style={styles.ddayText}>{getDday(item.date)}</Text>
-
-              <View style={styles.scheduleContent}>
-                <Text style={styles.scheduleTitle}>{item.title}</Text>
-                <Text style={styles.scheduleDate}>
-                  {DATE_FORMATTER.format(toDate(item.date))}
-                </Text>
-              </View>
-
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => setSelectedItem(item)}
-                activeOpacity={0.7}
+          {sortedItems.length === 0 ? (
+            <View style={styles.emptyCard}>
+              <Text style={styles.emptyText}>등록된 디데이가 없어요.</Text>
+            </View>
+          ) : (
+            sortedItems.map((item) => (
+              <Pressable
+                key={item.id}
+                style={styles.scheduleCard}
+                onLongPress={() => setSelectedItem(item)}
               >
-                <IconSymbol name="trash" size={22} color="#6B7280" />
-              </TouchableOpacity>
-            </Pressable>
-          ))}
+                <Text style={styles.ddayText}>{getDday(item.date)}</Text>
+
+                <View style={styles.scheduleContent}>
+                  <Text style={styles.scheduleTitle}>{item.title}</Text>
+                  <Text style={styles.scheduleDate}>
+                    {DATE_FORMATTER.format(toDate(item.date))}
+                  </Text>
+                </View>
+
+                <TouchableOpacity
+                  style={styles.deleteButton}
+                  onPress={() => setSelectedItem(item)}
+                  activeOpacity={0.7}
+                >
+                  <IconSymbol name="trash" size={22} color="#6B7280" />
+                </TouchableOpacity>
+              </Pressable>
+            ))
+          )}
         </View>
 
         <TouchableOpacity
@@ -374,6 +395,9 @@ const styles = StyleSheet.create({
   selectedDayCircle: {
     backgroundColor: "#4D79F6",
   },
+  todayDayCircle: {
+    backgroundColor: "#EAF3FF",
+  },
   dayText: {
     fontSize: 16,
     fontWeight: "700",
@@ -384,6 +408,10 @@ const styles = StyleSheet.create({
   },
   selectedDayText: {
     color: "#FFFFFF",
+  },
+  todayDayText: {
+    color: "#4D79F6",
+    fontWeight: "900",
   },
   sectionTitle: {
     marginTop: 22,
@@ -405,6 +433,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 22,
     paddingRight: 8,
+  },
+  emptyCard: {
+    minHeight: 76,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    backgroundColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyText: {
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#9CA3AF",
   },
   ddayText: {
     width: 78,
