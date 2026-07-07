@@ -82,6 +82,7 @@ export default function ChildDdayAddPage() {
     return new Date(today.getFullYear(), today.getMonth(), 1);
   });
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isScrollEnabled, setIsScrollEnabled] = useState(false);
   const [memo, setMemo] = useState("");
   const todayKey = getDateKey(new Date());
 
@@ -119,9 +120,15 @@ export default function ChildDdayAddPage() {
   const calendarRows = toCalendarRows(createCalendarDays(monthDate));
 
   const handleMemoFocus = () => {
+    setIsScrollEnabled(true);
     setTimeout(() => {
       scrollRef.current?.scrollToEnd({ animated: true });
     }, 120);
+  };
+
+  const handleMemoBlur = () => {
+    setIsScrollEnabled(false);
+    scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
 
   return (
@@ -148,6 +155,9 @@ export default function ChildDdayAddPage() {
           contentContainerStyle={styles.container}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
+          scrollEnabled={isScrollEnabled}
+          bounces={false}
+          overScrollMode="never"
         >
           <View style={styles.fieldGroup}>
             <Text style={styles.label}>일정 이름</Text>
@@ -189,6 +199,7 @@ export default function ChildDdayAddPage() {
                 value={memo}
                 onChangeText={(value) => setMemo(value.slice(0, MEMO_LIMIT))}
                 onFocus={handleMemoFocus}
+                onBlur={handleMemoBlur}
                 style={styles.memoText}
                 placeholder="메모를 입력해주세요"
                 placeholderTextColor="#A0A4AF"
@@ -332,7 +343,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 14,
     paddingTop: 34,
-    paddingBottom: 140,
+    paddingBottom: 20,
     gap: 34,
   },
   fieldGroup: {
