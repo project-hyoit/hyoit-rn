@@ -26,6 +26,20 @@ export default function ChildTabsLayout() {
       />
 
       <Tabs.Screen
+        name="dday"
+        options={{
+          title: "디데이",
+          tabBarIcon: ({ focused, size }) => (
+            <IconSymbol
+              name="calendar"
+              size={size}
+              color={focused ? ACTIVE : INACTIVE}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="check-in"
         options={{
           title: "대화",

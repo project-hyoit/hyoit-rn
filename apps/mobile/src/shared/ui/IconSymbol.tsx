@@ -33,6 +33,10 @@ const MAPPING = {
   pencil: "edit",
   camera: "photo-camera",
   questionmark: "help-outline",
+  calendar: "calendar-month",
+  trash: "delete-outline",
+  info: "info-outline",
+  plus: "add",
 } as const satisfies IconMapping;
 
 export function IconSymbol({
