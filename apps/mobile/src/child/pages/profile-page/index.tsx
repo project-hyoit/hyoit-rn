@@ -114,9 +114,11 @@ export default function ChildProfilePage() {
         </View>
 
         <ProfileSettings
-          onPressNotification={() => undefined}
-          onPressChangePhoto={() => setIsMenuOpen(true)}
-          onPressHelp={() => undefined}
+          onPressNotification={() =>
+            router.push("/(child)/(tabs)/profile/notification")
+          }
+          onPressChangePhoto={() => router.push("/(child)/(tabs)/profile/edit")}
+          onPressHelp={() => router.push("/(child)/(tabs)/profile/help")}
           onPressLogout={() => setIsLogoutModalOpen(true)}
         />
 
