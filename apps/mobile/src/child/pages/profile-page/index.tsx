@@ -86,6 +86,7 @@ export default function ChildProfilePage() {
             onPress={() => router.push("/(child)/(tabs)/profile/edit")}
             activeOpacity={0.8}
           >
+            <IconSymbol name="pencil" size={18} color="#1F3EA8" />
             <Text style={styles.modifyButtonText}>프로필 수정</Text>
           </TouchableOpacity>
         </View>
@@ -182,7 +183,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 24,
     paddingVertical: 24,
-    paddingHorizontal: 20,
+    paddingHorizontal: 12,
     alignItems: "center",
     marginTop: 16,
   },
@@ -255,6 +256,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: "#DDE0EE",
+    flexDirection: "row",
+    gap: 8,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -283,6 +286,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 18,
     padding: 16,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
   },
   parentLeft: {
     flex: 1,
