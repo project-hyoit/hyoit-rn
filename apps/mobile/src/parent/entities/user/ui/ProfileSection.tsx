@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import type { UserProfile } from "../model/types";
+import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import ProfileAvatar from "./ProfileAvatar";
 import ProfileInfo from "./ProfileInfo";
 
@@ -19,6 +20,7 @@ export default function ProfileSection({ user, onPressEdit, onPressModify }: Pro
         <ProfileInfo user={user} />
 
         <TouchableOpacity style={styles.modifyButton} onPress={onPressModify}>
+          <IconSymbol name="pencil" size={18} color="#1F3EA8" />
           <Text style={styles.modifyButtonText}>프로필 수정</Text>
         </TouchableOpacity>
       </View>
@@ -46,6 +48,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     borderColor: "#DDE0EE",
+    flexDirection: "row",
+    gap: 8,
     justifyContent: "center",
     alignItems: "center",
   },

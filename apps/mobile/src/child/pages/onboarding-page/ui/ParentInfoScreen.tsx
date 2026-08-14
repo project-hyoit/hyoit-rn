@@ -25,15 +25,15 @@ export default function ParentInfoScreen() {
     <View style={s.wrap}>
       <ProgressBar current={2} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        안녕하세요!{"\n"}부모님 성함을 알려주세요
+        안녕하세요!{"\n"}성함을 알려주세요
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        안부를 보낼 때 {"\n"}부모님 이름이 함께 표시돼요.
+        부모님께 안부를 보낼 때 {"\n"}이름이 함께 표시돼요.
       </Text>
 
       <View style={s.field}>
         <Text style={s.label} allowFontScaling={false}>
-          부모님 성함
+          성함
         </Text>
         <TextInput
           placeholder="예 : 김효잇"

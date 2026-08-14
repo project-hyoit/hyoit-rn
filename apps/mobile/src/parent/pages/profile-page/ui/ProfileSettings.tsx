@@ -10,11 +10,11 @@ interface Props {
 
 const settings = [
   { label: "알림 설정", icon: "bell", action: "notification" },
-  { label: "프로필 사진 변경", icon: "camera", action: "photo" },
+  { label: "프로필 사진 변경", icon: "person.circle.fill", action: "photo" },
   { label: "도움말", icon: "questionmark", action: "help" },
 ] as const;
 
-const logoutSetting = { label: "로그아웃", icon: "xmark", action: "logout" } as const;
+const logoutSetting = { label: "로그아웃", icon: "logout", action: "logout" } as const;
 
 type SettingIconName = typeof settings[number]["icon"] | typeof logoutSetting["icon"];
 

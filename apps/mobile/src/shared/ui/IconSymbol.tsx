@@ -15,6 +15,7 @@ const MAPPING = {
   "gamecontroller.fill": "sports-esports",
   "text.bubble.fill": "chat-bubble",
   "person.fill": "person",
+  "person.circle.fill": "account-circle",
   "paperplane.fill": "send",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
@@ -23,6 +24,7 @@ const MAPPING = {
   bell: "notifications-none",
   "bell.fill": "notifications",
   xmark: "close",
+  logout: "logout",
   checkmark: "check",
   "checkmark.circle.fill": "check-circle",
   exclamationmark: "priority-high",
@@ -33,6 +35,10 @@ const MAPPING = {
   pencil: "edit",
   camera: "photo-camera",
   questionmark: "help-outline",
+  calendar: "calendar-month",
+  trash: "delete-outline",
+  info: "info-outline",
+  plus: "add",
 } as const satisfies IconMapping;
 
 export function IconSymbol({
