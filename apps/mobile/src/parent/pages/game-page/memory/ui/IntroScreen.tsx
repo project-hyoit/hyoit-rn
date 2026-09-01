@@ -33,7 +33,7 @@ export default function IntroScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           s.content,
-          { paddingBottom: 24 + (selected ? 72 : 0) },
+          { paddingBottom: 24 + (selected ? 112 : 0) },
         ]}
       >
         <Image source={bananaCardsImg} style={s.hero} />
@@ -70,8 +70,7 @@ export default function IntroScreen() {
 
       {selected && (
         <View
-          pointerEvents="box-none"
-          style={[s.fabWrap, { bottom: insets.bottom + 12 }]}
+          style={[s.bottomBar, { paddingBottom: insets.bottom + 16 }]}
         >
           <Pressable
             onPress={start}
@@ -117,14 +116,19 @@ const s = StyleSheet.create({
     textAlign: "center",
     marginBottom: 36,
   },
-  fabWrap: {
+  bottomBar: {
     position: "absolute",
-    right: 20,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    backgroundColor: "#FFFFFF",
   },
   cta: {
+    width: "100%",
     backgroundColor: PRIMARY,
-    paddingHorizontal: 22,
-    paddingVertical: 14,
+    paddingVertical: 17,
     borderRadius: 16,
     shadowColor: "#000",
     shadowOpacity: 0.06,
