@@ -104,6 +104,9 @@ const s = StyleSheet.create({
   tick: {
     color: "#fff",
     fontSize: 18,
+    lineHeight: 20,
     fontWeight: "900",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 });
