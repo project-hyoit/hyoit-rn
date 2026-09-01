@@ -46,21 +46,21 @@ export default function IntroScreen() {
         <View style={{ gap: 14, marginTop: 8 }}>
           <DifficultyCard
             label="쉬움"
-            headline="90초의 시간이 주어져요"
+            headline="8장의 카드로 시작해요"
             subline="게임을 처음하시는 분에게 추천해요"
             selected={selected === "easy"}
             onPress={() => setSelected("easy")}
           />
           <DifficultyCard
             label="보통"
-            headline="60초의 시간이 주어져요"
+            headline="12장의 카드로 시작해요"
             subline="게임에 적응이 되신 분에게 추천해요"
             selected={selected === "normal"}
             onPress={() => setSelected("normal")}
           />
           <DifficultyCard
             label="어려움"
-            headline="30초의 시간이 주어져요"
+            headline="16장의 카드로 시작해요"
             subline="게임을 많이 하신 분에게 추천해요"
             selected={selected === "hard"}
             onPress={() => setSelected("hard")}
