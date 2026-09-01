@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { fruitSrc } from "@/src/parent/shared/assets/fruits";
 import DifficultyCard from "./DifficultyCard";
 
 const PRIMARY = "#1E90FF";
@@ -43,6 +44,7 @@ export default function IntroScreen() {
         <View style={{ gap: 14, marginTop: 8 }}>
           <DifficultyCard
             label="쉬움"
+            image={fruitSrc.apple}
             headline="8장의 카드로 시작해요"
             subline="게임을 처음하시는 분에게 추천해요"
             selected={selected === "easy"}
@@ -50,6 +52,7 @@ export default function IntroScreen() {
           />
           <DifficultyCard
             label="보통"
+            image={fruitSrc.banana}
             headline="12장의 카드로 시작해요"
             subline="게임에 적응이 되신 분에게 추천해요"
             selected={selected === "normal"}
@@ -57,6 +60,7 @@ export default function IntroScreen() {
           />
           <DifficultyCard
             label="어려움"
+            image={fruitSrc.orange}
             headline="16장의 카드로 시작해요"
             subline="게임을 많이 하신 분에게 추천해요"
             selected={selected === "hard"}

@@ -1,9 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import type { ImageSourcePropType } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 const PRIMARY = "#1E90FF";
 
 type Props = {
   label: string;
+  image: ImageSourcePropType;
   headline: string;
   subline: string;
   selected?: boolean;
@@ -12,6 +14,7 @@ type Props = {
 
 export default function DifficultyCard({
   label,
+  image,
   headline,
   subline,
   selected = false,
@@ -29,11 +32,14 @@ export default function DifficultyCard({
       accessibilityRole="button"
       accessibilityState={{ selected }}
     >
-      <Text style={[s.label, selected && s.labelSel]} allowFontScaling={false}>
-        {label}
-      </Text>
+      <View style={[s.imageWrap, selected && s.imageWrapSelected]}>
+        <Image source={image} style={s.image} resizeMode="cover" />
+      </View>
 
       <View style={s.textCol}>
+        <Text style={[s.label, selected && s.labelSel]} allowFontScaling={false}>
+          {label}
+        </Text>
         <Text
           style={[s.headline, selected && s.textSel]}
           allowFontScaling={false}
@@ -74,12 +80,26 @@ const s = StyleSheet.create({
     backgroundColor: PRIMARY,
   },
   label: {
-    width: 64,
-    fontSize: 22,
+    fontSize: 21,
     fontWeight: "900",
     color: "#111",
   },
   labelSel: { color: "#fff" },
+
+  imageWrap: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    overflow: "hidden",
+    backgroundColor: "#EEF7D8",
+  },
+  imageWrapSelected: {
+    backgroundColor: "#DCEBFF",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
 
   textCol: { flex: 1 },
   headline: { fontSize: 15, color: "#111", fontWeight: "700" },
