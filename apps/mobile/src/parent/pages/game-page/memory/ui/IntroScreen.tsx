@@ -1,8 +1,6 @@
-import bananaCardsImg from "@/assets/images/banana-cards_02.png";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -36,7 +34,6 @@ export default function IntroScreen() {
           { paddingBottom: 24 + (selected ? 112 : 0) },
         ]}
       >
-        <Image source={bananaCardsImg} style={s.hero} />
         <Text style={s.title}>카드 맞추기</Text>
         <Text style={s.desc}>
           같은 모양의 카드끼리의 위치를 기억해서{"\n"}알맞은 카드끼리
@@ -93,14 +90,6 @@ const s = StyleSheet.create({
   content: {
     paddingHorizontal: 20,
     paddingTop: 76,
-  },
-  hero: {
-    alignSelf: "center",
-    width: 160,
-    height: 160,
-    resizeMode: "contain",
-    marginVertical: 8,
-    backgroundColor: "#F6F7F9",
   },
   title: {
     fontSize: 32,
