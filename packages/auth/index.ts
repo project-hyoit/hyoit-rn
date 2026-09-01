@@ -8,4 +8,5 @@ export * from "./model/useChooseRoleAction";
 export * from "./model/useLoginWithKakao";
 
 export * from "./lib/isAuthenticated";
+export * from "./lib/restoreAuthSession";
 export * from "./lib/resolveEntryTarget";
