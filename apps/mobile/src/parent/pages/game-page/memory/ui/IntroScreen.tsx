@@ -77,7 +77,7 @@ export default function IntroScreen() {
             style={s.cta}
             android_ripple={{ color: "#e9f2ff" }}
           >
-            <Text style={s.ctaText}>시작하기 →</Text>
+            <Text style={s.ctaText}>시작하기</Text>
           </Pressable>
         </View>
       )}
@@ -130,6 +130,8 @@ const s = StyleSheet.create({
     backgroundColor: PRIMARY,
     paddingVertical: 17,
     borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 8,
