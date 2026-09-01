@@ -46,7 +46,6 @@ export default function IntroScreen() {
             label="쉬움"
             image={fruitSrc.apple}
             headline="8장의 카드로 시작해요"
-            subline="게임을 처음하시는 분에게 추천해요"
             selected={selected === "easy"}
             onPress={() => setSelected("easy")}
           />
@@ -54,7 +53,6 @@ export default function IntroScreen() {
             label="보통"
             image={fruitSrc.banana}
             headline="12장의 카드로 시작해요"
-            subline="게임에 적응이 되신 분에게 추천해요"
             selected={selected === "normal"}
             onPress={() => setSelected("normal")}
           />
@@ -62,7 +60,6 @@ export default function IntroScreen() {
             label="어려움"
             image={fruitSrc.orange}
             headline="16장의 카드로 시작해요"
-            subline="게임을 많이 하신 분에게 추천해요"
             selected={selected === "hard"}
             onPress={() => setSelected("hard")}
           />

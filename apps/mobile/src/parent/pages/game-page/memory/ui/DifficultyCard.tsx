@@ -7,7 +7,6 @@ type Props = {
   label: string;
   image: ImageSourcePropType;
   headline: string;
-  subline: string;
   selected?: boolean;
   onPress?: () => void;
 };
@@ -16,7 +15,6 @@ export default function DifficultyCard({
   label,
   image,
   headline,
-  subline,
   selected = false,
   onPress,
 }: Props) {
@@ -45,12 +43,6 @@ export default function DifficultyCard({
           allowFontScaling={false}
         >
           {headline}
-        </Text>
-        <Text
-          style={[s.subline, selected && s.textSelDim]}
-          allowFontScaling={false}
-        >
-          {subline}
         </Text>
       </View>
 
@@ -87,9 +79,9 @@ const s = StyleSheet.create({
   labelSel: { color: "#fff" },
 
   imageWrap: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     overflow: "hidden",
     backgroundColor: "#EEF7D8",
   },
@@ -103,9 +95,7 @@ const s = StyleSheet.create({
 
   textCol: { flex: 1 },
   headline: { fontSize: 15, color: "#111", fontWeight: "700" },
-  subline: { marginTop: 4, fontSize: 13, color: "#444" },
   textSel: { color: "#fff" },
-  textSelDim: { color: "#EAF3FF" },
 
   checkbox: {
     width: 24,
