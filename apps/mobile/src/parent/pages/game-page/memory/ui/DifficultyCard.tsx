@@ -94,7 +94,12 @@ const s = StyleSheet.create({
   },
 
   textCol: { flex: 1 },
-  headline: { fontSize: 15, color: "#111", fontWeight: "700" },
+  headline: {
+    fontSize: 15,
+    lineHeight: 22,
+    color: "#777777",
+    fontWeight: "700",
+  },
   textSel: { color: "#fff" },
 
   checkbox: {
