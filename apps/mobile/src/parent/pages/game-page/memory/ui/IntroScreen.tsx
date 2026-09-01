@@ -112,7 +112,7 @@ const s = StyleSheet.create({
     bottom: 0,
     paddingHorizontal: 20,
     paddingTop: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "transparent",
   },
   cta: {
     width: "100%",
