@@ -124,9 +124,9 @@ export default function ChildProfileEditPage() {
             </View>
 
             <View style={styles.fieldGroup}>
-              <Text style={styles.label}>연결 가족</Text>
+              <Text style={styles.label}>관계</Text>
               <View style={styles.inputBox}>
-                <Text style={styles.inputText}>부모님</Text>
+                <Text style={styles.inputText}>자식</Text>
               </View>
             </View>
           </View>

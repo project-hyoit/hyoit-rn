@@ -11,7 +11,7 @@ export default function ProfileInfo({ user }: Props) {
     <View style={styles.container}>
       <Text style={styles.name}>{user.name}님</Text>
       <View style={styles.accountBadge}>
-        <Text style={styles.accountBadgeText}>부모님 계정</Text>
+        <Text style={styles.accountBadgeText}>부모 계정</Text>
       </View>
       <Text style={styles.description}>
         효잇으로 가족과 연결되어 있어요.

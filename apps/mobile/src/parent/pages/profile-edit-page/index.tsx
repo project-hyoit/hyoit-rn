@@ -181,8 +181,7 @@ export default function ProfileEditPage() {
             <View style={styles.fieldGroup}>
               <Text style={styles.label}>관계</Text>
               <TouchableOpacity style={styles.selectBox} activeOpacity={0.8}>
-                <Text style={styles.inputText}>부모님 (자녀 계정)</Text>
-                <IconSymbol name="chevron.down" size={26} color="#171A20" />
+                <Text style={styles.inputText}>부모</Text>
               </TouchableOpacity>
             </View>
           </View>
