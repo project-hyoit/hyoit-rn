@@ -15,6 +15,7 @@ import ChildCheckInStatusBanner from "./ui/ChildCheckInStatusBanner";
 
 export default function ChildCheckInPage() {
   const rawItems = useCheckInStore((state) => state.items);
+  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
   const sendCheckIn = useCheckInStore((state) => state.sendCheckIn);
   const confirmCheckIn = useCheckInStore((state) => state.confirmCheckIn);
 
@@ -35,6 +36,10 @@ export default function ChildCheckInPage() {
     if (item.direction !== "RECEIVED") return;
     confirmCheckIn(item.id, "child");
   };
+
+  if (!hasHydrated) {
+    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
+  }
 
   return (
     <SafeAreaView style={s.safeArea} edges={["top"]}>

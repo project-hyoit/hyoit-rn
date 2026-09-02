@@ -41,12 +41,18 @@ export default function ParentCheckInHistoryPage() {
   const [filter, setFilter] = useState<CheckInHistoryFilter>("ALL");
 
   const rawItems = useCheckInStore((state) => state.items);
+  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
   const items = useMemo(
     () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
     [rawItems],
   );
   const filteredItems = useMemo(() => filterCheckInHistory(items, filter), [items, filter]);
   const grouped = useMemo(() => groupCheckInHistoryByDate(filteredItems), [filteredItems]);
+
+  if (!hasHydrated) {
+    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
+  }
+
   return (
     <SafeAreaView style={s.safeArea} edges={["top"]}>
       <ScrollView

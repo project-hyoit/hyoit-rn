@@ -17,6 +17,7 @@ import {
 
 export default function HomePage() {
   const rawItems = useCheckInStore((state) => state.items);
+  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
   const items = useMemo(
     () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
     [rawItems],
@@ -43,6 +44,10 @@ export default function HomePage() {
     if (latestSentItem?.status === "CONFIRMED") return "checked";
     return "empty";
   }, [latestSentItem, pendingReceivedCount]);
+
+  if (!hasHydrated) {
+    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
+  }
 
   const moveToCheckIn = () => {
     router.push("/(parent)/(tabs)/check-in");

@@ -20,10 +20,12 @@ import {
 export default function ParentCheckInPage() {
   const router = useRouter();
   const rawItems = useCheckInStore((state) => state.items);
+  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
   const sendCheckIn = useCheckInStore((state) => state.sendCheckIn);
   const confirmCheckIn = useCheckInStore((state) => state.confirmCheckIn);
   const [isSendSuccessModalVisible, setIsSendSuccessModalVisible] =
     useState(false);
+  const [lastSentMessage, setLastSentMessage] = useState<string | null>(null);
   const items = useMemo(
     () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
     [rawItems],
@@ -36,6 +38,7 @@ export default function ParentCheckInPage() {
 
   const handleSendCheckIn = (message: string) => {
     sendCheckIn("parent", message);
+    setLastSentMessage(message);
     setIsSendSuccessModalVisible(true);
   };
 
@@ -49,8 +52,19 @@ export default function ParentCheckInPage() {
   };
 
   const handleResendCheckIn = () => {
+    if (!lastSentMessage) {
+      setIsSendSuccessModalVisible(false);
+      return;
+    }
+
+    sendCheckIn("parent", lastSentMessage);
     setIsSendSuccessModalVisible(false);
   };
+
+  if (!hasHydrated) {
+    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
+  }
+
   return (
     <SafeAreaView style={s.safeArea} edges={["top"]}>
       <View style={s.screen}>

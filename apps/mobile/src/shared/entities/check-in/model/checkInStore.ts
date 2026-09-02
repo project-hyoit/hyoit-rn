@@ -10,9 +10,11 @@ type CheckInStore = {
   hasHydrated: boolean;
   sendCheckIn: (senderRole: CheckInViewerRole, message: string) => void;
   confirmCheckIn: (itemId: string, viewerRole: CheckInViewerRole) => void;
-  clearCheckIns: () => void;
+  clearCheckIns: () => Promise<void>;
   setHydrated: (hydrated: boolean) => void;
 };
+
+const CHECK_IN_STORAGE_KEY = "hyoit-check-ins-v1";
 
 const createCheckInId = () =>
   `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -47,11 +49,14 @@ export const useCheckInStore = create<CheckInStore>()(
           ),
         }));
       },
-      clearCheckIns: () => set({ items: [] }),
+      clearCheckIns: async () => {
+        await AsyncStorage.removeItem(CHECK_IN_STORAGE_KEY);
+        set({ items: [] });
+      },
       setHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {
-      name: "hyoit-check-ins-v1",
+      name: CHECK_IN_STORAGE_KEY,
       storage: createJSONStorage(() => AsyncStorage),
       partialize: (state) => ({ items: state.items }),
       onRehydrateStorage: () => (state) => {

@@ -60,6 +60,7 @@ export default function ChildHomePage() {
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
   const rawCheckIns = useCheckInStore((state) => state.items);
+  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
 
   const nextDday = useMemo(() => {
     return [...ddayItems].sort((a, b) => a.date.localeCompare(b.date))[0];
@@ -98,6 +99,10 @@ export default function ChildHomePage() {
   const checkInActionLabel = latestSentCheckIn
     ? "안부 다시 보내기"
     : "안부 보내기";
+
+  if (!hasHydrated) {
+    return <SafeAreaView style={styles.safeArea} edges={["top"]} />;
+  }
 
   const moveToCheckIn = () => {
     router.push("/(child)/(tabs)/check-in");
