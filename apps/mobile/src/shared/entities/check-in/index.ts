@@ -13,20 +13,15 @@ export {
   QUICK_CHECK_IN_MESSAGES,
 } from "./model/constants";
 
-export {
-  checkedCheckInMock,
-  checkInMockPresets,
-  emptyCheckInMock,
-  multipleNewCheckInMock,
-  newCheckInMock,
-  sentConfirmedCheckInMock,
-  sentWaitingCheckInMock,
-} from "./model/mock";
-
-export type { CheckInMockPresetKey } from "./model/mock";
-
 export { formatCheckInTime } from "./lib/formatCheckInTime";
 export { getCheckInOpponentLabel } from "./lib/getCheckInOpponentLabel";
 export { getCheckInStatusLabel } from "./lib/getCheckInStatusLabel";
 export { getLatestCheckIn } from "./lib/getLatestCheckIn";
 export { mapCheckInToViewItem } from "./lib/mapCheckInToViewItem";
+export {
+  filterCheckInHistory,
+  groupCheckInHistoryByDate,
+} from "./lib/checkInHistory";
+export type { CheckInHistoryFilter } from "./lib/checkInHistory";
+export { createCheckIn, markCheckInAsChecked } from "./lib/checkInState";
+export { useCheckInStore } from "./model/checkInStore";

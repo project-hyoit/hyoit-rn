@@ -9,8 +9,7 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import HyoitLogo from "@/src/parent/assets/login/hyoit_logo_home.png";
 import {
   formatCheckInTime,
-  sentConfirmedCheckInMock,
-  sentWaitingCheckInMock,
+  useCheckInStore,
   type CheckInRawItem,
 } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
@@ -60,21 +59,22 @@ const getLatestSentCheckIn = (items: CheckInRawItem[]) => {
 export default function ChildHomePage() {
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
+  const rawCheckIns = useCheckInStore((state) => state.items);
 
   const nextDday = useMemo(() => {
     return [...ddayItems].sort((a, b) => a.date.localeCompare(b.date))[0];
   }, [ddayItems]);
 
   const latestSentCheckIn = useMemo(
-    () => getLatestSentCheckIn(sentWaitingCheckInMock),
-    [],
+    () => getLatestSentCheckIn(rawCheckIns),
+    [rawCheckIns],
   );
 
   const newReceivedCheckInCount = useMemo(() => {
-    return sentConfirmedCheckInMock.filter(
+    return rawCheckIns.filter(
       (item) => item.receiverRole === "child" && !item.checkedAt,
     ).length;
-  }, []);
+  }, [rawCheckIns]);
 
   const recordCountLabel =
     newReceivedCheckInCount > 0
@@ -121,9 +121,13 @@ export default function ChildHomePage() {
 
             <Pressable style={styles.notificationButton} onPress={moveToCheckIn}>
               <IconSymbol name="bell" size={25} color="#111111" />
-              <View style={styles.notificationBadge}>
-                <Text style={styles.notificationBadgeText}>2</Text>
-              </View>
+              {newReceivedCheckInCount > 0 ? (
+                <View style={styles.notificationBadge}>
+                  <Text style={styles.notificationBadgeText}>
+                    {newReceivedCheckInCount}
+                  </Text>
+                </View>
+              ) : null}
             </Pressable>
           </View>
 

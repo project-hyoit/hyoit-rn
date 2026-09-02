@@ -1,7 +1,12 @@
 import { router } from "expo-router";
+import { useMemo } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import {
+  mapCheckInToViewItem,
+  useCheckInStore,
+} from "@/src/shared/entities/check-in";
 import type { HomeStatus } from "./types/home";
 import {
   HomeCardGrid,
@@ -11,7 +16,33 @@ import {
 } from "./ui";
 
 export default function HomePage() {
-  const homeStatus = "received" as HomeStatus;
+  const rawItems = useCheckInStore((state) => state.items);
+  const items = useMemo(
+    () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
+    [rawItems],
+  );
+
+  const pendingReceivedCount = items.filter(
+    (item) => item.direction === "RECEIVED" && item.status === "NEW",
+  ).length;
+  const latestSentItem = useMemo(
+    () =>
+      items
+        .filter((item) => item.direction === "SENT")
+        .sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        )[0] ?? null,
+    [items],
+  );
+
+  const homeStatus: HomeStatus = useMemo(() => {
+    if (pendingReceivedCount > 1) return "multiple";
+    if (pendingReceivedCount === 1) return "received";
+    if (latestSentItem?.status === "WAITING_CONFIRM") return "sent";
+    if (latestSentItem?.status === "CONFIRMED") return "checked";
+    return "empty";
+  }, [latestSentItem, pendingReceivedCount]);
 
   const moveToCheckIn = () => {
     router.push("/(parent)/(tabs)/check-in");
@@ -25,9 +56,7 @@ export default function HomePage() {
       >
         <HomeHeader
           name="00"
-          hasNotification={
-            homeStatus === "received" || homeStatus === "multiple"
-          }
+          hasNotification={pendingReceivedCount > 0}
           onPressNotification={moveToCheckIn}
           onPressSetting={() => {}}
         />
@@ -49,13 +78,11 @@ export default function HomePage() {
     </SafeAreaView>
   );
 }
-
 const s = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: "#F8F8F8",
   },
-
   container: {
     paddingHorizontal: 24,
     paddingTop: 22,
