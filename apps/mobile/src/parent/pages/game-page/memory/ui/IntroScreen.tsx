@@ -1,8 +1,6 @@
-import bananaCardsImg from "@/assets/images/banana-cards_02.png";
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,6 +9,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { fruitSrc } from "@/src/parent/shared/assets/fruits";
 import DifficultyCard from "./DifficultyCard";
 
 const PRIMARY = "#1E90FF";
@@ -33,10 +32,9 @@ export default function IntroScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[
           s.content,
-          { paddingBottom: 24 + (selected ? 72 : 0) },
+          { paddingBottom: 24 + (selected ? 112 : 0) },
         ]}
       >
-        <Image source={bananaCardsImg} style={s.hero} />
         <Text style={s.title}>카드 맞추기</Text>
         <Text style={s.desc}>
           같은 모양의 카드끼리의 위치를 기억해서{"\n"}알맞은 카드끼리
@@ -46,22 +44,22 @@ export default function IntroScreen() {
         <View style={{ gap: 14, marginTop: 8 }}>
           <DifficultyCard
             label="쉬움"
-            headline="90초의 시간이 주어져요"
-            subline="게임을 처음하시는 분에게 추천해요"
+            image={fruitSrc.apple}
+            headline="8장의 카드로 시작해요"
             selected={selected === "easy"}
             onPress={() => setSelected("easy")}
           />
           <DifficultyCard
             label="보통"
-            headline="60초의 시간이 주어져요"
-            subline="게임에 적응이 되신 분에게 추천해요"
+            image={fruitSrc.banana}
+            headline="12장의 카드로 시작해요"
             selected={selected === "normal"}
             onPress={() => setSelected("normal")}
           />
           <DifficultyCard
             label="어려움"
-            headline="30초의 시간이 주어져요"
-            subline="게임을 많이 하신 분에게 추천해요"
+            image={fruitSrc.orange}
+            headline="16장의 카드로 시작해요"
             selected={selected === "hard"}
             onPress={() => setSelected("hard")}
           />
@@ -70,15 +68,14 @@ export default function IntroScreen() {
 
       {selected && (
         <View
-          pointerEvents="box-none"
-          style={[s.fabWrap, { bottom: insets.bottom + 12 }]}
+          style={[s.bottomBar, { paddingBottom: insets.bottom + 16 }]}
         >
           <Pressable
             onPress={start}
             style={s.cta}
             android_ripple={{ color: "#e9f2ff" }}
           >
-            <Text style={s.ctaText}>시작하기 →</Text>
+            <Text style={s.ctaText}>시작하기</Text>
           </Pressable>
         </View>
       )}
@@ -95,14 +92,6 @@ const s = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 76,
   },
-  hero: {
-    alignSelf: "center",
-    width: 160,
-    height: 160,
-    resizeMode: "contain",
-    marginVertical: 8,
-    backgroundColor: "#F6F7F9",
-  },
   title: {
     fontSize: 32,
     fontWeight: "900",
@@ -113,19 +102,27 @@ const s = StyleSheet.create({
     marginTop: 12,
     fontSize: 15,
     lineHeight: 22,
-    color: "#333",
+    color: "#777777",
+    fontWeight: "700",
     textAlign: "center",
     marginBottom: 36,
   },
-  fabWrap: {
+  bottomBar: {
     position: "absolute",
-    right: 20,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    paddingHorizontal: 20,
+    paddingTop: 16,
+    backgroundColor: "transparent",
   },
   cta: {
+    width: "100%",
     backgroundColor: PRIMARY,
-    paddingHorizontal: 22,
-    paddingVertical: 14,
+    paddingVertical: 17,
     borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 8,

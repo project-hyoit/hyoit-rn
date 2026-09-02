@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { resolveEntryTarget, useAuthStore } from "@hyoit/auth";
+import { resolveEntryTarget, restoreAuthSession, useAuthStore } from "@hyoit/auth";
 import { Redirect } from "expo-router";
 
 const SPLASH_DURATION = 2000;
 
 export default function Index() {
-  const { isSignedIn, role } = useAuthStore();
+  const { isSignedIn, role, hasHydrated } = useAuthStore();
   const [isReady, setIsReady] = useState(false);
 
   const target = resolveEntryTarget({
@@ -15,11 +15,12 @@ export default function Index() {
   });
 
   useEffect(() => {
+    void restoreAuthSession();
     const timer = setTimeout(() => setIsReady(true), SPLASH_DURATION);
     return () => clearTimeout(timer);
   }, []);
 
-  if (!isReady) {
+  if (!isReady || !hasHydrated) {
     return (
       <View style={s.wrap}>
         <Image
