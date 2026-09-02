@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
-  mapCheckInToViewItem,
+  getCheckInOverview,
   useCheckInStore,
   type CheckInItem,
 } from "@/src/shared/entities/check-in";
@@ -26,19 +26,16 @@ export default function ParentCheckInPage() {
   const [isSendSuccessModalVisible, setIsSendSuccessModalVisible] =
     useState(false);
   const [lastSentMessage, setLastSentMessage] = useState<string | null>(null);
-  const items = useMemo(
-    () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
+  const overview = useMemo(
+    () => getCheckInOverview(rawItems, "parent"),
     [rawItems],
   );
 
-  const latestItem = items[0] ?? null;
-  const pendingCount = items.filter(
-    (item) => item.direction === "RECEIVED" && item.status === "NEW",
-  ).length;
-
   const handleSendCheckIn = (message: string) => {
-    sendCheckIn("parent", message);
-    setLastSentMessage(message);
+    const sentItem = sendCheckIn("parent", message);
+    if (!sentItem) return;
+
+    setLastSentMessage(sentItem.message);
     setIsSendSuccessModalVisible(true);
   };
 
@@ -57,7 +54,10 @@ export default function ParentCheckInPage() {
       return;
     }
 
-    sendCheckIn("parent", lastSentMessage);
+    const resentItem = sendCheckIn("parent", lastSentMessage);
+    if (!resentItem) return;
+
+    setLastSentMessage(resentItem.message);
     setIsSendSuccessModalVisible(false);
   };
 
@@ -73,18 +73,18 @@ export default function ParentCheckInPage() {
           showsVerticalScrollIndicator={false}
         >
           <ParentCheckInHeader
-            hasNotification={pendingCount > 0}
+            hasNotification={overview.pendingCount > 0}
             onPressNotification={() => {}}
           />
 
           <ParentCheckInStatusBanner
-            latestItem={latestItem}
-            pendingCount={pendingCount}
+            latestItem={overview.displayItem}
+            pendingCount={overview.pendingCount}
             onConfirm={handleConfirmCheckIn}
           />
 
           <ParentCheckInHistorySection
-            items={items}
+            items={overview.items}
             onPressHistory={() => router.push("/(parent)/check-in-history")}
           />
         </ScrollView>

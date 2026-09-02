@@ -3,16 +3,30 @@ import type {
   CheckInViewerRole,
 } from "../model/types";
 
+type CreateCheckInParams = {
+  senderRole: CheckInViewerRole;
+  message: string;
+  id: string;
+  createdAt: string;
+};
+
+type MarkCheckInAsCheckedParams = {
+  items: CheckInRawItem[];
+  itemId: string;
+  viewerRole: CheckInViewerRole;
+  checkedAt: string;
+};
+
 const getReceiverRole = (
   senderRole: CheckInViewerRole,
 ): CheckInViewerRole => (senderRole === "parent" ? "child" : "parent");
 
-export const createCheckIn = (
-  senderRole: CheckInViewerRole,
-  message: string,
-  id: string,
-  createdAt: string,
-): CheckInRawItem => ({
+export const createCheckIn = ({
+  senderRole,
+  message,
+  id,
+  createdAt,
+}: CreateCheckInParams): CheckInRawItem => ({
   id,
   senderRole,
   receiverRole: getReceiverRole(senderRole),
@@ -20,12 +34,13 @@ export const createCheckIn = (
   type: "QUESTION",
   createdAt,
 });
-export const markCheckInAsChecked = (
-  items: CheckInRawItem[],
-  itemId: string,
-  viewerRole: CheckInViewerRole,
-  checkedAt: string,
-): CheckInRawItem[] =>
+
+export const markCheckInAsChecked = ({
+  items,
+  itemId,
+  viewerRole,
+  checkedAt,
+}: MarkCheckInAsCheckedParams): CheckInRawItem[] =>
   items.map((item) => {
     if (item.id !== itemId) return item;
     if (item.receiverRole !== viewerRole) return item;

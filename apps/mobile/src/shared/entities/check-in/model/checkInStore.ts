@@ -8,7 +8,10 @@ import type { CheckInRawItem, CheckInViewerRole } from "./types";
 type CheckInStore = {
   items: CheckInRawItem[];
   hasHydrated: boolean;
-  sendCheckIn: (senderRole: CheckInViewerRole, message: string) => void;
+  sendCheckIn: (
+    senderRole: CheckInViewerRole,
+    message: string,
+  ) => CheckInRawItem | null;
   confirmCheckIn: (itemId: string, viewerRole: CheckInViewerRole) => void;
   clearCheckIns: () => Promise<void>;
   setHydrated: (hydrated: boolean) => void;
@@ -26,27 +29,26 @@ export const useCheckInStore = create<CheckInStore>()(
       hasHydrated: false,
       sendCheckIn: (senderRole, message) => {
         const trimmedMessage = message.trim();
-        if (!trimmedMessage) return;
+        if (!trimmedMessage) return null;
 
-        const now = new Date().toISOString();
-        const item = createCheckIn(
+        const item = createCheckIn({
           senderRole,
-          trimmedMessage,
-          createCheckInId(),
-          now,
-        );
+          message: trimmedMessage,
+          id: createCheckInId(),
+          createdAt: new Date().toISOString(),
+        });
 
         set((state) => ({ items: [item, ...state.items] }));
+        return item;
       },
       confirmCheckIn: (itemId, viewerRole) => {
-        const checkedAt = new Date().toISOString();
         set((state) => ({
-          items: markCheckInAsChecked(
-            state.items,
+          items: markCheckInAsChecked({
+            items: state.items,
             itemId,
             viewerRole,
-            checkedAt,
-          ),
+            checkedAt: new Date().toISOString(),
+          }),
         }));
       },
       clearCheckIns: async () => {

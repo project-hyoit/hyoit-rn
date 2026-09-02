@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
-  mapCheckInToViewItem,
+  getCheckInOverview,
   useCheckInStore,
   type CheckInItem,
 } from "@/src/shared/entities/check-in";
@@ -19,14 +19,10 @@ export default function ChildCheckInPage() {
   const sendCheckIn = useCheckInStore((state) => state.sendCheckIn);
   const confirmCheckIn = useCheckInStore((state) => state.confirmCheckIn);
 
-  const items = useMemo(
-    () => rawItems.map((item) => mapCheckInToViewItem(item, "child")),
+  const overview = useMemo(
+    () => getCheckInOverview(rawItems, "child"),
     [rawItems],
   );
-  const latestItem = items[0] ?? null;
-  const pendingCount = items.filter(
-    (item) => item.direction === "RECEIVED" && item.status === "NEW",
-  ).length;
 
   const handleSendCheckIn = (message: string) => {
     sendCheckIn("child", message);
@@ -49,17 +45,17 @@ export default function ChildCheckInPage() {
           showsVerticalScrollIndicator={false}
         >
           <ChildCheckInHeader
-            hasNotification={pendingCount > 0}
+            hasNotification={overview.pendingCount > 0}
             onPressNotification={() => {}}
           />
 
           <ChildCheckInStatusBanner
-            latestItem={latestItem}
-            pendingCount={pendingCount}
+            latestItem={overview.displayItem}
+            pendingCount={overview.pendingCount}
             onConfirm={handleConfirmCheckIn}
           />
 
-          <ChildCheckInHistorySection items={items} />
+          <ChildCheckInHistorySection items={overview.items} />
         </ScrollView>
 
         <View style={s.fixedQuickAction}>
