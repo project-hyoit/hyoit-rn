@@ -3,6 +3,12 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import {
+  clearPersistedCheckIns,
+  CHECK_IN_STORAGE_KEY,
+  handleCheckInRehydrated,
+  selectPersistedCheckInState,
+} from "../lib/checkInPersistence";
+import {
   confirmCheckIn as confirmCheckInState,
   sendCheckIn as sendCheckInState,
 } from "../lib/checkInState";
@@ -19,8 +25,6 @@ type CheckInStore = {
   clearCheckIns: () => Promise<void>;
   setHydrated: (hydrated: boolean) => void;
 };
-
-const CHECK_IN_STORAGE_KEY = "hyoit-check-ins-v1";
 
 const createCheckInId = () =>
   `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
@@ -56,18 +60,19 @@ export const useCheckInStore = create<CheckInStore>()(
         if (!result.confirmedItem) return;
         set({ items: result.items });
       },
-      clearCheckIns: async () => {
-        await AsyncStorage.removeItem(CHECK_IN_STORAGE_KEY);
-        set({ items: [] });
-      },
+      clearCheckIns: () =>
+        clearPersistedCheckIns({
+          removeItem: AsyncStorage.removeItem,
+          resetItems: () => set({ items: [] }),
+        }),
       setHydrated: (hasHydrated) => set({ hasHydrated }),
     }),
     {
       name: CHECK_IN_STORAGE_KEY,
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({ items: state.items }),
+      partialize: (state) => selectPersistedCheckInState(state),
       onRehydrateStorage: () => (state) => {
-        state?.setHydrated(true);
+        handleCheckInRehydrated(state);
       },
     },
   ),
