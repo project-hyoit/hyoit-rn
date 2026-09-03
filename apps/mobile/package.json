@@ -9,7 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test:check-in": "node --experimental-strip-types --test src/shared/entities/check-in/lib/*.test.mjs"
+    "test:check-in": "node --experimental-strip-types --test src/shared/entities/check-in/lib/*.test.mjs src/parent/pages/home-page/*.test.mjs"
   },
   "pnpm": {
     "overrides": {

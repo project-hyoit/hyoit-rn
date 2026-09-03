@@ -8,7 +8,7 @@ import {
   getLatestSentCheckIn,
   useCheckInStore,
 } from "@/src/shared/entities/check-in";
-import type { HomeStatus } from "./types/home";
+import { resolveHomeStatus } from "./resolveHomeStatus";
 import {
   HomeCardGrid,
   HomeHeader,
@@ -26,13 +26,10 @@ export default function HomePage() {
   const latestSentItem = getLatestSentCheckIn(overview.items);
   const pendingReceivedCount = overview.pendingCount;
 
-  const homeStatus: HomeStatus = useMemo(() => {
-    if (pendingReceivedCount > 1) return "multiple";
-    if (pendingReceivedCount === 1) return "received";
-    if (latestSentItem?.status === "WAITING_CONFIRM") return "sent";
-    if (latestSentItem?.status === "CONFIRMED") return "checked";
-    return "empty";
-  }, [latestSentItem, pendingReceivedCount]);
+  const homeStatus = resolveHomeStatus({
+    pendingReceivedCount,
+    latestSentItem,
+  });
 
   if (!hasHydrated) {
     return <SafeAreaView style={s.safeArea} edges={["top"]} />;
