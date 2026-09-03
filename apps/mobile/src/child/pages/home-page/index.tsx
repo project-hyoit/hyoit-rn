@@ -9,8 +9,9 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import HyoitLogo from "@/src/parent/assets/login/hyoit_logo_home.png";
 import {
   formatCheckInTime,
+  getCheckInOverview,
+  getLatestSentCheckIn,
   useCheckInStore,
-  type CheckInRawItem,
 } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
@@ -47,15 +48,6 @@ const getDday = (date: string) => {
   return `D+${Math.abs(diff)}`;
 };
 
-const getLatestSentCheckIn = (items: CheckInRawItem[]) => {
-  return [...items]
-    .filter((item) => item.senderRole === "child")
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )[0];
-};
-
 export default function ChildHomePage() {
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
@@ -66,24 +58,19 @@ export default function ChildHomePage() {
     return [...ddayItems].sort((a, b) => a.date.localeCompare(b.date))[0];
   }, [ddayItems]);
 
-  const latestSentCheckIn = useMemo(
-    () => getLatestSentCheckIn(rawCheckIns),
+  const checkInOverview = useMemo(
+    () => getCheckInOverview(rawCheckIns, "child"),
     [rawCheckIns],
   );
-
-  const newReceivedCheckInCount = useMemo(() => {
-    return rawCheckIns.filter(
-      (item) => item.receiverRole === "child" && !item.checkedAt,
-    ).length;
-  }, [rawCheckIns]);
-
+  const latestSentCheckIn = getLatestSentCheckIn(checkInOverview.items);
+  const newReceivedCheckInCount = checkInOverview.pendingCount;
   const recordCountLabel =
     newReceivedCheckInCount > 0
       ? `새 기록 ${newReceivedCheckInCount}개`
       : "새 기록 없음";
 
   const checkInStatusTitle = latestSentCheckIn
-    ? latestSentCheckIn.checkedAt
+    ? latestSentCheckIn.status === "CONFIRMED"
       ? "부모님이 확인했어요"
       : "부모님이 아직 확인하지 않았어요"
     : "최근에 보낸 안부가 없어요";
