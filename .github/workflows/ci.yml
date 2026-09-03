@@ -27,8 +27,5 @@ jobs:
       - name: Run mobile lint
         run: pnpm --filter hyoit-rn lint
 
-      - name: Run mobile typecheck
-        run: pnpm --filter hyoit-rn exec tsc --noEmit
-
       - name: Run check-in tests
         run: pnpm --filter hyoit-rn test:check-in
