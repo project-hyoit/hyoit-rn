@@ -31,7 +31,7 @@ export const HOME_STATUS_CONTENT: Record<HomeStatus, HomeStatusContent> = {
 
   empty: {
     label: null,
-    title: "아직 도착한\n안부가 없어요!",
+    title: "새로 도착한\n안부가 없어요!",
     description: "한번 먼저 안부를\n보내볼까요?",
     ctaLabel: "바로 보내러 가기 >",
     badgeText: null,

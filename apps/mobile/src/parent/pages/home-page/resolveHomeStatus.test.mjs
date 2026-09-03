@@ -57,3 +57,10 @@ test("returns empty without unread or sent check-ins", () => {
     "empty",
   );
 });
+
+test("empty copy does not claim there has never been a received check-in", async () => {
+  const { HOME_STATUS_CONTENT } = await import("./constants/homeStatus.ts");
+
+  assert.match(HOME_STATUS_CONTENT.empty.title, /새로 도착한/);
+  assert.doesNotMatch(HOME_STATUS_CONTENT.empty.title, /아직 도착한/);
+});
