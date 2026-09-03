@@ -64,3 +64,11 @@ test("empty copy does not claim there has never been a received check-in", async
   assert.match(HOME_STATUS_CONTENT.empty.title, /새로 도착한/);
   assert.doesNotMatch(HOME_STATUS_CONTENT.empty.title, /아직 도착한/);
 });
+
+
+test("multiple label reflects the actual unread count", async () => {
+  const { resolveHomeStatusLabel } = await import("./constants/homeStatus.ts");
+
+  assert.equal(resolveHomeStatusLabel("multiple", 3), "새 안부 3개");
+  assert.equal(resolveHomeStatusLabel("multiple", 4), "새 안부 4개");
+});

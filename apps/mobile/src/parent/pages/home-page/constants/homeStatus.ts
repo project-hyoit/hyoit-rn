@@ -85,3 +85,12 @@ export const HOME_STATUS_CONTENT: Record<HomeStatus, HomeStatusContent> = {
     ctaColor: "#3A8F59",
   },
 };
+
+
+export const resolveHomeStatusLabel = (
+  status: HomeStatus,
+  pendingReceivedCount: number,
+) => {
+  if (status !== "multiple") return HOME_STATUS_CONTENT[status].label;
+  return `새 안부 ${pendingReceivedCount}개`;
+};

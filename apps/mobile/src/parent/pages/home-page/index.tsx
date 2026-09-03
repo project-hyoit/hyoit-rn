@@ -52,7 +52,11 @@ export default function HomePage() {
           onPressSetting={() => {}}
         />
 
-        <HomeStatusBanner status={homeStatus} onPress={moveToCheckIn} />
+        <HomeStatusBanner
+          status={homeStatus}
+          pendingReceivedCount={pendingReceivedCount}
+          onPress={moveToCheckIn}
+        />
 
         <HomePrimaryAction
           label="자녀에게 안부 보내기"
