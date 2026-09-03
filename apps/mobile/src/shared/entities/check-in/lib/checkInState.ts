@@ -10,6 +10,15 @@ type CreateCheckInParams = {
   createdAt: string;
 };
 
+type SendCheckInParams = CreateCheckInParams & {
+  items: CheckInRawItem[];
+};
+
+type SendCheckInResult = {
+  items: CheckInRawItem[];
+  sentItem: CheckInRawItem | null;
+};
+
 type MarkCheckInAsCheckedParams = {
   items: CheckInRawItem[];
   itemId: string;
@@ -26,28 +35,50 @@ export const createCheckIn = ({
   message,
   id,
   createdAt,
-}: CreateCheckInParams): CheckInRawItem => ({
-  id,
-  senderRole,
-  receiverRole: getReceiverRole(senderRole),
-  message,
-  type: "QUESTION",
-  createdAt,
-});
+}: CreateCheckInParams): CheckInRawItem | null => {
+  const normalizedMessage = message.trim();
+  if (!normalizedMessage) return null;
+
+  return {
+    id,
+    senderRole,
+    receiverRole: getReceiverRole(senderRole),
+    message: normalizedMessage,
+    type: "QUESTION",
+    createdAt,
+  };
+};
+
+export const sendCheckIn = ({
+  items,
+  ...params
+}: SendCheckInParams): SendCheckInResult => {
+  const sentItem = createCheckIn(params);
+  if (!sentItem) return { items, sentItem: null };
+
+  return {
+    items: [sentItem, ...items],
+    sentItem,
+  };
+};
 
 export const markCheckInAsChecked = ({
   items,
   itemId,
   viewerRole,
   checkedAt,
-}: MarkCheckInAsCheckedParams): CheckInRawItem[] =>
-  items.map((item) => {
-    if (item.id !== itemId) return item;
-    if (item.receiverRole !== viewerRole) return item;
-    if (item.checkedAt) return item;
+}: MarkCheckInAsCheckedParams): CheckInRawItem[] => {
+  const targetIndex = items.findIndex((item) => item.id === itemId);
+  if (targetIndex < 0) return items;
 
-    return {
-      ...item,
-      checkedAt,
-    };
-  });
+  const target = items[targetIndex];
+  if (target.receiverRole !== viewerRole || target.checkedAt) return items;
+
+  const nextItems = [...items];
+  nextItems[targetIndex] = {
+    ...target,
+    checkedAt,
+  };
+
+  return nextItems;
+};

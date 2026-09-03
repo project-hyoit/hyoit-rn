@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 const stateModule = await import("./checkInState.ts").catch(() => ({}));
-const { createCheckIn, markCheckInAsChecked } = stateModule;
+const { createCheckIn, sendCheckIn, markCheckInAsChecked } = stateModule;
 
 const NOW = "2026-09-03T18:00:00.000Z";
 
@@ -15,9 +15,7 @@ const createItem = (overrides = {}) =>
     ...overrides,
   });
 
-test("creates a real pending check-in from sender to the opposite role", () => {
-  assert.equal(typeof createCheckIn, "function");
-
+test("creates a pending check-in for the opposite role", () => {
   const item = createItem();
 
   assert.equal(item.senderRole, "parent");
@@ -25,8 +23,56 @@ test("creates a real pending check-in from sender to the opposite role", () => {
   assert.equal(item.message, "잘 지내고 있어요");
   assert.equal(item.checkedAt, undefined);
 });
+
+test("normalizes message text at the domain boundary", () => {
+  const item = createItem({ message: "   밥 먹었어?   " });
+
+  assert.equal(item.message, "밥 먹었어?");
+});
+
+test("rejects a blank message before creating a check-in", () => {
+  const item = createItem({ message: "   " });
+
+  assert.equal(item, null);
+});
+
+test("sends a check-in without mutating the previous conversation", () => {
+  assert.equal(typeof sendCheckIn, "function");
+  const previousItem = createItem({ id: "old" });
+  const previousItems = [previousItem];
+
+  const result = sendCheckIn({
+    items: previousItems,
+    senderRole: "child",
+    message: "  잘 있어요  ",
+    id: "new",
+    createdAt: NOW,
+  });
+
+  assert.equal(previousItems.length, 1);
+  assert.equal(result.sentItem.id, "new");
+  assert.equal(result.sentItem.message, "잘 있어요");
+  assert.equal(result.sentItem.receiverRole, "parent");
+  assert.deepEqual(result.items.map((item) => item.id), ["new", "old"]);
+});
+
+test("does not change conversation when sending a blank message", () => {
+  const previousItem = createItem({ id: "old" });
+  const previousItems = [previousItem];
+
+  const result = sendCheckIn({
+    items: previousItems,
+    senderRole: "child",
+    message: "   ",
+    id: "new",
+    createdAt: NOW,
+  });
+
+  assert.equal(result.sentItem, null);
+  assert.equal(result.items, previousItems);
+});
+
 test("only the receiver can confirm a check-in", () => {
-  assert.equal(typeof markCheckInAsChecked, "function");
   const item = createItem({ id: "id-2" });
 
   const senderAttempt = markCheckInAsChecked({
@@ -45,17 +91,24 @@ test("only the receiver can confirm a check-in", () => {
   });
   assert.equal(receiverAttempt[0].checkedAt, NOW);
 });
-test("confirming one check-in does not mutate other records", () => {
-  const first = createItem({ senderRole: "child", id: "id-3" });
-  const second = createItem({ id: "id-4" });
 
-  const next = markCheckInAsChecked({
-    items: [first, second],
+test("keeps the same array when confirmation is a no-op", () => {
+  const item = createItem({ id: "id-3" });
+  const items = [item];
+
+  const senderAttempt = markCheckInAsChecked({
+    items,
     itemId: "id-3",
     viewerRole: "parent",
     checkedAt: NOW,
   });
+  assert.equal(senderAttempt, items);
 
-  assert.equal(next[0].checkedAt, NOW);
-  assert.equal(next[1].checkedAt, undefined);
+  const missingAttempt = markCheckInAsChecked({
+    items,
+    itemId: "missing",
+    viewerRole: "child",
+    checkedAt: NOW,
+  });
+  assert.equal(missingAttempt, items);
 });

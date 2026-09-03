@@ -22,7 +22,11 @@ export {
   groupCheckInHistoryByDate,
 } from "./lib/checkInHistory";
 export type { CheckInHistoryFilter } from "./lib/checkInHistory";
-export { createCheckIn, markCheckInAsChecked } from "./lib/checkInState";
+export {
+  createCheckIn,
+  sendCheckIn,
+  markCheckInAsChecked,
+} from "./lib/checkInState";
 export {
   mapCheckInToViewItem,
   getCheckInsForViewer,

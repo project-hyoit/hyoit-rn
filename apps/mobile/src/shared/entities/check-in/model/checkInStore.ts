@@ -2,7 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-import { createCheckIn, markCheckInAsChecked } from "../lib/checkInState";
+import {
+  markCheckInAsChecked,
+  sendCheckIn as sendCheckInState,
+} from "../lib/checkInState";
 import type { CheckInRawItem, CheckInViewerRole } from "./types";
 
 type CheckInStore = {
@@ -24,32 +27,34 @@ const createCheckInId = () =>
 
 export const useCheckInStore = create<CheckInStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       items: [],
       hasHydrated: false,
       sendCheckIn: (senderRole, message) => {
-        const trimmedMessage = message.trim();
-        if (!trimmedMessage) return null;
-
-        const item = createCheckIn({
+        const result = sendCheckInState({
+          items: get().items,
           senderRole,
-          message: trimmedMessage,
+          message,
           id: createCheckInId(),
           createdAt: new Date().toISOString(),
         });
 
-        set((state) => ({ items: [item, ...state.items] }));
-        return item;
+        if (!result.sentItem) return null;
+
+        set({ items: result.items });
+        return result.sentItem;
       },
       confirmCheckIn: (itemId, viewerRole) => {
-        set((state) => ({
-          items: markCheckInAsChecked({
-            items: state.items,
-            itemId,
-            viewerRole,
-            checkedAt: new Date().toISOString(),
-          }),
-        }));
+        const currentItems = get().items;
+        const nextItems = markCheckInAsChecked({
+          items: currentItems,
+          itemId,
+          viewerRole,
+          checkedAt: new Date().toISOString(),
+        });
+
+        if (nextItems === currentItems) return;
+        set({ items: nextItems });
       },
       clearCheckIns: async () => {
         await AsyncStorage.removeItem(CHECK_IN_STORAGE_KEY);
