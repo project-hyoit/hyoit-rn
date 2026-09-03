@@ -19,13 +19,17 @@ type SendCheckInResult = {
   sentItem: CheckInRawItem | null;
 };
 
-type MarkCheckInAsCheckedParams = {
+type ConfirmCheckInParams = {
   items: CheckInRawItem[];
   itemId: string;
   viewerRole: CheckInViewerRole;
   checkedAt: string;
 };
 
+type ConfirmCheckInResult = {
+  items: CheckInRawItem[];
+  confirmedItem: CheckInRawItem | null;
+};
 const getReceiverRole = (
   senderRole: CheckInViewerRole,
 ): CheckInViewerRole => (senderRole === "parent" ? "child" : "parent");
@@ -61,13 +65,12 @@ export const sendCheckIn = ({
     sentItem,
   };
 };
-
-export const markCheckInAsChecked = ({
+const markCheckInAsChecked = ({
   items,
   itemId,
   viewerRole,
   checkedAt,
-}: MarkCheckInAsCheckedParams): CheckInRawItem[] => {
+}: ConfirmCheckInParams): CheckInRawItem[] => {
   const targetIndex = items.findIndex((item) => item.id === itemId);
   if (targetIndex < 0) return items;
 
@@ -81,4 +84,18 @@ export const markCheckInAsChecked = ({
   };
 
   return nextItems;
+};
+
+export const confirmCheckIn = (
+  params: ConfirmCheckInParams,
+): ConfirmCheckInResult => {
+  const nextItems = markCheckInAsChecked(params);
+  if (nextItems === params.items) {
+    return { items: params.items, confirmedItem: null };
+  }
+
+  const confirmedItem =
+    nextItems.find((item) => item.id === params.itemId) ?? null;
+
+  return { items: nextItems, confirmedItem };
 };

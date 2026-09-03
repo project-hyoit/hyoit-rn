@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 const selectorModule = await import("./checkInSelectors.ts").catch(() => ({}));
-const { getCheckInOverview } = selectorModule;
+const { getCheckInOverview, getLatestSentCheckIn } = selectorModule;
 
 const receivedUnread = {
   id: "received-unread",
@@ -40,4 +40,43 @@ test("falls back to the newest item when there is no unread received check-in", 
   assert.equal(overview.pendingCount, 0);
   assert.equal(overview.displayItem?.id, "sent-later");
   assert.equal(overview.displayItem?.status, "WAITING_CONFIRM");
+});
+
+test("returns the newest sent check-in regardless of input order", () => {
+  assert.equal(typeof getLatestSentCheckIn, "function");
+
+  const olderSent = {
+    ...sentLater,
+    id: "sent-older",
+    createdAt: "2026-09-03T08:00:00.000Z",
+    direction: "SENT",
+    status: "WAITING_CONFIRM",
+  };
+  const newerSent = {
+    ...sentLater,
+    id: "sent-newer",
+    createdAt: "2026-09-03T11:00:00.000Z",
+    direction: "SENT",
+    status: "CONFIRMED",
+    checkedAt: "2026-09-03T11:05:00.000Z",
+  };
+  const received = {
+    ...receivedUnread,
+    direction: "RECEIVED",
+    status: "NEW",
+  };
+
+  const latest = getLatestSentCheckIn([olderSent, received, newerSent]);
+
+  assert.equal(latest?.id, "sent-newer");
+});
+
+test("returns null when the viewer has not sent a check-in", () => {
+  const received = {
+    ...receivedUnread,
+    direction: "RECEIVED",
+    status: "NEW",
+  };
+
+  assert.equal(getLatestSentCheckIn([received]), null);
 });

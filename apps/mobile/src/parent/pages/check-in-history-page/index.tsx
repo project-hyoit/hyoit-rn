@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   filterCheckInHistory,
   groupCheckInHistoryByDate,
-  mapCheckInToViewItem,
+  getCheckInsForViewer,
   useCheckInStore,
   type CheckInHistoryFilter,
   type CheckInItem,
@@ -43,7 +43,7 @@ export default function ParentCheckInHistoryPage() {
   const rawItems = useCheckInStore((state) => state.items);
   const hasHydrated = useCheckInStore((state) => state.hasHydrated);
   const items = useMemo(
-    () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
+    () => getCheckInsForViewer(rawItems, "parent"),
     [rawItems],
   );
   const filteredItems = useMemo(() => filterCheckInHistory(items, filter), [items, filter]);

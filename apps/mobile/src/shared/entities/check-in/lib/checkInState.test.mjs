@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 const stateModule = await import("./checkInState.ts").catch(() => ({}));
-const { createCheckIn, sendCheckIn, markCheckInAsChecked } = stateModule;
+const { createCheckIn, sendCheckIn, confirmCheckIn } = stateModule;
 
 const NOW = "2026-09-03T18:00:00.000Z";
 
@@ -72,43 +72,69 @@ test("does not change conversation when sending a blank message", () => {
   assert.equal(result.items, previousItems);
 });
 
-test("only the receiver can confirm a check-in", () => {
-  const item = createItem({ id: "id-2" });
+test("confirms a check-in and returns the confirmed item", () => {
+  assert.equal(typeof confirmCheckIn, "function");
+  const item = createItem({ id: "id-4" });
+  const items = [item];
 
-  const senderAttempt = markCheckInAsChecked({
-    items: [item],
-    itemId: "id-2",
-    viewerRole: "parent",
-    checkedAt: NOW,
-  });
-  assert.equal(senderAttempt[0].checkedAt, undefined);
-
-  const receiverAttempt = markCheckInAsChecked({
-    items: [item],
-    itemId: "id-2",
+  const result = confirmCheckIn({
+    items,
+    itemId: "id-4",
     viewerRole: "child",
     checkedAt: NOW,
   });
-  assert.equal(receiverAttempt[0].checkedAt, NOW);
+
+  assert.equal(result.confirmedItem.id, "id-4");
+  assert.equal(result.confirmedItem.checkedAt, NOW);
+  assert.notEqual(result.items, items);
+  assert.equal(result.items[0].checkedAt, NOW);
 });
 
-test("keeps the same array when confirmation is a no-op", () => {
-  const item = createItem({ id: "id-3" });
+test("returns a no-op confirmation result for an invalid viewer", () => {
+  const item = createItem({ id: "id-5" });
   const items = [item];
 
-  const senderAttempt = markCheckInAsChecked({
+  const result = confirmCheckIn({
     items,
-    itemId: "id-3",
+    itemId: "id-5",
     viewerRole: "parent",
     checkedAt: NOW,
   });
-  assert.equal(senderAttempt, items);
 
-  const missingAttempt = markCheckInAsChecked({
+  assert.equal(result.confirmedItem, null);
+  assert.equal(result.items, items);
+});
+
+test("returns a no-op confirmation result for a missing item", () => {
+  const item = createItem({ id: "id-6" });
+  const items = [item];
+
+  const result = confirmCheckIn({
     items,
     itemId: "missing",
     viewerRole: "child",
     checkedAt: NOW,
   });
-  assert.equal(missingAttempt, items);
+
+  assert.equal(result.confirmedItem, null);
+  assert.equal(result.items, items);
+});
+
+test("keeps an already confirmed check-in unchanged", () => {
+  const checkedItem = {
+    ...createItem({ id: "id-7" }),
+    checkedAt: NOW,
+  };
+  const items = [checkedItem];
+
+  const result = confirmCheckIn({
+    items,
+    itemId: "id-7",
+    viewerRole: "child",
+    checkedAt: "2026-09-03T19:00:00.000Z",
+  });
+
+  assert.equal(result.confirmedItem, null);
+  assert.equal(result.items, items);
+  assert.equal(result.items[0].checkedAt, NOW);
 });

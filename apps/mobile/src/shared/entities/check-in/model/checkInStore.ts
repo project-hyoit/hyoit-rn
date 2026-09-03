@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 import {
-  markCheckInAsChecked,
+  confirmCheckIn as confirmCheckInState,
   sendCheckIn as sendCheckInState,
 } from "../lib/checkInState";
 import type { CheckInRawItem, CheckInViewerRole } from "./types";
@@ -46,15 +46,15 @@ export const useCheckInStore = create<CheckInStore>()(
       },
       confirmCheckIn: (itemId, viewerRole) => {
         const currentItems = get().items;
-        const nextItems = markCheckInAsChecked({
+        const result = confirmCheckInState({
           items: currentItems,
           itemId,
           viewerRole,
           checkedAt: new Date().toISOString(),
         });
 
-        if (nextItems === currentItems) return;
-        set({ items: nextItems });
+        if (!result.confirmedItem) return;
+        set({ items: result.items });
       },
       clearCheckIns: async () => {
         await AsyncStorage.removeItem(CHECK_IN_STORAGE_KEY);

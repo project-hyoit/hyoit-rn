@@ -32,6 +32,24 @@ export const getCheckInsForViewer = (
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
+export const getLatestSentCheckIn = (
+  items: CheckInItem[],
+): CheckInItem | null => {
+  let latest: CheckInItem | null = null;
+
+  for (const item of items) {
+    if (item.direction !== "SENT") continue;
+    if (
+      !latest ||
+      new Date(item.createdAt).getTime() > new Date(latest.createdAt).getTime()
+    ) {
+      latest = item;
+    }
+  }
+
+  return latest;
+};
+
 export const getPendingReceivedCheckIns = (
   items: CheckInItem[],
 ): CheckInItem[] =>

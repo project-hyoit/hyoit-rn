@@ -4,7 +4,8 @@ import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
-  mapCheckInToViewItem,
+  getCheckInOverview,
+  getLatestSentCheckIn,
   useCheckInStore,
 } from "@/src/shared/entities/check-in";
 import type { HomeStatus } from "./types/home";
@@ -18,24 +19,12 @@ import {
 export default function HomePage() {
   const rawItems = useCheckInStore((state) => state.items);
   const hasHydrated = useCheckInStore((state) => state.hasHydrated);
-  const items = useMemo(
-    () => rawItems.map((item) => mapCheckInToViewItem(item, "parent")),
+  const overview = useMemo(
+    () => getCheckInOverview(rawItems, "parent"),
     [rawItems],
   );
-
-  const pendingReceivedCount = items.filter(
-    (item) => item.direction === "RECEIVED" && item.status === "NEW",
-  ).length;
-  const latestSentItem = useMemo(
-    () =>
-      items
-        .filter((item) => item.direction === "SENT")
-        .sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-        )[0] ?? null,
-    [items],
-  );
+  const latestSentItem = getLatestSentCheckIn(overview.items);
+  const pendingReceivedCount = overview.pendingCount;
 
   const homeStatus: HomeStatus = useMemo(() => {
     if (pendingReceivedCount > 1) return "multiple";

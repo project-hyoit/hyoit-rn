@@ -16,7 +16,6 @@ export {
 export { formatCheckInTime } from "./lib/formatCheckInTime";
 export { getCheckInOpponentLabel } from "./lib/getCheckInOpponentLabel";
 export { getCheckInStatusLabel } from "./lib/getCheckInStatusLabel";
-export { getLatestCheckIn } from "./lib/getLatestCheckIn";
 export {
   filterCheckInHistory,
   groupCheckInHistoryByDate,
@@ -25,11 +24,12 @@ export type { CheckInHistoryFilter } from "./lib/checkInHistory";
 export {
   createCheckIn,
   sendCheckIn,
-  markCheckInAsChecked,
+  confirmCheckIn,
 } from "./lib/checkInState";
 export {
   mapCheckInToViewItem,
   getCheckInsForViewer,
+  getLatestSentCheckIn,
   getPendingReceivedCheckIns,
   getCheckInOverview,
 } from "./lib/checkInSelectors";
